@@ -127,6 +127,9 @@ def _get_or_create_config_file_path() -> Path:
 
 def _write_config(config: dict):
     config_file = _get_or_create_config_file_path()
+    # Create the directory if it doesn't exist
+    if not config_file.parent.exists():
+        config_file.parent.mkdir(parents=True, exist_ok=True)
     with open(config_file, "w") as f:
         yaml.dump(config, f)
 
