@@ -3,10 +3,9 @@
 import logging
 from pathlib import Path
 from typing import List
-
+import pkg_resources
 from filelock import FileLock, Timeout
 from ruamel import yaml
-import site
 import importlib.util
 
 
@@ -129,11 +128,7 @@ def find_class_id_mapping(job_config: dict) -> dict:
     return class_id_mapping
 
 def get_site_packages_path():
-    if hasattr(site, "getsitepackages"):
-        site_packages_path = site.getsitepackages()[0]
-    else:
-        site_packages_path = site.getusersitepackages()
-    return site_packages_path
+    return pkg_resources.get_distribution("syclops").location
 
 def get_module_path(module_name: str) -> Path:
     spec = importlib.util.find_spec(module_name)
