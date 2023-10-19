@@ -110,11 +110,14 @@ def _crawl_assets(install_folder: Path):
 
     asset_catalog_path = install_folder / "asset_catalog.yaml"
     asset_paths_path = install_folder / "asset_paths.yaml"
+    if not asset_paths_path.exists():
+        with open(asset_paths_path, "w") as f:
+            yaml.dump({"asset_paths": []}, f)
+
     # Read asset paths
     with open(asset_paths_path, "r") as f:
         asset_paths = yaml.load(f, Loader=yaml.FullLoader)["asset_paths"]
     # Convert relative paths to absolute paths
-    # Paths are relative to asset_paths.yaml
     asset_paths = [str(install_folder / path) for path in asset_paths]
 
     package_path = Path(__file__).parent.parent
@@ -287,9 +290,15 @@ def _asset_browser():
     _run_subprocess([venv_path, asset_browser_path], execution_info="Asset browser")
 
 
+def _ensure_catalog_exists(install_folder: Path):
+    asset_catalog_path = install_folder / "asset_catalog.yaml"
+    if not asset_catalog_path.exists():
+        _crawl_assets(install_folder)
+
 def main():
     install_folder = get_or_create_install_folder()
     install_blender(BLENDER_VERSION, install_folder)
+    _ensure_catalog_exists(install_folder)
     console = Console()
     console.print(f"Syclops folder: {install_folder}", style="bold green")
 
