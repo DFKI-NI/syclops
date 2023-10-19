@@ -1,0 +1,47 @@
+description: Places individual 3D objects in the scene.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the plugin
+      type: string
+    models:
+      description: 3D assets to scatter.
+      oneOf:
+        - type: array
+          items:
+            $ref: "#/definitions/asset_models"
+        - $ref: "#/definitions/asset_models"
+    frame_id:
+      description: Transformation tree node to attach to.
+      type: string
+    place_on_ground:
+      description: If true, the object will be placed on the ground.
+      type: boolean
+      default: false
+    floor_object:
+      description: Name of the floor object to scatter on.
+      type: string
+    max_texture_size:
+      description: Maximum texture size in pixel. Will reduce the texture to save GPU RAM.
+      type: integer
+    decimate_mesh_factor:
+      description: Factor between 0-1 that decimates the number of vertices of the mesh. Lower means less vertices.
+      type: number
+    class_id:
+      description: Class ID for ground truth output.
+      type: integer
+    class_id_offset:
+      description: Class ID offset for ground truth output. The keys are the name of the material and the values are the offsets.
+      type: object
+      additionalProperties:
+        type: integer
+  required: [name, models, frame_id, class_id]
+  if:
+    properties:
+      place_on_ground:
+        const: true
+    required: [place_on_ground]
+  then:
+    required: [floor_object]

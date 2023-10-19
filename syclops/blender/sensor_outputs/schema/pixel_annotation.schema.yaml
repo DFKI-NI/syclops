@@ -1,0 +1,43 @@
+description: Variety of pixel level annotations of the sensor image.
+type: array
+items:
+  type: object
+  properties:
+    semantic_segmentation:
+      description: Semantic segmentation output. Pixels will have the class id value of the object.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the output
+          type: string
+    instance_segmentation:
+      description: Instance segmentation output. Each object will have a unique id in the image.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the output
+          type: string
+    pointcloud:
+      description: 3D coordinates of each pixel in camera coordinates in meters.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the output
+          type: string
+    depth:
+      description: Z Depth of a pixel to the camera in meters.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the output
+          type: string
+    object_volume:
+      description: Volume of the objects in cm^3.
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the output
+          type: string
+    debug_breakpoint:
+      description: Wether to break and open Blender before rendering. Only works if scene debugging is active.
+      type: boolean

@@ -1,0 +1,2 @@
+recursive-include syclops/ *.yaml *.blend
+recursive-include syclops/__example_assets__ *

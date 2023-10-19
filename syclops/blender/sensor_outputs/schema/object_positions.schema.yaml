@@ -1,0 +1,14 @@
+description: Global position of all objects in the scene. Listed with their class ids, xyz [m] location, xyz [rad] euler angles and xyz scale in a json.
+type: array
+items:
+  type: object
+  properties:
+    id:
+      description: Unique identifier of the output
+      type: string
+    debug_breakpoint:
+      description: Wether to break and open Blender before rendering. Only works if scene debugging is active.
+      type: boolean
+  required: [id]
+minItems: 1
+maxItems: 1

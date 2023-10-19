@@ -1,0 +1,82 @@
+description: Basic camera sensor.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the sensor
+      type: string
+    frame_id:
+      description: Transformation tree node to attach to.
+      type: string
+    resolution:
+      description: Width and height of the camera in pixel.
+      type: array
+      items:
+        type: integer
+      maxItems: 2
+      minItems: 2
+    focal_length:
+      description: Focal length of the camera in mm.
+      $ref: "#/definitions/number_evaluation"
+    sensor_width:
+      description: Width of the sensor in mm.
+      $ref: "#/definitions/number_evaluation"
+    exposure:
+      description: Exposure offset in stops.
+      $ref: "#/definitions/number_evaluation"
+    gamma:
+      description: Gamma correction applied to the image. 1 being no change in gamma.
+      $ref: "#/definitions/number_evaluation"
+    shutter_speed:
+      description: Shutter speed in seconds. Only effects the strength of motion blur.
+      type: number
+    depth_of_field:
+      description: Settings for the depth of field of the camera
+      type: object
+      properties:
+        aperture:
+          description: f-number of the aperture.
+          type: number
+        autofocus:
+          description: Wether the camera should focus on the object in the center of the image.
+          type: boolean
+        focus_distance:
+          description: Fixed focus distance of the camera in m.
+          type: number
+    motion_blur:
+      description: Settings for the motion blur of the camera.
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        rolling_shutter:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            duration:
+              description: Exposure time of the Scanline in seconds.
+              type: number
+    outputs:
+      type: object
+      properties:
+        syclops_output_rgb:
+          $ref: "#/definitions/syclops_output_rgb"
+        syclops_output_pixel_annotation:
+          $ref: "#/definitions/syclops_output_pixel_annotation"
+        syclops_output_object_positions:
+          $ref: "#/definitions/syclops_output_object_positions"
+      additionalProperties: False
+  required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
+
+  allOf:
+    - if:
+        properties:
+          motion_blur:
+            properties:
+              enabled:
+                const: true
+        required: [motion_blur]
+      then:
+        required: [shutter_speed]

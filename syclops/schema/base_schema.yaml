@@ -1,0 +1,456 @@
+$schema: http://json-schema.org/draft-07/schema#
+
+type: object
+properties:
+  steps:
+    description: Number of datapoints to generate
+    type: integer
+  seeds:
+    description: Seeds for the random number generators
+    type: object
+    properties:
+      numpy:
+        description: Seed for the Numpy random number generator
+        type: integer
+      cycles:
+        description: Seed for the Cycles renderer
+        type: integer
+    required: [numpy, cycles]
+  render_device:
+    type: string
+    enum: [GPU, CPU]
+  render_hardware:
+    type: string
+    enum: [CUDA, OPTIX]
+  denoising_enabled:
+    type: boolean
+  denoising_algorithm:
+    description: Denoising algorithm to use. OPTIX is only available for RTX GPUs.
+    type: string
+    enum: [OPTIX, OPENIMAGEDENOISE]
+  transformations:
+    description: Transformation tree for the scene
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/transformation"
+  scene:
+    type: object
+    properties: {}
+    additionalProperties: False
+  sensor:
+    type: object
+    properties: {}
+    additionalProperties: False
+  textures:
+    type: object
+    description: Dynamically generated textures for the scene.
+    additionalProperties:
+        type: object
+        additionalProperties: False
+        properties:
+          config:
+            type: object
+            properties:
+              image_size:
+                description: Size of the texture in pixels
+                type: array
+                items:
+                  type: integer
+                minItems: 2
+                maxItems: 2
+              bit_depth:
+                description: Bit depth of the texture. Only 8 and 16 are supported.
+                type: integer
+                enum: [8, 16]
+              seed:
+                type: integer
+              num_textures:
+                description: Number of textures to generate. During rendering, the textures will be randomly selected.
+                type: integer
+            required: [image_size, bit_depth, seed, num_textures]
+          ops:
+            type: array
+            description: List of operations to perform on texture. Operations are applied in order.
+            items:
+              oneOf:
+                - $ref: "#/definitions/perlin"
+                - $ref: "#/definitions/math_expression"
+                - $ref: "#/definitions/input_texture"
+                - $ref: "#/definitions/erode"
+                - $ref: "#/definitions/dilate"
+                - $ref: "#/definitions/clip"
+                - $ref: "#/definitions/blur"
+                - $ref: "#/definitions/contrast"
+                - $ref: "#/definitions/keep_overlapp"
+                - $ref: "#/definitions/random_rectangles"
+            minItems: 1
+required: [steps, seeds, render_device, denoising_enabled]
+
+allOf:
+  - if:
+      properties:
+        render_device:
+          const: GPU
+    then:
+      required: [render_hardware]
+
+definitions:
+  # TRANSFORMATION
+  transformation:
+    type: object
+    properties:
+      location:
+        description: Location in meters
+        $ref: "#/definitions/vector_evaluation"
+      rotation:
+        description: Euler angles in radians
+        $ref: "#/definitions/vector_evaluation"
+      velocities:
+        type: object
+        properties:
+          translation:
+            description: Translation velocity in meters per second
+            $ref: "#/definitions/vector_evaluation"
+          rotation:
+            description: Rotation velocity in radians per second
+            $ref: "#/definitions/vector_evaluation"
+        required: [translation, rotation]
+      children:
+        type: object
+        additionalProperties:
+          $ref: "#/definitions/transformation"
+    required:
+      - location
+      - rotation
+
+  # GENERAL DEFINITIONS
+  vector:
+    type: array
+    items:
+      type: number
+    minItems: 3
+    maxItems: 3
+
+  vector_evaluation:
+    anyOf:
+      - $ref: "#/definitions/vector"
+      - $ref: "#/definitions/sample_linear_vector"
+      - $ref: "#/definitions/sample_normal_vector"
+      - $ref: "#/definitions/sample_uniform_vector"
+      - $ref: "#/definitions/sample_step_vector"
+      - $ref: "#/definitions/sample_random_selection_vector"
+
+  number_evaluation:
+    anyOf:
+      - type: number
+      - $ref: "#/definitions/sample_linear_number"
+      - $ref: "#/definitions/sample_normal_number"
+      - $ref: "#/definitions/sample_uniform_number"
+      - $ref: "#/definitions/sample_step_number"
+      - $ref: "#/definitions/sample_random_selection_number"
+
+  string_evaluation:
+    anyOf:
+      - type: string
+      - $ref: "#/definitions/sample_step_string"
+      - $ref: "#/definitions/sample_random_selection_string"
+      - $ref: "#/definitions/sample_selection_folder"
+      - $ref: "#/definitions/sample_selection_asset"
+      - $ref: "#/definitions/sample_wildcard"
+
+  image_texture_evaluation:
+    type: string
+
+
+  # EVALUATION
+  sample_linear_vector:
+    type: object
+    properties:
+      linear:
+        description: Value starts with the first vector and gets incremented every timestep by the second vector.
+        type: array
+        items:
+          $ref: "#/definitions/vector"
+        minItems: 2
+        maxItems: 2
+    required: [linear]
+
+  sample_linear_number:
+    type: object
+    properties:
+      linear:
+        description: Value starts with the first number and gets incremented every timestep by the second number.
+        type: array
+        items:
+          type: number
+        minItems: 2
+        maxItems: 2
+    required: [linear]
+
+  sample_normal_vector:
+    type: object
+    properties:
+      normal:
+        description: Random vector each timestep with the first vector being the mean and the second vector being the standard deviation.
+        type: array
+        items:
+          $ref: "#/definitions/vector"
+        minItems: 2
+        maxItems: 2
+    required: [normal]
+
+  sample_normal_number:
+    type: object
+    properties:
+      normal:
+        description: Random value each timestep with the first number being the mean and the second number being the standard deviation.
+        type: array
+        items:
+          type: number
+        minItems: 2
+        maxItems: 2
+    required: [normal]
+
+  sample_uniform_vector:
+    type: object
+    properties:
+      uniform:
+        description: Random vector each timestep with the first vector being the lower bound and the second vector being the upper bound.
+        type: array
+        items:
+          $ref: "#/definitions/vector"
+        minItems: 2
+        maxItems: 2
+    required: [uniform]
+
+  sample_uniform_number:
+    type: object
+    properties:
+      uniform:
+        description: Random number each timestep with the first number being the lower bound and the second number being the upper bound.
+        type: array
+        items:
+          type: number
+        minItems: 2
+        maxItems: 2
+    required: [uniform]
+
+  sample_step_number:
+    type: object
+    properties:
+      step:
+        description: Each timestep will pick the index from the list.
+        type: array
+        items:
+          type: number
+    required: [step]
+
+  sample_step_vector:
+    type: object
+    properties:
+      step:
+        type: array
+        description: Each timestep will pick the index from the list.
+        items:
+          $ref: "#/definitions/vector"
+    required: [step]
+
+  sample_step_string:
+    type: object
+    properties:
+      step:
+        description: Each timestep will pick the index from the list.
+        type: array
+        items:
+          type: string
+    required: [step]
+
+  sample_random_selection_number:
+    type: object
+    properties:
+      random_selection:
+        description: Each timestep will randomly pick an element from the list.
+        type: array
+        items:
+          type: number
+    required: [random_selection]
+
+  sample_random_selection_vector:
+    type: object
+    properties:
+      random_selection:
+        description: Each timestep will randomly pick an element from the list.
+        type: array
+        items:
+          $ref: "#/definitions/vector"
+    required: [random_selection]
+
+  sample_random_selection_string:
+    type: object
+    properties:
+      random_selection:
+        description: Each timestep will randomly pick an element from the list.
+        type: array
+        items:
+          type: string
+    required: [random_selection]
+
+  sample_selection_folder:
+    type: object
+    properties:
+      selection_folder:
+        description: DEPRECATED
+        type: string
+    required: [selection_folder]
+
+  sample_selection_asset:
+    type: object
+    properties:
+      selection_asset:
+        description: Randomly pick an asset from the given library that satisfies the type filter.
+        type: object
+        properties:
+          type:
+            type: string
+          library:
+            type: string
+        required: [type, library]
+    required: [selection_asset]
+
+  sample_wildcard:
+    type: object
+    properties:
+      selection_wildcard:
+        description: Randomly select an asset from a library that fits the given wildcard.
+        type: object
+        properties:
+          wildcard:
+            type: string
+          library:
+            type: string
+        required: [wildcard, library]
+    required: [selection_asset]
+
+  # TEXTURE OPS
+  perlin:
+    type: object
+    properties:
+      perlin:
+        description: Create a Perlin noise texture
+        type: object
+        properties:
+          res:
+            type: integer
+          octaves:
+            type: integer
+        required: [res, octaves]
+        additionalProperties: false
+    additionalProperties: false
+  
+  math_expression:
+    type: object
+    properties:
+      math_expression:
+        description: Adjust the texture with an expression. Use x as the image variable, or use the name of a previously defined texture.
+        type: string
+    additionalProperties: false
+  
+  input_texture:
+    type: object
+    properties:
+      input_texture:
+        description: Use another texture as input
+        type: string
+    additionalProperties: false
+
+  erode:
+    type: object
+    properties:
+      erode:
+        type: object
+        description: Erode the texture with a specified kernel and iterations
+        properties:
+          kernel_size:
+            type: integer
+          iterations:
+            type: integer
+        required: [kernel_size, iterations]
+        additionalProperties: false
+    additionalProperties: false
+
+
+  dilate:
+    type: object
+    properties:
+      dilate:
+        type: object
+        description: Dilate the texture with a specified kernel and iterations
+        properties:
+          kernel_size:
+            type: integer
+          iterations:
+            type: integer
+        required: [kernel_size, iterations]
+        additionalProperties: false
+    additionalProperties: false
+  clip:
+    type: object
+    properties:
+      clip:
+        description: Clip texture values between specified minimum and maximum
+        type: array
+        minItems: 2
+        maxItems: 2
+        items:
+          type: number
+    additionalProperties: false
+  blur:
+    type: object
+    properties:
+      blur:
+        description: Blur the texture using Gaussian blur with a specified kernel size
+        type: object
+        properties:
+          kernel_size:
+            type: integer
+        required: [kernel_size]
+        additionalProperties: false
+    additionalProperties: false
+  contrast:
+      type: object
+      properties:
+        contrast:
+          description: Adjust the contrast of the texture using a given factor
+          type: number
+      additionalProperties: false
+  keep_overlapp:
+      type: object
+      properties:
+        keep_overlapp:
+          type: object
+          description: Keep areas of the texture that overlap with another specified texture
+          properties:
+            texture:
+              type: string
+          required: [texture]
+          additionalProperties: false
+      additionalProperties: false
+  random_rectangles:
+      type: object
+      properties:
+        random_rectangles:
+          type: object
+          properties:
+            num_rectangles:
+              type: integer
+            avg_width:
+              type: number
+            std_width:
+              type: number
+            avg_height:
+              type: number
+            std_height:
+              type: number
+          required: [num_rectangles, avg_width, std_width, avg_height, std_height]
+          additionalProperties: false
+      additionalProperties: false

@@ -1,0 +1,73 @@
+description: Scatters 3D assets on a floor object.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the plugin
+      type: string
+    models:
+      description: 3D assets to scatter.
+      oneOf:
+        - type: array
+          items:
+            $ref: "#/definitions/asset_models"
+        - $ref: "#/definitions/asset_models"
+    floor_object:
+      description: Name of the floor object to scatter on.
+      type: string
+    max_texture_size:
+      description: Maximum texture size in pixel. Will reduce the texture to save GPU RAM.
+      type: integer
+    density_map:
+      description: Texture that alters the density. It is normalized to 0-1 and multiplied with the density_max at each spatial locataion.
+      $ref: "#/definitions/image_texture_evaluation"
+    decimate_mesh_factor:
+      description: Factor between 0-1 that decimates the number of vertices of the mesh. Lower means less vertices.
+      type: number
+    density_max:
+      description: Maximum density per square meter.
+      $ref: "#/definitions/number_evaluation"
+    distance_min:
+      description: Minimum distance between each object origin.
+      $ref: "#/definitions/number_evaluation"
+    scale_standard_deviation:
+      description: Scale variance of the scattered objects.
+      $ref: "#/definitions/number_evaluation"
+    seed:
+      description: Random seed for the scattering.
+      $ref: "#/definitions/number_evaluation"
+    class_id:
+      description: Class ID for ground truth output.
+      type: integer
+    class_id_offset:
+      description: Class ID offset for ground truth output. The keys are the name of the material and the values are the offsets.
+      type: object
+      additionalProperties:
+        type: integer
+    align_to_normal:
+      desctiption: If objects should be aligned to the normal of the surface.
+      type: boolean
+    clumps:
+      description: Optional creation of clumps
+      type: object
+      properties:
+        ratio:
+          description: Ratio of clumped vs non clumped objects.
+          type: number
+        size:
+          description: Number of plants per clump.
+          type: number
+        size_std:
+          description: Standard deviation of the number of plants per clump.
+          type: number
+        position_std:
+          description: Stander deviation of the plant location to the clump center in meters.
+          type: number
+        scale_std:
+          description: Scale standard deviation of the plants
+          type: number
+      required: [ratio, size, size_std, position_std, scale_std]
+
+ 
+  required: [name, models, floor_object, density_max, distance_min, scale_standard_deviation, seed, class_id]

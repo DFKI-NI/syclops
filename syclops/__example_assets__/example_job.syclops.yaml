@@ -1,0 +1,150 @@
+steps: 4
+seeds:
+  numpy: 42
+  cycles: 42
+render_device: "GPU"
+render_hardware: "CUDA"
+denoising_enabled: False
+denoising_algorithm: "OPENIMAGEDENOISE"
+
+# TRANSFORMATION CONFIG
+transformations:
+  map:          
+    location: [0, 0, 0]
+    rotation: [0, 0, 0]
+    children:
+      camera_link:
+        location:
+          linear: [[-20,0,2],[0.5,0,0]]
+        rotation: 
+          normal: [[0.785398, 0, 0],[0.05,0.05,0.05]]
+      iso_object:
+        location:
+          uniform: [[-20,-20,0],[20,20,0]]
+        rotation: [0,0,0]
+
+textures:
+  plain_noise:
+    config:
+      image_size: [512, 512]
+      bit_depth: 16
+      seed: 2
+      num_textures: 2
+    ops:
+      - perlin:
+          res: 4
+          octaves: 4
+      - math_expression: "((x-0.5) * 100 + 65535 / 2)/65535"
+
+# SCENE CONFIG
+scene:
+  syclops_plugin_ground:
+    - name: "Ground"
+      size: 50 # m
+      texture: Example Assets/Muddy Dry Ground
+      # displacement_texture: Example Assets/Ground Displacement 1
+      displacement_texture: Preprocessed Assets/plain_noise
+      class_id: 1
+
+  syclops_plugin_environment:
+    - type: hdri
+      environment_image: 
+        random_selection: [Example Assets/Sunflower Field]
+
+  syclops_plugin_scatter:
+    - name: "Corn Scatter"
+      models: [Example Assets/Corn]
+      floor_object: Ground
+      max_texture_size: 512
+      density_max: 10 # per m^2
+      distance_min: 0.05 # m
+      scale_standard_deviation: 0.5
+      class_id: 2
+      class_id_offset:
+        Stem: 1
+      seed: 1
+      clumps:
+        ratio: 0.3
+        size: 3
+        size_std: 2
+        position_std: 0.02
+        scale_std: 0.4
+    - name: "Weed Scatter"
+      models: [Example Assets/Plain Weeds]
+      floor_object: Ground
+      max_texture_size: 512
+      density_max: 15 # per m^2
+      distance_min: 0.01 # m
+      scale_standard_deviation: 0.5
+      class_id: 4
+      seed: 2
+      clumps:
+        ratio: 0.3
+        size: 3
+        size_std: 2
+        position_std: 0.02
+        scale_std: 0.4
+
+  syclops_plugin_object:
+    - name: iso_object
+      frame_id: iso_object
+      class_id: 5
+      place_on_ground: true
+      models: [Example Assets/ISO Object]
+      floor_object: Ground
+
+
+# SENSOR CONFIG
+sensor:
+  syclops_sensor_camera:
+    - name: "main_camera"
+      # Location, rotation and velocity of camera is optional if frame_id is set
+      frame_id: "camera_link"
+      resolution: [1280, 960]
+      focal_length: 65 # mm
+      shutter_speed: 0.02 # s Currently only affects motion blur
+      sensor_width: 35 # mm
+
+      exposure: 0.0 # Exposure (stops) shift of camera
+      gamma: 1.0 # Gamma correction applied to the image
+
+      depth_of_field:
+        aperture: 8 # f-number (no influence on exposure)
+        autofocus: true
+        #focus_distance: 2 # m (disabled because of autofocus)
+
+      motion_blur:
+        enabled: true
+        rolling_shutter: # Only top to bottom supported
+          enabled: true
+          duration: 0.03 # s (Scanline "exposure" time)
+      outputs:
+        syclops_output_rgb:
+          - samples: 256
+            compositor:
+              chromatic_aberration: 0.007 #Strong aberration can cause shift between ground truth and rgb
+              bloom:
+                threshold: 0.99 # higher is less bloom
+            debug_breakpoint: True
+            id: main_cam_rgb
+        syclops_output_object_positions:
+          - id: main_cam_object_positions
+        syclops_output_pixel_annotation:
+          - semantic_segmentation:
+              id: main_cam_semantic
+            instance_segmentation:
+              id: main_cam_instance
+            pointcloud:
+              id: main_cam_pointcloud
+            depth:
+              id: main_cam_depth
+            object_volume:
+              id: main_cam_object_volume
+
+postprocessing:
+  syclops_postprocessing_bounding_boxes:
+    - type: "YOLO"
+      classes_to_skip: [0,1]
+      id: yolo_bound_boxes
+      sources: ["main_cam_instance", "main_cam_semantic"]
+      multiple_bb_per_instance: False

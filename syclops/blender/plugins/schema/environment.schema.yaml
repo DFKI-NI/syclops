@@ -1,0 +1,25 @@
+description: Adds lighting and background to the scene.
+type: array
+items:
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [hdri, hdri_and_sun]
+    environment_image:
+      description: HDRI image to use as environment map
+      $ref: "#/definitions/string_evaluation"
+    sun_elevation:
+      description: Elevation of the sun in radians
+      $ref: "#/definitions/number_evaluation"
+    sun_rotation:
+      description: Rotation of the sun in radians
+      $ref: "#/definitions/number_evaluation"
+
+  if: 
+    properties: 
+      type:
+        const:
+          hdri_and_sun
+  then:
+    required: [sun_elevation,sun_rotation]

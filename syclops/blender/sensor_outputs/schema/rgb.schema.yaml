@@ -1,0 +1,15 @@
+description: RGB color output of the sensor.
+type: array
+items:
+  type: object
+  properties:
+    id:
+      description: Unique identifier of the output
+      type: string
+    samples:
+      description: Render quality of the image. More means a better quality and more samples per pixel.
+      type: integer
+    debug_breakpoint:
+      description: Wether to break and open Blender before rendering. Only works if scene debugging is active.
+      type: boolean
+  required: [id, samples]

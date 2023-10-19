@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syclops"
+authors = [
+    {name = "Anton Elmiger", email = "anton.elmiger@gmail.com"},
+]
+description = "Syclops is a Python library for generating synthetic data for machine learning."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "GPLv3"}
+
+version = "1.0.0"
+
+dynamic = ["dependencies"]
+
+[project.scripts]
+syclops = "syclops.cli:main"
+
+[project.entry-points."syclops.plugins"]
+syclops_plugin_ground = "syclops.blender.plugins.ground:Ground"
+syclops_plugin_environment = "syclops.blender.plugins.environment:Environment"
+syclops_plugin_scatter = "syclops.blender.plugins.scatter:Scatter"
+syclops_plugin_object = "syclops.blender.plugins.object:Object"
+[project.entry-points."syclops.sensors"]
+syclops_sensor_camera = "syclops.blender.sensors.camera:Camera"
+[project.entry-points."syclops.outputs"]
+syclops_output_rgb = "syclops.blender.sensor_outputs.rgb:RGB"
+syclops_output_pixel_annotation = "syclops.blender.sensor_outputs.pixel_annotation:PixelAnnotation"
+syclops_output_object_positions = "syclops.blender.sensor_outputs.object_positions:ObjectPositions"
+[project.entry-points."syclops.postprocessing"]
+syclops_postprocessing_bounding_boxes = "syclops.postprocessing.bounding_boxes:BoundingBoxes"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+syclops = ["*.yaml", "*.blend", "*.png", ".hdr", ".jpg"]

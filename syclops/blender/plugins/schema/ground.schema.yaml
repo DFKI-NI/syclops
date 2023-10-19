@@ -1,0 +1,35 @@
+description: Configures a floor plane for the scene.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the plugin
+      type: string
+    object_path:
+      description: 3D Object of the ground.
+      $ref: "#/definitions/asset_models"
+    size:
+      description: Width and length of the ground in meters.
+      type: number
+    texture:
+      description: PBR Texture of the ground.
+      $ref: "#/definitions/string_evaluation"
+    displacement_texture:
+      description: Height map of the ground. If the texture is 16-bit, then pixel value of 32768 means 0m height. Increasing a pixel value by 1 means a height difference of 0,5cm. 
+      $ref: "#/definitions/image_texture_evaluation"
+    class_id:
+      description: Class ID for ground truth output.
+      type: integer
+    class_id_offset:
+      description: Class ID offset for ground truth output. The keys are the name of the material and the values are the offsets.
+      type: object
+      additionalProperties:
+        type: integer
+  oneOf:
+    - required: [name, object_path, class_id]
+      not: 
+        required: [size, texture, displacement_texture]
+    - required: [name, size, texture]
+      not:
+        required: [object_path]
