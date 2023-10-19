@@ -1,0 +1,72 @@
+site_name: Syclops Documentation
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.path
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+    # - toc.integrate
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+  language: en
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+      accent: red
+  logo: img/logo.png
+  favicon: img/favicon.ico
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Architecture: architecture.md
+  - Usage:
+    - Command Line: usage/command_line.md
+    - Debugging: usage/debugging.md
+    - Job Description:
+      - Job Configuration: usage/job_description/job_configuration.md
+      - Validation: usage/job_description/validation.md
+      - Dynamic Evaluators: usage/job_description/dynamic_evaluators.md
+      - Plugin Configuration:
+        - Ground: usage/job_description/config_descriptions/ground.md
+        - Environment: usage/job_description/config_descriptions/environment.md
+        - Object: usage/job_description/config_descriptions/object.md
+        - Scatter: usage/job_description/config_descriptions/scatter.md
+    - Assets: usage/assets/assets.md
+  - Add Functionality:
+    - Create Plugin: add_functionality/create_plugin.md
+    - Create Sensor: add_functionality/create_sensor.md
+extra_css:
+  - stylesheets/extra.css
+plugins:
+  - glightbox:
+      auto_caption: true
+  - search

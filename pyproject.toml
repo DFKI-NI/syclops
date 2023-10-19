@@ -33,6 +33,12 @@ syclops_output_object_positions = "syclops.blender.sensor_outputs.object_positio
 [project.entry-points."syclops.postprocessing"]
 syclops_postprocessing_bounding_boxes = "syclops.postprocessing.bounding_boxes:BoundingBoxes"
 
+[project.optional-dependencies]
+# Dev dependencies.
+dev = [
+    "mkdocs-material==9.4.6"
+]
+
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
