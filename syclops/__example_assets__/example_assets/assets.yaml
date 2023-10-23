@@ -55,6 +55,8 @@ assets:
     license: CC0
     filepath: textures/sunflowers_2k.hdr
     filepath_md5: 866d2db4a635cd6d4225bf503d5c3139
+    thumbnail:
+      - thumbnails\Sunflower Field_0.png
   Ground Displacement 1:
     type: texture
     tags: [displacement, bumps, ground]

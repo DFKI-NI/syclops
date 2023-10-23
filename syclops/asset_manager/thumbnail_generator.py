@@ -9,12 +9,9 @@ import random
 import sys
 from os.path import isdir, splitext
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 
 import bpy
-import debugpy
-import numpy as np
-import ruamel.yaml
 
 # Get catalog path from command line
 argv = sys.argv
@@ -31,8 +28,9 @@ parser.add_argument(
     action="store_true",
     default=False,
 )
-
-args = parser.parse_known_args(argv)[0]
+parser.add_argument(
+    "--site-packages-path", help="Path to site-packages"
+)
 
 
 class RevertAfter:
@@ -53,7 +51,7 @@ class RevertAfter:
 
 def import_assets(
     asset_dict: dict, root_dir: str, path_key: str = "filepath"
-) -> list[bpy.types.Object]:
+) -> List[bpy.types.Object]:
     """Extract filepath from asset and import"""
     root_dir = Path(root_dir)
     obj_path = asset_dict[path_key]
@@ -61,7 +59,7 @@ def import_assets(
     return import_objects(obj_path)
 
 
-def import_objects(obj_paths: Union[str, list]) -> list[bpy.types.Object]:
+def import_objects(obj_paths: Union[str, list]) -> List[bpy.types.Object]:
     """Import Objects into Blender.
     Args:
         obj_paths (string/list(string)): String of a single file,
@@ -80,7 +78,7 @@ def import_objects(obj_paths: Union[str, list]) -> list[bpy.types.Object]:
     return imported_objs
 
 
-def import_file(obj_path: str, imported_objs: list[bpy.types.Object]):
+def import_file(obj_path: str, imported_objs: List[bpy.types.Object]):
     """Import a single object file. Can handle multiple formats
     Args:
         obj_path (string): Path to object file (fbx,obj,blend supported)
@@ -145,6 +143,17 @@ def calc_bounding_box(obj: bpy.types.Object) -> tuple:
 
 
 if __name__ == "__main__":
+    args = parser.parse_known_args(argv)[0]
+
+    site_packages_path = Path(args.site_packages_path).resolve()
+    print(f"Adding {site_packages_path} to sys.path")
+    sys.path.append(str(site_packages_path))
+
+    import debugpy
+    import numpy as np
+    import ruamel.yaml
+    from syclops import utility
+
     if args.debug_scene_creator:
         debugpy.listen(5678)
         print("Start Debugging")

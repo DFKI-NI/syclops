@@ -1,17 +1,15 @@
-import argparse
 import hashlib
 import os
 import subprocess
 from pathlib import Path
 
 import ruamel.yaml
-
+from syclops.utility import get_site_packages_path
 
 RESET_MD5_HASH = False
 ASSET_LIBRARY_PATHS = []
 CATALOG_OUTPUT_PATH = ""
 MANIFEST_FILE_NAME = "assets.yaml"
-CREATE_THUMBNAILS = False
 
 
 class AssetCrawler(object):
@@ -26,6 +24,7 @@ class AssetCrawler(object):
         self.asset_paths = asset_paths
         self.asset_catalog: dict = {}
         self.yaml = ruamel.yaml.YAML()
+        self.manifest_files = []
         self.yaml.indent(mapping=2, sequence=4, offset=2)
 
     def crawl(self):
@@ -34,12 +33,10 @@ class AssetCrawler(object):
             print(f"Crawling {path} for {MANIFEST_FILE_NAME} ...")
             library_root_paths = self.crawl_root_paths(path)
             for library_root_path in library_root_paths:
-                manifest_files = self._crawl_path(library_root_path)
-                print(f"... found {[str(f) for f in manifest_files]}")
-                if CREATE_THUMBNAILS:
-                    self._create_thumbnails(manifest_files)
-                self._add_missing_md5_checksums(manifest_files, library_root_path)
-                parsed_manifest_files = self._parse_manifest_files(manifest_files)
+                self.manifest_files = self._crawl_path(library_root_path)
+                print(f"... found {[str(f) for f in self.manifest_files]}")
+                self._add_missing_md5_checksums(self.manifest_files, library_root_path)
+                parsed_manifest_files = self._parse_manifest_files(self.manifest_files)
                 merged_manifests = self._merge_manifests(
                     parsed_manifest_files,
                     library_root_path,
@@ -184,27 +181,28 @@ class AssetCrawler(object):
         with open(catalog_path, "w") as f:
             self.yaml.dump(self.asset_catalog, f)
 
-    def _create_thumbnails(self, manifests: list):
+    def create_thumbnails(self, blender_path: Path):
         thumbnail_generator_path = (
-            Path(__file__).parent.parent.parent
-            / "syclops_blender"
-            / "helper-scripts"
-            / "thumbnail_generator.py"
+            Path(__file__).parent / "thumbnail_generator.py"
         )
-        for manifest_path in manifests:
+
+        for manifest_path in self.manifest_files:
             print(f"Generate thumbnails for {manifest_path}")
             subprocess.run(
                 [
-                    os.environ["SYCLOPS_BLENDER"],
-                    Path(__file__).resolve().parent / "studio.blend",
+                blender_path,
+                Path(__file__).resolve().parent / "studio.blend",
                     "-P",
                     thumbnail_generator_path,
                     "-b",
                     "--",
                     "--asset",
                     manifest_path,
+                    "--site-packages-path",
+                    get_site_packages_path()
                 ]
             )
+
 
 
 if __name__ == "__main__":

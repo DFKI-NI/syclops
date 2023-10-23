@@ -109,7 +109,7 @@ def _run_subprocess(args, cwd=None, env=None, execution_info="Command"):
         )
 
 
-def _crawl_assets(install_folder: Path):
+def _crawl_assets(install_folder: Path, generate_thumbnails: bool = False):
     print("Crawling assets...")
 
     asset_catalog_path = install_folder / "asset_catalog.yaml"
@@ -130,7 +130,9 @@ def _crawl_assets(install_folder: Path):
     asset_crawler = AssetCrawler(asset_paths)
     asset_crawler.crawl()
     asset_crawler.write_catalog(asset_catalog_path)
-
+    if generate_thumbnails:
+        blender_path = install_folder / f"blender-{BLENDER_VERSION}" / "blender"
+        asset_crawler.create_thumbnails(blender_path)
     _build_schema(install_folder)
     print("Assets crawled")
 
@@ -323,7 +325,10 @@ def main():
         _wait_for_debugger()
 
     if args.crawl_assets:
-        _crawl_assets(install_folder)
+        if args.generate_thumbnails:
+            _crawl_assets(install_folder, generate_thumbnails = True)
+        else:
+            _crawl_assets(install_folder)
 
     if args.job_description:
         _run_syclops_job(args, install_folder, Path(args.job_description))
