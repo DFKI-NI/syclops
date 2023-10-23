@@ -32,12 +32,16 @@ parser.add_argument(
     help="Path to job description file",
 )
 parser.add_argument(
+    "--example-job",
+    help="Use example job description file",
+    action="store_true",
+)
+parser.add_argument(
     "-log",
     "--show-logging",
     help="Display the logging messages",
     action="store_true",
 )
-
 parser.add_argument(
     "-o",
     "--output-path",
@@ -130,6 +134,7 @@ def _crawl_assets(install_folder: Path):
     _build_schema(install_folder)
     print("Assets crawled")
 
+
 def available_plugins():
     entry_points = [
         "syclops.plugins",
@@ -139,7 +144,10 @@ def available_plugins():
     ]
     plugins = {}
     for group in entry_points:
-        plugins[group] = [(entry_point.name,entry_point.module_name) for entry_point in pkg_resources.iter_entry_points(group)]
+        plugins[group] = [
+            (entry_point.name, entry_point.module_name)
+            for entry_point in pkg_resources.iter_entry_points(group)
+        ]
     return plugins
 
 
@@ -175,7 +183,9 @@ def _build_schema(intall_folder: Path):
             module_name = plugin[1].split(":")[0]
             plugin_name = module_name.split(".")[-1]
             plugin_path = get_module_path(module_name)
-            plugin_schema_path = plugin_path.parent / "schema" / f"{plugin_name}.schema.yaml"
+            plugin_schema_path = (
+                plugin_path.parent / "schema" / f"{plugin_name}.schema.yaml"
+            )
             if plugin_schema_path.exists():
                 with open(plugin_schema_path, "r") as f:
                     schema = yaml.load(f, Loader=yaml.FullLoader)
@@ -215,10 +225,10 @@ def _wait_for_debugger():
     print("Debugger attached")
 
 
-def _run_syclops_job(args, install_folder: Path):
+def _run_syclops_job(args, install_folder: Path, job_description: Path):
     output_path = _configure_output_path(install_folder / "output")
 
-    job_filepath = args.job_description
+    job_filepath = job_description
     asset_catalog_filepath = install_folder / "asset_catalog.yaml"
     schema_catalog_filepath = install_folder / "schema.yaml"
 
@@ -295,6 +305,7 @@ def _ensure_catalog_exists(install_folder: Path):
     if not asset_catalog_path.exists():
         _crawl_assets(install_folder)
 
+
 def main():
     install_folder = get_or_create_install_folder()
     install_blender(BLENDER_VERSION, install_folder)
@@ -315,8 +326,15 @@ def main():
         _crawl_assets(install_folder)
 
     if args.job_description:
-        # Configure output path
-        _run_syclops_job(args, install_folder)
+        _run_syclops_job(args, install_folder, Path(args.job_description))
+
+    elif args.example_job:
+        job_filepath = (
+            get_module_path("syclops").parent
+            / "__example_assets__"
+            / "example_job.syclops.yaml"
+        )
+        _run_syclops_job(args, install_folder, job_filepath)
 
     elif args.texture_viewer:
         texture_viewer(args)
