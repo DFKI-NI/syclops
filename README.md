@@ -1,0 +1,136 @@
+# Introduction
+
+<h1 align="center">
+  <img alt="cgapp logo" src="https://user-images.githubusercontent.com/40243985/222779654-df09c551-3eab-4a08-aa3c-08ab6cfd73ab.png" width="224px"/><br/>
+  Syclops
+</h1>
+<p align="center">Syclops is a tool for creating synthetic data from 3D virtual environments.</p>
+<!-- <p align="center">
+  <a href="https://github.com/agri-gaia/syclops-docs/">
+    <img alt="Documentation" src="https://img.shields.io/badge/Documentation-0.0.0-blue.svg?style=flat-square">
+  </a>
+</p> -->
+
+---
+
+
+# 🎯 Features
+📷 Photorealistic renderings of the virtual environment with pixel-perfect annotations
+
+📄 No-Code scene and sensor configuration with a simple YAML syntax
+
+🔧 Extensive randomization tools to increase the diversity of the generated data
+
+💾 Asset management and viewer to easily reuse assets across multiple scenes
+
+📦 Easy to use and extend with a modular architecture
+
+
+# 🔍 Annotations
+<div align="center">
+  <img alt="output-render" src="https://user-images.githubusercontent.com/40243985/222779779-02d4fb4d-b3a9-4436-8d75-b37de437ec10.gif" width="400px"/><br/>
+</div>
+
+Syclops supports a variety of annotated outputs for different use cases. The following outputs are currently supported:
+
+|Output|Description|
+|:---:|:---:|
+|**RGB**|Rendered color image|
+|**Semantic Segmentation**|Semantic segmentation mask with class ids|
+|**Instance Segmentation**|Unique instance id for each object in the scene|
+|**Depth**|Distance from the camera to each pixel|
+|**Bounding Boxes**|Bounding boxes for each object in the scene|
+|**Object Volume**|Volume of each object in the scene|
+|**Point Cloud**|3D location of each pixel in camera space|
+|**Object Positions**|3D pose of each object in the scene|
+
+
+# ⚡️Getting Started
+
+## Prerequisites
+
+Before you install `Syclops`, ensure you have the following prerequisites:
+
+- Python version 3.9 or higher.
+
+We recommend using a virtual environment to avoid potential package conflicts. Below are instructions for setting up with `virtualenv` and `conda`.
+
+## Installing
+
+### Using `virtualenv`
+
+If you don't have `virtualenv` installed:
+
+```bash
+pip install virtualenv
+```
+
+To create and activate a new virtual environment named `syclops`:
+
+```bash
+# For Linux/macOS
+virtualenv syclops
+source syclops/bin/activate
+
+# For Windows
+virtualenv syclops
+.\syclops\Scripts\activate
+```
+
+### Using `conda`
+
+If you use Anaconda or Miniconda, you can create a new environment:
+
+```bash
+conda create --name syclops python=3.9
+conda activate syclops
+```
+
+### Installing Syclops
+
+Once you have your environment set up and activated:
+
+```bash
+pip install syclops
+```
+
+### Alternatively: Clone and Install from Source
+
+To install `Syclops` directly from the source code:
+
+```bash
+git clone https://github.com/DFKI-NI/syclops.git
+cd syclops
+pip install .
+```
+
+
+## Run a job
+
+Next, the assets need to be crawled by the pipeline. This only needs to be done once, or if new assets are added.
+```bash
+syclops -c
+```
+
+> To run a **job**, a job file is needed. You can find an example in the [syclops/\_\_example_assets\_\_](https://github.com/DFKI-NI/syclops/blob/main/syclops/__example_assets__/example_job.syclops.yaml) folder.
+
+To test the installation with the example job file run:
+```bash
+syclops --example-job
+```
+
+To run a job, simply pass the path to the job file to the `syclops` command:
+```bash
+syclops -j path/to/job.syclops.yaml
+```
+
+That's all you need to know to render images! 🎉
+
+The rendered data will be in `output/<timestamp>` inside of your specified syclops directory.
+To quickly visuzalize the data, you can use the dataset viewer tool.
+
+> Adjust the output path accordingly.
+
+```bash
+syclops -da output/2022-09-01_12-00-00
+```
