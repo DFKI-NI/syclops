@@ -1,7 +1,6 @@
 """Main module for handling command-line arguments and launching the scene creator."""
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
@@ -49,7 +48,7 @@ def parse_arguments():
         "--catalog", help="Path to catalog file", default=DEFAULT_CATALOG
     )
     parser.add_argument(
-        "--site-packages-path", help="Path to site-packages", default=DEFAULT_CATALOG
+        "--site-packages-path", help="Path to site-packages"
     )
 
     argv = sys.argv
@@ -73,9 +72,11 @@ def main(args):
 
 if __name__ == "__main__":
     args = parse_arguments()
+    
     site_packages_path = Path(args.site_packages_path).resolve()
     print(f"Adding {site_packages_path} to sys.path")
     sys.path.append(str(site_packages_path))
+
     import debugpy
     import yaml
     from syclops.blender.scene import Scene
@@ -86,3 +87,4 @@ if __name__ == "__main__":
         debugpy.wait_for_client()
 
     main(args)
+
