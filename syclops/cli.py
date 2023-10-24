@@ -323,7 +323,7 @@ def _ensure_catalog_exists(install_folder: Path):
 def main():
     args = parser.parse_args()
 
-    install_folder = get_or_create_install_folder(Path(args.install_folder))
+    install_folder = get_or_create_install_folder(args.install_folder)
     install_blender(BLENDER_VERSION, install_folder)
     _ensure_catalog_exists(install_folder)
     console = Console()

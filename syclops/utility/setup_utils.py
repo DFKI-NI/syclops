@@ -95,12 +95,12 @@ def install_blender(version: str, install_dir: Path) -> None:
     # Clean up
     dest_file.unlink()
 
-def get_or_create_install_folder(install_folder_path: Path) -> Path:
+def get_or_create_install_folder(install_folder_path: str) -> Path:
     """
     Get the install folder from the config file, or ask the user for a folder.
 
     Args:
-        install_folder_path (Path): The path to the install folder, if it exists.
+        install_folder_path (str): The path to the install folder, if it exists.
 
     Returns:
         Path: The path to the install folder.
@@ -110,7 +110,7 @@ def get_or_create_install_folder(install_folder_path: Path) -> Path:
 
     def determine_folder():
         if install_folder_path is not None:
-            return install_folder_path.resolve()
+            return Path(install_folder_path).resolve()
         return _ask_directory().resolve()
 
     # If 'install_folder' is not in the config or the saved folder doesn't exist
