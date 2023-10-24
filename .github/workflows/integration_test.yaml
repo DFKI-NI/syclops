@@ -30,7 +30,7 @@ jobs:
 
     - name: Run Syclops
       run: |
-        syclops -if ./ --example-job
+        syclops -if ./ --test-job -log
 
     # Check for expected output files and report any missing ones
     - name: Check for output files
