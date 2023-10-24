@@ -95,24 +95,36 @@ def install_blender(version: str, install_dir: Path) -> None:
     # Clean up
     dest_file.unlink()
 
-def get_or_create_install_folder() -> Path:
-    config = _load_config()
+def get_or_create_install_folder(install_folder_path: Path) -> Path:
+    """
+    Get the install folder from the config file, or ask the user for a folder.
 
-    # If 'install_folder' is not in the config, ask the user and save it
-    if "install_folder" not in config:
-        install_folder = _ask_directory().resolve()
-        config["install_folder"] = str(install_folder)
+    Args:
+        install_folder_path (Path): The path to the install folder, if it exists.
+
+    Returns:
+        Path: The path to the install folder.
+    """
+    config = _load_config()
+    install_folder_key = "install_folder"
+
+    def determine_folder():
+        if install_folder_path is not None:
+            return install_folder_path.resolve()
+        return _ask_directory().resolve()
+
+    # If 'install_folder' is not in the config or the saved folder doesn't exist
+    if install_folder_key not in config or not Path(config[install_folder_key]).exists():
+        install_folder = determine_folder()
+        config[install_folder_key] = str(install_folder)
         _write_config(config)
     else:
-        install_folder = Path(config["install_folder"]).resolve()
-        if not install_folder.exists():
-            install_folder = _ask_directory().resolve()
-            config["install_folder"] = str(install_folder)
-            _write_config(config)
+        install_folder = Path(config[install_folder_key]).resolve()
 
-    if not install_folder.exists():
-        install_folder.mkdir(parents=True, exist_ok=True)
+    # Ensure the folder exists
+    install_folder.mkdir(parents=True, exist_ok=True)
     return install_folder
+
 
 def _load_config() -> dict:
     config_file = _get_or_create_config_file_path()

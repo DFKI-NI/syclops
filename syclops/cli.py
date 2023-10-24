@@ -100,6 +100,13 @@ parser.add_argument(
     nargs="*",
 )
 
+parser.add_argument(
+    "-if",
+    "--install_folder",
+    help="Path to install folder",
+    default=None,
+)
+
 
 def _run_subprocess(args, cwd=None, env=None, execution_info="Command"):
     process_result = subprocess.run(args, cwd=cwd, env=env)
@@ -309,13 +316,14 @@ def _ensure_catalog_exists(install_folder: Path):
 
 
 def main():
-    install_folder = get_or_create_install_folder()
+    args = parser.parse_args()
+
+    install_folder = get_or_create_install_folder(args.install_folder)
     install_blender(BLENDER_VERSION, install_folder)
     _ensure_catalog_exists(install_folder)
     console = Console()
     console.print(f"Syclops folder: {install_folder}", style="bold green")
 
-    args = parser.parse_args()
 
     if len(sys.argv) == 1:
         parser.print_help()
