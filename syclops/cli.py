@@ -37,6 +37,11 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument(
+    "--test-job",
+    help="Run test job for an integration test",
+    action="store_true",
+)
+parser.add_argument(
     "-log",
     "--show-logging",
     help="Display the logging messages",
@@ -346,6 +351,14 @@ def main():
             get_module_path("syclops").parent
             / "__example_assets__"
             / "example_job.syclops.yaml"
+        )
+        _run_syclops_job(args, install_folder, job_filepath)
+
+    elif args.test_job:
+        job_filepath = (
+            get_module_path("syclops").parent
+            / "__example_assets__"
+            / "test_job.syclops.yaml"
         )
         _run_syclops_job(args, install_folder, job_filepath)
 

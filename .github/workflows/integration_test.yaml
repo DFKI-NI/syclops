@@ -1,0 +1,73 @@
+name: Syclops Pipeline Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Syclops Pipeline Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update -q
+        sudo apt-get install -y --no-install-recommends libgl1-mesa-glx libglib2.0-0 libsm6 libxrender1 libxext6 libxi6 libxkbcommon0
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' 
+
+    - name: Install package
+      run: |
+        pip install .
+
+    - name: Run Syclops
+      run: |
+        syclops -if ./ --test-job -log
+
+    # Check for expected output files and report any missing ones
+    - name: Check for output files
+      run: |
+        patterns=(
+          "./output/*/main_camera/rect/*.png"
+          "./output/*/main_camera/rect/*metadata.yaml"
+          "./output/*/main_camera/extrinsics/*.yaml"
+          "./output/*/main_camera/extrinsics/*metadata.yaml"
+          "./output/*/calibration/*intrinsics.yaml"
+          "./output/*/calibration/*metadata.yaml"
+          "./output/*/main_camera_annotations/bounding_box/*.txt"
+          "./output/*/main_camera_annotations/bounding_box/*metadata.yaml"
+          "./output/*/main_camera_annotations/depth/*.npz"
+          "./output/*/main_camera_annotations/depth/*metadata.yaml"
+          "./output/*/main_camera_annotations/instance_segmentation/*.npz"
+          "./output/*/main_camera_annotations/instance_segmentation/*metadata.yaml"
+          "./output/*/main_camera_annotations/semantic_segmentation/*.npz"
+          "./output/*/main_camera_annotations/semantic_segmentation/*metadata.yaml"
+          "./output/*/main_camera_annotations/pointcloud/*.npz"
+          "./output/*/main_camera_annotations/pointcloud/*metadata.yaml"
+          "./output/*/main_camera_annotations/object_volume/*.npz"
+          "./output/*/main_camera_annotations/object_volume/*metadata.yaml"
+          "./output/*/object_positions/*.json"
+          "./output/*/object_positions/*metadata.yaml"
+        )
+        
+        missing=false
+        
+        for pattern in "${patterns[@]}"; do
+          files=$(find . -path "$pattern")
+          if [[ ! $files ]]; then
+            echo "MISSING: $pattern"
+            missing=true
+          fi
+        done
+
+        if [ "$missing" = true ]; then
+          exit 1
+        fi
