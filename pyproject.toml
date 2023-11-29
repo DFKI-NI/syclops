@@ -36,7 +36,8 @@ syclops_postprocessing_bounding_boxes = "syclops.postprocessing.bounding_boxes:B
 [project.optional-dependencies]
 # Dev dependencies.
 dev = [
-    "mkdocs-material==9.4.6"
+    "mkdocs-material==9.4.6",
+    "mkdocs-glightbox==0.1.0"
 ]
 
 [tool.setuptools.dynamic]
