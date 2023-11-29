@@ -47,23 +47,31 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting Started: getting_started.md
-  - Architecture: architecture.md
   - Usage:
     - Command Line: usage/command_line.md
-    - Debugging: usage/debugging.md
     - Job Description:
       - Job Configuration: usage/job_description/job_configuration.md
       - Validation: usage/job_description/validation.md
       - Dynamic Evaluators: usage/job_description/dynamic_evaluators.md
-      - Plugin Configuration:
-        - Ground: usage/job_description/config_descriptions/ground.md
-        - Environment: usage/job_description/config_descriptions/environment.md
-        - Object: usage/job_description/config_descriptions/object.md
-        - Scatter: usage/job_description/config_descriptions/scatter.md
+    - Plugin Configuration:
+      - Ground: usage/job_description/config_descriptions/ground.md
+      - Environment: usage/job_description/config_descriptions/environment.md
+      - Object: usage/job_description/config_descriptions/object.md
+      - Scatter: usage/job_description/config_descriptions/scatter.md
+    - Sensor Configuration:
+      - Camera: usage/job_description/config_descriptions/camera.md
+    - Output Configuration:
+      - RGB: usage/job_description/config_descriptions/rgb.md
+      - Pixel Annotation: usage/job_description/config_descriptions/pixel_annotation.md
+      - Object Position: usage/job_description/config_descriptions/object_position.md
     - Assets: usage/assets/assets.md
-  - Add Functionality:
-    - Create Plugin: add_functionality/create_plugin.md
-    - Create Sensor: add_functionality/create_sensor.md
+  - Developement:
+    - Architecture: developement/architecture.md
+    - Add Functionality:
+      - Create Scene Plugin: developement/add_functionality/create_plugin.md
+      - Create Sensor and Output Plugin: developement/add_functionality/create_sensor.md
+    - Debugging: developement/debugging.md
+
 extra_css:
   - stylesheets/extra.css
 plugins:

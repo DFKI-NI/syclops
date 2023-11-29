@@ -1,13 +1,18 @@
 # Command Line
-To source the environment variables and aliases, run the following command in your terminal:
+To use `Syclops` the virtual environment needs to be activated. This can be done by running the following command in the terminal:
 
-=== "Windows"
-    ```powershell
-    . .\env.ps1
-    ```
-=== "Linux"
+=== "conda"
     ```bash
-    . ./env.sh
+    conda activate syclops
+    ```
+
+=== "virtualenv"    
+    ```bash
+    # For Windows
+    .\syclops\Scripts\activate
+
+    # For Linux
+    source syclops/bin/activate
     ```
 
 The most important alias is `syclops` which is the main command to use the pipeline.
@@ -15,13 +20,14 @@ Following is a list of the command line arguments for `syclops`:
 
 | Argument | Description | Default | Type |
 | --- | --- | --- | --- |
-| `-j` | Path to the job description file. | None | String |
-| `-o` | Path to the output directory. | `./output` | String |
+| `-j` | Path to the job description file. | `None` | String |
+| `-o` | Path to the output directory. Defaults to <install_folder>/output | `./output` | String |
 | `-c` | Crawl assets and write a catalog file. | `False` | Boolean |
-| `-i` | Install changes from the source folder. Optional: Install only selected repos. | `False` | [Boolean, String] |
-| `-p` | Pull repos in the source folder. Optional: Pull only selected repos. | `False` | [Boolean, String] |
+| `--example-job` | Run the example job config. | `False` | Boolean |
 | `-da` | Path generated data to view. | `False` | String |
 | `-t` | Command to generate thumbnails for the asset browser. | `False` | Boolean |
 | `-b` | Start the asset browser. | `False` | Boolean |
 | `-log` | Display all log messages in the console. | `False` | Boolean |
-| `-d` | Debugging mode. See [Debugging](debugging.md) | `False` | String [scene, blender-code, pipeline-code]
+| `-tv` | Live display of the procedural textures in a job config. | `None` | String |
+| `-if` | Path to the install folder. | `None` | String |
+| `-d` | Debugging mode. See [Debugging](/developement/debugging) | `False` | String [scene, blender-code, pipeline-code]

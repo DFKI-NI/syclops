@@ -4,98 +4,88 @@
 
 Necessary Software to install on your machine:
 
-!!! note
-    === "Windows"
-        - [Miniconda](https://docs.conda.io/en/latest/miniconda.html) - Python 3.9 or higher
-        - [Git](https://git-scm.com/downloads)
-        - [Powershell](https://docs.microsoft.com/de-de/powershell/scripting/install/installing-powershell?view=powershell-7.2)
 
-    === "Linux"
-        - [Miniconda](https://docs.conda.io/en/latest/miniconda.html) - Python 3.9 or higher
-        - [Git](https://git-scm.com/downloads)
+- Python version 3.9 or higher.
 
-
+We recommend using a virtual environment to avoid potential package conflicts. Below are instructions for setting up with `virtualenv` or `conda`.
 
 ## Installing
 
-First setup a folder structure like this:
+=== "virtualenv"
+    If you don't have `virtualenv` installed:
 
-```bash
-├───syclops-dev
-│   ├───assets
-│   └───src
-```
+    ```bash
+    pip install virtualenv
+    ```
 
-```bash
-mkdir syclops-dev
-cd syclops-dev
-mkdir assets
-mkdir src
-```
+    To create and activate a new virtual environment named `syclops`:
+    
+    === "Windows"
+        ```bash
+        virtualenv syclops
+        .\syclops\Scripts\activate
+        ```
+    === "Linux"
+        ```bash
+        virtualenv syclops
+        source syclops/bin/activate
+        ```
 
-Then clone the main [syclops repository](https://github.com/agri-gaia/syclops-pipeline) into the `src` folder checkout to the latest release tag.
+=== "conda"
+    If you use Anaconda or Miniconda, you can create a new environment:
 
-```bash
-cd src
-git clone git@github.com:agri-gaia/syclops-pipeline.git
-cd syclops-pipeline
-git fetch --tags
-syclops_latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
-git checkout $syclops_latest_tag
-```
+    ```bash
+    conda create --name syclops python=3.9
+    conda activate syclops
+    ```
 
-Create the conda `syclops` environment and activate it:
 
-```bash
-conda create --yes --name syclops python=3.9 pip
-conda activate syclops
-```
+### Installing Syclops
 
-To run the setup script, run `setup.py` from the `syclops-dev` folder:
+Once you have your environment set up and activated:
 
-```bash
-python src/syclops-pipeline/setup.py
-```
+=== "From PyPI"
+    ```bash
+    pip install syclops
+    ```
 
-This will do the following:
+=== "From Source"
+    To install `Syclops` directly from the source code:
 
-- Clone all necessary repositories into the `src` folder
-- Install Python dependencies to a virtual environment
-- Download Blender
-- Create an environment file for the current os
+    ```bash
+    git clone https://github.com/DFKI-NI/syclops.git
+    cd syclops
+    pip install .
+    ```
+
+    !!! warning
+        `pip install . -e` does not work with the current setup.
 
 ## Run a job
 
-> To run a **job**, a job file is needed. You can find an example in the `syclops-pipeline/examples` folder.
-
-Bevore running a job, you need to source the environment file.
-
-=== "Windows"
-    ```powershell
-    . .\env.ps1
-    ```
-=== "Linux"
-    ```py
-    . ./env.sh
-    ```
-
-Next, the assets have to crawled by the pipeline. This only needs to be done once, or if new assets are added.
+Next, the assets need to be crawled by the pipeline. This only needs to be done once, or if new assets are added.
 ```bash
 syclops -c
 ```
-Then run the pipeline with the job file as an argument:
 
+> To run a **job**, a job file is needed. You can find an example in the [syclops/\_\_example_assets\_\_](https://github.com/DFKI-NI/syclops/blob/main/syclops/__example_assets__/example_job.syclops.yaml) folder.
+
+To test the installation with the example job file run:
 ```bash
-syclops -j src/syclops-pipeline/examples/example_job.syclops.yaml
+syclops --example-job
+```
+
+To run a specific job, simply pass the path to the job file to the `syclops` command:
+```bash
+syclops -j path/to/job.syclops.yaml
 ```
 
 That's all you need to know to render images! 🎉
 
-The rendered data will be in a timestamped folder inside of the `output` folder.
+The rendered data will be in `output/<timestamp>` inside of your specified syclops directory.
 To quickly visuzalize the data, you can use the dataset viewer tool.
 
-!!! info
-    Adjust the output path accordingly.
+> Adjust the output path accordingly.
 
 ```bash
 syclops -da output/2022-09-01_12-00-00

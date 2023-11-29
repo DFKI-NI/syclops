@@ -28,7 +28,7 @@ For parameters that can undergo dynamic evaluation, their values can be adjusted
 
 ```yaml
 scene:
-  Base Plugins/Object:
+  syclops_plugin_object:
     - name: "Tree1"
       models: Example Assets/Tree
       frame_id: "frame_001"
