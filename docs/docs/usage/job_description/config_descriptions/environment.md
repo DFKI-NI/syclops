@@ -26,7 +26,7 @@ Here's a sample configuration for the Environment Plugin:
 
 ```yaml
 scene:
-  Base Plugins/Environment:
+  syclops_plugin_environment:
     - type: hdri
       environment_image: Example Assets/Sunflower Field
 ```

@@ -32,7 +32,7 @@ Here's a simple example of how to configure the Ground Plugin:
 
 ```yaml
 scene:
-  Base Plugins/Ground:
+  syclops_plugin_ground:
     - name: "Ground"
       size: 50
       texture: Example Assets/Muddy Dry Ground

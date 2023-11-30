@@ -69,3 +69,9 @@
     border-radius: 5px;
     box-shadow: rgba(0,0,0,0.1) 0 1px 2px 0 !important;
 }
+img[alt="A simplified overview of the syclops workflow."] {
+  background-color: white;
+  display: inline-block;
+  padding: 4px;
+  border-radius: 10px;
+}

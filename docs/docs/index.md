@@ -40,5 +40,5 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 |**Scene**|A scene is a virtual 3D environment that is used by the pipeline to generate sensor data.|
 |**Job**|A job is a YAML file that defines the environment, sensors, and output of a scene.|
 |**Plugin**|A plugin is a python class that is used to extend the functionality of the pipeline. It can create new elements in the scene, simulate a sensor, or add a new output.|
-|**Asset**|An asset is something that can be used by the pipeline. This can be a 3D model, a texture, a material, but also a plugin.|
+|**Asset**|An asset is something that can be used by the pipeline. This can be a 3D model, a texture, or a material.|
 

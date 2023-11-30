@@ -43,7 +43,7 @@ Most parameters, like `density_max` and `seed`, can be dynamically evaluated. Th
 
 ```yaml
 scene:
-  Base Plugins/Scatter:
+  syclops_plugin_scatter:
     - name: "Forest"
       models: Example Assets/Trees
       floor_object: "Ground"
