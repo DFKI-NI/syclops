@@ -50,7 +50,7 @@ parser.add_argument(
 parser.add_argument(
     "-o",
     "--output-path",
-    help="Output path of generated files",
+    help="Output path of generated files. Defaults to <install_folder>/output",
     default="./output",
 )
 parser.add_argument(
@@ -89,20 +89,6 @@ parser.add_argument(
     "-tv",
     "--texture_viewer",
     help="Live view of textures in the job config",
-)
-
-parser.add_argument(
-    "-i",
-    "--install",
-    help="Install code from src to install folder. If no folders are specified, everything will be copied.",
-    nargs="*",
-)
-
-parser.add_argument(
-    "-p",
-    "--pull_repos",
-    help="Pull all or a list of git repos",
-    nargs="*",
 )
 
 parser.add_argument(
