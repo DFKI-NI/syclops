@@ -149,13 +149,14 @@ class LaserDistanceOutput(OutputInterface):
 
 1. The `RevertAfter` context manager is used to revert all changes made to the scene after the context manager is exited.
 
-### Plugin Registration
+### Sensor and Ouput Registration
 
 To register your sensor and output plugins with Syclops, add entries in your pyproject.toml file under the [project.entry-points."syclops.plugins"] section. For example:
 
 ```toml title="pyproject.toml"
-[project.entry-points."syclops.plugins"]
+[project.entry-points."syclops.sensors"]
 syclops_laser_sensor = "path.to.laser_distance_sensor:LaserDistanceSensor"
+[project.entry-points."syclops.outputs"]
 syclops_laser_output = "path.to.laser_distance_output:LaserDistanceOutput"
 ```
 
