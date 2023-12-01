@@ -117,12 +117,16 @@ class AssetCrawler(object):
         merged_manifest["root_path"] = str(root_path.absolute())
         return merged_manifest
 
+
     def _add_assets_to_catalog(self, manifest: dict):
         asset_library_name = manifest["name"]
         if asset_library_name in self.asset_catalog:
-            raise Exception(
-                "Asset library {} already exists in catalog.".format(asset_library_name)
+            print(
+                "Warning: Asset library '{}' already exists in catalog. Skipping addition.".format(
+                    asset_library_name
+                )
             )
+            return
         self.asset_catalog[asset_library_name] = manifest
 
     def check_catalog(self):
@@ -182,16 +186,14 @@ class AssetCrawler(object):
             self.yaml.dump(self.asset_catalog, f)
 
     def create_thumbnails(self, blender_path: Path):
-        thumbnail_generator_path = (
-            Path(__file__).parent / "thumbnail_generator.py"
-        )
+        thumbnail_generator_path = Path(__file__).parent / "thumbnail_generator.py"
 
         for manifest_path in self.manifest_files:
             print(f"Generate thumbnails for {manifest_path}")
             subprocess.run(
                 [
-                blender_path,
-                Path(__file__).resolve().parent / "studio.blend",
+                    blender_path,
+                    Path(__file__).resolve().parent / "studio.blend",
                     "-P",
                     thumbnail_generator_path,
                     "-b",
@@ -199,10 +201,9 @@ class AssetCrawler(object):
                     "--asset",
                     manifest_path,
                     "--site-packages-path",
-                    get_site_packages_path()
+                    get_site_packages_path(),
                 ]
             )
-
 
 
 if __name__ == "__main__":
