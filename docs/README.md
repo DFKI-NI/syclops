@@ -6,6 +6,7 @@ To build the documentation, you need to install [Material for MKDocs](https://sq
 
 ```bash
 pip install mkdocs-material
+pip install mkdocs-glightbox
 ```
 
 ## Serve

@@ -1,6 +1,4 @@
 import logging
-import os
-from pathlib import Path
 
 import bpy
 import numpy as np
