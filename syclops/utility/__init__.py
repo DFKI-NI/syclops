@@ -9,7 +9,7 @@ if 'bpy' in sys.modules:
                             get_asset_path, get_lib_path, import_assets,
                             import_file, import_objects, link_duplicate_objs,
                             load_module, remove_unused_objects, split_asset_name)
-    from .blender_utils import (ObjPointer, RevertAfter, add_volume_attribute,
+    from .blender_utils import (ObjPointer, RevertAfter, DisjointSet, add_volume_attribute,
                                 append_output_path, apply_modifiers,
                                 apply_transform, clear_scene, configure_render,
                                 convex_decomposition, create_clumps,
