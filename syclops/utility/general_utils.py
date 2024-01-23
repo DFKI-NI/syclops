@@ -7,6 +7,21 @@ import pkg_resources
 from filelock import FileLock, Timeout
 from ruamel import yaml
 import importlib.util
+import hashlib
+import struct
+
+def hash_vector(vector):
+    # Convert the 3D vector into bytes
+    packed_vector = struct.pack('fff', *vector)
+
+    # Use SHA-256 and truncate to 64 bits
+    hash_object = hashlib.sha256(packed_vector)
+    hash_digest = hash_object.digest()[:8]
+
+    # Convert the first 8 bytes of the hash to a 64-bit integer
+    hash_value = int.from_bytes(hash_digest, byteorder='big')
+
+    return hash_value
 
 
 def create_folder(path: str) -> None:

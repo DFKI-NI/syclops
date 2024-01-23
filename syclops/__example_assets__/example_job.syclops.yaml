@@ -63,12 +63,6 @@ scene:
       class_id_offset:
         Stem: 1
       seed: 1
-      clumps:
-        ratio: 0.3
-        size: 3
-        size_std: 2
-        position_std: 0.02
-        scale_std: 0.4
     - name: "Weed Scatter"
       models: [Example Assets/Plain Weeds]
       floor_object: Ground
@@ -129,6 +123,8 @@ sensor:
             id: main_cam_rgb
         syclops_output_object_positions:
           - id: main_cam_object_positions
+        syclops_output_keypoints:
+          - id: main_cam_keypoints
         syclops_output_pixel_annotation:
           - semantic_segmentation:
               id: main_cam_semantic

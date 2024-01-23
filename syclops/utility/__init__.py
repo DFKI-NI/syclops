@@ -26,7 +26,7 @@ if 'bpy' in sys.modules:
 
 
 from .general_utils import (AtomicYAMLWriter, create_folder,
-                            find_class_id_mapping,get_site_packages_path, get_module_path)
+                            find_class_id_mapping,get_site_packages_path, get_module_path, hash_vector)
 from .postprocessing_utils import (crawl_output_meta, filter_type, create_module_instances_pp)
 
 from .setup_utils import (download_file, extract_zip, extract_tar, install_blender, get_or_create_install_folder)

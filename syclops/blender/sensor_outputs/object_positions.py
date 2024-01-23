@@ -1,11 +1,12 @@
 import json
 import logging
 from pathlib import Path
-
+import numpy as np
 import bpy
 from syclops import utility
 from syclops.blender.sensor_outputs.output_interface import OutputInterface
-
+from typing import List
+import mathutils
 # META DESCRIPTION
 meta_description_object_positions = {
     "type": "OBJECT_POSITIONS",
@@ -51,7 +52,18 @@ class ObjectPositions(OutputInterface):
                             "loc": location,
                             "rot": rotation,
                             "scl": scale,
+                            "id": self._calculate_instance_id(location),
                         }
+                        if "keypoints" in object_instance.object:
+                            pose_dict["keypoints"] = {}
+                            for keypoint, pos in object_instance.object["keypoints"].items():
+                                vec = mathutils.Vector((pos['x'], pos['y'], pos['z']))
+                                world_position = object_instance.object.matrix_world @ vec
+                                # Add keypoint to pose_dict
+                                pose_dict["keypoints"][keypoint] = {
+                                    "loc": [round(x, 4) for x in world_position]
+                                }
+
                         if class_id not in obj_dict:
                             obj_dict[class_id] = []
                         obj_dict[class_id].append(pose_dict)
@@ -67,6 +79,21 @@ class ObjectPositions(OutputInterface):
                 f.write(json.dumps(obj_dict))
             self.write_meta_output_file(Path(json_file))
             logging.info("Wrote object positions to %s", json_file)
+
+    @staticmethod
+    def _calculate_instance_id(location: List[float]) -> int:
+        """Calculate the instance id from the location.
+
+        Args:
+            location: The location.
+
+        Returns:
+            int: The instance id.
+        """
+        # Convert x, y, z to mm and round to integer
+        location = np.round(np.array(location) * 1000)
+
+        return utility.hash_vector(location)
 
     def write_meta_output_file(self, file: Path):
         """Write the meta output file"""
