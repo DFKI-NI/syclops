@@ -1,6 +1,5 @@
 import logging
 import os
-import pickle
 from pathlib import Path
 
 import bpy
@@ -40,6 +39,7 @@ meta_description_object_volume = {
 }
 
 
+
 # Output postprocessing functions
 def postprocess_functions(img, file):
     if "semantic_segmentation" in file:
@@ -47,16 +47,21 @@ def postprocess_functions(img, file):
 
     elif "instance_segmentation" in file:
         try:
-            # Convert x,y,z to mm
-            img = img * 1000
-            # Round to integer
-            img = np.round(img)
-            # Calculate unique x,y,z values and assign new index
-            _, index = np.unique(
-                img.reshape(-1, img.shape[2]), axis=0, return_inverse=True
-            )
-            # Reshape to original shape
-            img = index.reshape(img.shape[:2])
+            # Convert x, y, z to mm and round to integer
+            img_mm = np.round(img * 1000)
+
+            # Calculate unique x, y, z values and assign new index
+            values, index = np.unique(img_mm.reshape(-1, img_mm.shape[2]), axis=0, return_inverse=True)
+
+            # Hash the unique values to get the instance id
+            vectorized_hash = np.vectorize(utility.hash_vector, signature='(n)->()')
+            instance_id = vectorized_hash(values)
+
+            # Create instance segmentation mask
+            img_mask = instance_id[index]
+            img = img_mask.reshape(img_mm.shape[0], img_mm.shape[1])
+            if values.shape[0] != instance_id.shape[0]:
+                logging.warning("Hashing of instance ids created collisions")
         except IndexError:
             logging.warning("Instance segmentation mask is empty")
             img = np.zeros(img.shape[:2], dtype=np.int32)

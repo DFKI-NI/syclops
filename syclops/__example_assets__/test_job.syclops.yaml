@@ -128,6 +128,8 @@ sensor:
             id: main_cam_rgb
         syclops_output_object_positions:
           - id: main_cam_object_positions
+        syclops_output_keypoints:
+          - id: main_cam_keypoints
         syclops_output_pixel_annotation:
           - semantic_segmentation:
               id: main_cam_semantic

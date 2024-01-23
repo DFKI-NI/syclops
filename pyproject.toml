@@ -28,6 +28,7 @@ syclops_plugin_object = "syclops.blender.plugins.object:Object"
 syclops_sensor_camera = "syclops.blender.sensors.camera:Camera"
 [project.entry-points."syclops.outputs"]
 syclops_output_rgb = "syclops.blender.sensor_outputs.rgb:RGB"
+syclops_output_keypoints = "syclops.blender.sensor_outputs.keypoints:Keypoints"
 syclops_output_pixel_annotation = "syclops.blender.sensor_outputs.pixel_annotation:PixelAnnotation"
 syclops_output_object_positions = "syclops.blender.sensor_outputs.object_positions:ObjectPositions"
 [project.entry-points."syclops.postprocessing"]

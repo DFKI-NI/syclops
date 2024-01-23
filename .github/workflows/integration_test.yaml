@@ -54,6 +54,8 @@ jobs:
           "./output/*/main_camera_annotations/pointcloud/*metadata.yaml"
           "./output/*/main_camera_annotations/object_volume/*.npz"
           "./output/*/main_camera_annotations/object_volume/*metadata.yaml"
+          "./output/*/main_camera_annotations/keypoints/*.json"
+          "./output/*/main_camera_annotations/keypoints/*metadata.yaml"
           "./output/*/object_positions/*.json"
           "./output/*/object_positions/*metadata.yaml"
         )

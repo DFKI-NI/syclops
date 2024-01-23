@@ -33,6 +33,7 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 |**Bounding Boxes**|Bounding boxes for each object in the scene|
 |**Object Positions**|3D position of each object in the scene|
 |**Point Cloud**|3D location of each pixel in camera space|
+|**Keypoints**|Location of keypoints in camera space|
 
 # 📣 Terminology
 |Term|Description|

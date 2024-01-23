@@ -67,6 +67,8 @@ items:
           $ref: "#/definitions/syclops_output_pixel_annotation"
         syclops_output_object_positions:
           $ref: "#/definitions/syclops_output_object_positions"
+        syclops_output_keypoints:
+          $ref: "#/definitions/syclops_output_keypoints"
       additionalProperties: False
   required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
 
