@@ -52,6 +52,7 @@ def dataset_viewer(args):
         "object_volume",
         "bounding_box",
         "pointcloud",
+        "keypoints",
     ]
     annotation_data = {annotation: None for annotation in annotations}
     annotation_path = camera_folder.parent / (camera_folder.name + "_annotations")
@@ -98,6 +99,18 @@ def dataset_viewer(args):
                 img, annotation_data["bounding_box"][i]
             )
             cv2.imshow("Bounding Boxes", bb_img)
+        
+        if annotation_data["keypoints"]:
+            keypoint_img = img.copy()
+            with open(annotation_data["keypoints"][i], "r") as f:
+                keypoints = json.load(f)
+            for instance_id, keypoint_dict in keypoints.items():
+                for key, keypoint in keypoint_dict.items():
+                    if key == "class_id":
+                        continue
+                    else:
+                        cv2.circle(keypoint_img, (int(keypoint["x"]), int(keypoint["y"])), 4, (0, 0, 255), 1)
+            cv2.imshow("Keypoints", keypoint_img)
 
         if camera_intrinsics and camera_extrinsics and object_positions:
             pos_img = img.copy()

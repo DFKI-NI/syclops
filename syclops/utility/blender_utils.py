@@ -696,7 +696,7 @@ def create_clumps(collection: bpy.types.Collection, config: dict) -> list:
     Returns:
         list: List of clumps objects.
     """
-    all_objects = collection.all_objects
+    all_objects = [obj for obj in collection.all_objects if obj.type == "MESH"]
     new_clumps = []
     num_objects = len(all_objects)
     num_clumps = _get_num_clumps(num_objects, config["ratio"])
@@ -714,6 +714,7 @@ def create_clumps(collection: bpy.types.Collection, config: dict) -> list:
         clump_items = []
         for obj in instance:
             clump_item = obj.copy()
+
             clump_item.data = obj.data.copy()
             random_transform_object(
                 clump_item, config["position_std"], config["scale_std"]
