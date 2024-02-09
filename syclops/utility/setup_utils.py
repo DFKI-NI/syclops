@@ -95,7 +95,7 @@ def install_blender(version: str, install_dir: Path) -> None:
     # Clean up
     dest_file.unlink()
 
-def get_or_create_install_folder(install_folder_path: str) -> Path:
+def get_or_create_install_folder(install_folder_path: str = None) -> Path:
     """
     Get the install folder from the config file, or ask the user for a folder.
 
