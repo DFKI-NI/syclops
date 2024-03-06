@@ -19,7 +19,7 @@ def hash_vector(vector):
     hash_digest = hash_object.digest()[:8]
 
     # Convert the first 8 bytes of the hash to a 64-bit integer
-    hash_value = int.from_bytes(hash_digest, byteorder='big')
+    hash_value = int.from_bytes(hash_digest, byteorder='big', signed=True)
 
     return hash_value
 
