@@ -2,7 +2,7 @@ import logging
 import pickle
 import uuid
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 
 import bmesh
 import bpy
@@ -348,6 +348,13 @@ def _get_bounding_box(tmp_obj):
 
 
 def _scale_obj(tmp_obj, width, height, depth):
+    # Catch division by zero
+    if width == 0:
+        width = 1
+    if height == 0:
+        height = 1
+    if depth == 0:
+        depth = 1
     scale_x, scale_y, scale_z = 1.0 / width, 1.0 / height, 1.0 / depth
 
     tmp_obj.scale = (scale_x, scale_y, scale_z)
@@ -382,7 +389,7 @@ def convex_decomposition(
     obj_pointer: ObjPointer,
     conv_hull_collection_pointer: ObjPointer,
     quality: float = 90,
-) -> list[bpy.types.Object]:
+) -> List[bpy.types.Object]:
     """Decompose an object into convex hulls for physics simulation.
 
     Args:
@@ -431,11 +438,48 @@ def convex_decomposition(
         apply_transform(convex_obj, use_scale=True)
         convex_obj.location += obj.location
         convex_obj["PARENT_UUID"] = obj_pointer.uuid
+        convex_obj.scale = obj.scale
         convex_hulls.append(convex_obj)
 
     return convex_hulls
 
+class DisjointSet:
+    def __init__(self):
+        self.parent = {}
 
+    def find(self, item):
+        if item not in self.parent:
+            self.parent[item] = item
+        if self.parent[item] != item:
+            self.parent[item] = self.find(self.parent[item])
+        return self.parent[item]
+
+    def union(self, item1, item2):
+        root1 = self.find(item1)
+        root2 = self.find(item2)
+        if root1 != root2:
+            self.parent[root1] = root2
+
+    def get_clusters(self):
+        clusters = {}
+        for item in self.parent:
+            root = self.find(item)
+            if root not in clusters:
+                clusters[root] = set()
+            clusters[root].add(item)
+        return list(clusters.values())
+    
+    def find_cluster(self, item):
+        if item not in self.parent:
+            return None  # Item not present in any cluster
+
+        root = self.find(item)
+        cluster = set()
+        for key in self.parent:
+            if self.find(key) == root:
+                cluster.add(key)
+        return cluster
+    
 def run_coacd(quality: float, coacd_mesh: coacd.Mesh) -> list:
     """Run the COACD algorithm on a mesh with default parameters.
 

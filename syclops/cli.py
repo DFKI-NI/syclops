@@ -315,7 +315,6 @@ def main():
     console = Console()
     console.print(f"Syclops folder: {install_folder}", style="bold green")
 
-
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -325,7 +324,7 @@ def main():
 
     if args.crawl_assets:
         if args.generate_thumbnails:
-            _crawl_assets(install_folder, generate_thumbnails = True)
+            _crawl_assets(install_folder, generate_thumbnails=True)
         else:
             _crawl_assets(install_folder)
 

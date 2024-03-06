@@ -33,10 +33,11 @@ class AssetCrawler(object):
             print(f"Crawling {path} for {MANIFEST_FILE_NAME} ...")
             library_root_paths = self.crawl_root_paths(path)
             for library_root_path in library_root_paths:
-                self.manifest_files = self._crawl_path(library_root_path)
-                print(f"... found {[str(f) for f in self.manifest_files]}")
-                self._add_missing_md5_checksums(self.manifest_files, library_root_path)
-                parsed_manifest_files = self._parse_manifest_files(self.manifest_files)
+                manifest_files = self._crawl_path(library_root_path)
+                print(f"... found {[str(f) for f in manifest_files]}")
+                self._add_missing_md5_checksums(manifest_files, library_root_path)
+                parsed_manifest_files = self._parse_manifest_files(manifest_files)
+                self.manifest_files.extend(manifest_files)
                 merged_manifests = self._merge_manifests(
                     parsed_manifest_files,
                     library_root_path,

@@ -51,6 +51,6 @@ def setup_and_launch_server():
 
 
 if __name__ == "__main__":
-    install_folder = get_or_create_install_folder()
+    install_folder = get_or_create_install_folder(None)
     read_and_process_catalog(install_folder)
     setup_and_launch_server()

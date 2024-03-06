@@ -22,21 +22,21 @@ We recommend using a virtual environment to avoid potential package conflicts. B
     
     === "Windows"
         ```bash
-        virtualenv syclops
-        .\syclops\Scripts\activate
+        virtualenv syclops_venv
+        .\syclops_venv\Scripts\activate
         ```
     === "Linux"
         ```bash
-        virtualenv syclops
-        source syclops/bin/activate
+        virtualenv syclops_venv
+        source syclops_venv/bin/activate
         ```
 
 === "conda"
     If you use Anaconda or Miniconda, you can create a new environment:
 
     ```bash
-    conda create --name syclops python=3.9
-    conda activate syclops
+    conda create --name syclops_venv python=3.9
+    conda activate syclops_venv
     ```
 
 

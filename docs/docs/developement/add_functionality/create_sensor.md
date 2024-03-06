@@ -17,7 +17,7 @@ Below is a basic example illustrating how a laser distance sensor can be added t
 import logging
 import bpy  # Blender python API
 from syclops_blender import utility  # Collection of useful utility functions
-from syclops_plugins_core.sensors.sensor_interface import SensorInterface
+from syclops.blender.sensors.sensor_interface import SensorInterface
 
 
 class LaserDistanceSensor(SensorInterface):
@@ -52,7 +52,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 from syclops_blender import utility
-from syclops_plugins_core.sensor_outputs.output_interface import OutputInterface
+from syclops.blender.sensor_outputs.output_interface import OutputInterface
 
 META_DESCRIPTION = {
     "type": "DISTANCE",
