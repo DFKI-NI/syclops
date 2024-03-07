@@ -64,6 +64,7 @@ nav:
       - RGB: usage/job_description/config_descriptions/rgb.md
       - Pixel Annotation: usage/job_description/config_descriptions/pixel_annotation.md
       - Object Position: usage/job_description/config_descriptions/object_position.md
+      - Keypoint Annotation: usage/job_description/config_descriptions/keypoint_annotation.md
     - Assets: usage/assets/assets.md
   - Developement:
     - Architecture: developement/architecture.md
