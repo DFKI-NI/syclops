@@ -61,8 +61,11 @@ def dataset_viewer(args):
             annotation_data[annotation_folder.name] = sorted(list(annotation_folder.iterdir()))
 
     camera_intrinsics = (
-        dataset_path / "calibration" / (camera_folder.name + "_intrinsics.yaml")
+        sorted(list((camera_folder / "intrinsics").iterdir()))
+        if (camera_folder / "intrinsics").exists()
+        else None
     )
+
     camera_extrinsics = (
         sorted(list((camera_folder / "extrinsics").iterdir()))
         if (camera_folder / "extrinsics").exists()
@@ -115,7 +118,7 @@ def dataset_viewer(args):
         if camera_intrinsics and camera_extrinsics and object_positions:
             pos_img = img.copy()
             # Read camera intrinsics yaml
-            camera_matrix = np.array(_load_yaml(camera_intrinsics)["camera_matrix"])
+            camera_matrix = np.array(_load_yaml(camera_intrinsics[i])["camera_matrix"])
             # Read camera extrinsics yaml
             pose_matrix = np.array(_load_yaml(camera_extrinsics[i])["camera_pose"])
             # Read object positions yaml

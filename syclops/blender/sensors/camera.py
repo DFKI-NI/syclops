@@ -23,7 +23,6 @@ class Camera(SensorInterface):
         if "depth_of_field" in self.config:
             cam.data.dof.use_dof = True
             cam.data.dof.aperture_fstop = self.config["depth_of_field"]["aperture"]
-        self.write_intrinsics()
         self.create_frustum()
         logging.info("Camera: %s created", self.config["name"])
 
@@ -205,6 +204,7 @@ class Camera(SensorInterface):
             )
 
         # Render image
+        self.write_intrinsics()
         self.write_extrinsics()
         for output in self.outputs:
             output.generate_output(self)
@@ -327,11 +327,14 @@ class Camera(SensorInterface):
         for obj in self.objs:
             if obj.get().type == "CAMERA":
                 cam = obj.get()
-
+        curr_frame = bpy.context.scene.frame_current
         cam_name = cam["name"]
-        calibration_folder = Path(bpy.context.scene.render.filepath) / "calibration"
+        calibration_folder = (
+            Path(bpy.context.scene.render.filepath) / cam_name / "intrinsics"
+        )
         calibration_folder.mkdir(parents=True, exist_ok=True)
-        calibration_file = calibration_folder / f"{cam_name}_intrinsics.yaml"
+        calibration_file = calibration_folder / f"{curr_frame:04}.yaml"
+
         cam_matrix = np.array(self.get_camera_matrix(cam.data))
 
         meta_description_intrinsics = {
@@ -361,7 +364,7 @@ class Camera(SensorInterface):
             )
 
             # Add expected steps
-            writer.data["expected_steps"] = 1
+            writer.data["expected_steps"] = utility.get_job_conf()["steps"]
             writer.data["sensor"] = cam_name
             writer.data["id"] = cam_name + "_intrinsics"
 

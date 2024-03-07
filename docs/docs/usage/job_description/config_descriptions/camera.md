@@ -1,6 +1,8 @@
+Here's the extended camera documentation with the output for extrinsic and intrinsic camera parameters:
+
 # Camera Plugin Documentation
 
-The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, focal length, exposure, and depth of field, among others.
+The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, focal length, exposure, and depth of field, among others. Additionally, it outputs the intrinsic and extrinsic camera parameters.
 
 ## Configuration Parameters
 
@@ -45,6 +47,44 @@ The following table describes each configuration parameter for the Camera Plugin
 !!! warning
     If `motion_blur` is enabled, `shutter_speed` becomes a required parameter.
 
+## Intrinsic Camera Parameters Output
+
+The Camera Plugin outputs the intrinsic camera parameters, which include the camera matrix. The camera matrix is written to a YAML file named `<frame_number>.yaml` in the `<camera_name>/intrinsics` folder for each frame.
+
+### Example Intrinsics Output
+
+```yaml
+camera_matrix:
+  - [fx, 0, cx]
+  - [0, fy, cy] 
+  - [0, 0, 1]
+```
+
+Where:
+- `fx`, `fy`: Focal lengths in pixels
+- `cx`, `cy`: Principal point coordinates in pixels
+
+## Extrinsic Camera Parameters Output
+
+The Camera Plugin also outputs the extrinsic camera parameters, which represent the global pose of the camera in the scene. The camera pose is written to a YAML file named `<frame_number>.yaml` in the `<camera_name>/extrinsics` folder for each frame.
+
+### Example Extrinsics Output
+
+```yaml
+camera_pose:
+  - [r11, r12, r13, tx]
+  - [r21, r22, r23, ty]
+  - [r31, r32, r33, tz]
+  - [0, 0, 0, 1]
+```
+
+Where:
+- `r11` to `r33`: Rotation matrix elements
+- `tx`, `ty`, `tz`: Translation vector elements
+
+## Metadata Output
+
+Along with the intrinsic and extrinsic parameter files, a `metadata.yaml` file is generated in the respective output folders. This file contains metadata about the parameter outputs, including the output type, format, description, expected steps, sensor name, and output ID.s
 
 ## Example Configuration
 
@@ -66,9 +106,9 @@ syclops_sensor_camera:
         enabled: true
         duration: 0.001
     outputs:
-        Base Plugins/RGB:
+        syclops_output_rgb:
             - samples: 256
-            id: main_cam_rgb
+              id: main_cam_rgb
 ```
 
-In the example above, a camera named "Main_Camera" is defined with a resolution of 1920x1080 pixels, a focal length of 35mm, and other specific properties. The camera will also utilize motion blur with a rolling shutter effect.
+In the example above, a camera named "Main_Camera" is defined with a resolution of 1920x1080 pixels, a focal length of 35mm, and other specific properties. The camera will also utilize motion blur with a rolling shutter effect. The intrinsic and extrinsic camera parameters will be output according to the specified configuration.
