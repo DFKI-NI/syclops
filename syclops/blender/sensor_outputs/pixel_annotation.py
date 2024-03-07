@@ -94,7 +94,9 @@ class PixelAnnotation(OutputInterface):
             if class_id_offset is not None:
                 for material_name, offset in class_id_offset.items():
                     for mat in obj.data.materials:
-                        if mat.name == material_name:
+                        # Strip of the .001, .002, etc. from the material name
+                        # Name can have multiple dots, so we only strip the last one
+                        if mat.name.rsplit(".", 1)[0] == material_name:
                             offset_node = mat.node_tree.nodes.new("ShaderNodeValue")
                             offset_node.name = "class_id_offset"
                             offset_node.outputs[0].default_value = offset

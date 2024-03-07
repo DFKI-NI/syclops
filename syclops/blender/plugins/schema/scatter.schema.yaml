@@ -46,7 +46,7 @@ items:
       additionalProperties:
         type: integer
     align_to_normal:
-      desctiption: If objects should be aligned to the normal of the surface.
+      description: If objects should be aligned to the normal of the surface.
       type: boolean
     clumps:
       description: Optional creation of clumps
