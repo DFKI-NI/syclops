@@ -3,16 +3,16 @@ To use `Syclops` the virtual environment needs to be activated. This can be done
 
 === "conda"
     ```bash
-    conda activate syclops
+    conda activate syclops_venv
     ```
 
 === "virtualenv"    
     ```bash
     # For Windows
-    .\syclops\Scripts\activate
+    ./syclops_venv/Scripts/activate
 
     # For Linux
-    source syclops/bin/activate
+    source syclops_venv/bin/activate
     ```
 
 The most important alias is `syclops` which is the main command to use the pipeline.
