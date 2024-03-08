@@ -4,9 +4,9 @@ The Keypoint Output is designed to provide the 2D pixel coordinates of predefine
 
 ## Keypoint Definition
 
-Keypoints are defined using a Blender script that allows users to easily add keypoint information to 3D objects. The script can be used in two ways:
+Keypoints are defined using a Blender [script](https://github.com/DFKI-NI/syclops/blob/main/syclops/utility/keypoint_script.py) that allows users to easily add keypoint information to 3D objects. To use it, open Blender with the model and paste the [script](https://github.com/DFKI-NI/syclops/blob/main/syclops/utility/keypoint_script.py) in the Blender text editor. The script can be used in two ways:
 
-1. With multiple objects selected, the last selected object being a mesh: The user should create empty objects at the desired keypoint locations relative to the mesh object. Then, select all the empty objects and the mesh object, with the mesh object being the active object. Run the script, and it will add the keypoint information to the mesh object based on the positions of the empty objects. The empty objects will be sorted alphabetically, and their index will be used as the keypoint number.
+1. The user should create empty objects at the desired keypoint locations relative to the mesh object. Then, select all the empty objects and the mesh object, with the mesh object being the active object. Run the script, and it will add the keypoint information to the mesh object based on the positions of the empty objects. The empty objects will be sorted alphabetically, and their index will be used as the keypoint number.
 
 2. With a single mesh object selected that already has a keypoints attribute: The script will create empty objects at the keypoint positions defined in the mesh object to visualize the keypoint locations.
 
