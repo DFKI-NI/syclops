@@ -2,13 +2,14 @@
 
 The Pixel Annotation Output is dedicated to providing various pixel-level annotations of the sensor image. This encompasses a range of annotations from semantic segmentation to the volume of objects.
 
-## Inter Object Segmentation
+## Inter Class Segmentation
 
 In Syclops it is possible to have multiple class labels for a single object. This means, that a plant can have the segmentation labels `stem` and `leaf` at the same time.
+![Inter Class Segmentation](/img/docs/inter_class_seg.png)
 
 It has to be configured in the scene description for the object that should have multiple labels. The following example shows how to configure it:
 
-```yaml title="Configure Inter Object Segmentation"
+```yaml title="Configure Inter Class Segmentation"
   syclops_plugin_scatter:
     - name: "Corn Scatter"
       ...
