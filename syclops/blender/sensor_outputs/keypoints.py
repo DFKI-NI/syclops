@@ -31,15 +31,9 @@ class Keypoints(OutputInterface):
             depsgraph = bpy.context.view_layer.depsgraph
             scene = bpy.context.scene
             camera = scene.camera
-            # Camera matrices
-            modelview_matrix = camera.matrix_world.inverted()
-            projection_matrix = camera.calc_matrix_camera(
-                bpy.context.evaluated_depsgraph_get(), x=bpy.context.scene.render.resolution_x, y=bpy.context.scene.render.resolution_y
-            )
             render_scale = scene.render.resolution_percentage / 100
             width = int(scene.render.resolution_x * render_scale)
             height = int(scene.render.resolution_y * render_scale)
-
 
             for object_instance in depsgraph.object_instances:
                 if object_instance.object.type == "MESH":
@@ -100,7 +94,6 @@ class Keypoints(OutputInterface):
         output_folder = utility.append_output_path(f"{sensor_name}_annotations/keypoints/")
         utility.create_folder(output_folder)
         return output_folder
-
 
     def write_meta_output_file(self, file: Path, sensor_name: str):
         """Write the metadata output to a YAML file."""
