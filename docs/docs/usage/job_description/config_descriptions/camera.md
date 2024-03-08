@@ -1,8 +1,6 @@
-Here's the extended camera documentation with the output for extrinsic and intrinsic camera parameters:
-
 # Camera Plugin Documentation
 
-The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, focal length, exposure, and depth of field, among others. Additionally, it outputs the intrinsic and extrinsic camera parameters.
+The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, focal length, exposure, depth of field, motion blur, and frustum visualization for debugging purposes. Additionally, it outputs the intrinsic and extrinsic camera parameters.
 
 ## Configuration Parameters
 
@@ -20,6 +18,7 @@ The following table describes each configuration parameter for the Camera Plugin
 | `shutter_speed`  | float                                                 | Shutter speed in seconds. Affects the strength of motion blur. If `motion_blur` is enabled, this becomes required. | Conditional  |
 | `depth_of_field` | object (contains aperture, autofocus, focus_distance) | Settings for the depth of field of the camera.                                                                     | Optional     |
 | `motion_blur`    | object (contains enabled, rolling_shutter)            | Settings for the motion blur of the camera.                                                                        | Optional     |
+| `frustum`        | object (contains settings for frustum visualization)  | Settings for the camera frustum visualization (for debugging purposes).                                            | Optional     |
 | `outputs`        | object                                                | Output configuration, which can include RGB, Pixel Annotation, and Object Positions.                               | **Required** |
 
 ### Depth of Field
@@ -44,8 +43,30 @@ The following table describes each configuration parameter for the Camera Plugin
 | `enabled`     | boolean | Whether rolling shutter is enabled.       |
 | `duration`    | number  | Exposure time of the scanline in seconds. |
 
+### Frustum Visualization
+
+| Sub-parameter | Type    | Description                                                                                |
+| ------------- | ------- | ------------------------------------------------------------------------------------------ |
+| `enabled`     | boolean | Whether to enable frustum visualization.                                                  |
+| `type`        | string  | Type of frustum visualization (e.g., "pyramid").                                          |
+| `depth`       | number  | Depth of the frustum in meters.                                                           |
+| `color`       | array   | RGB color of the frustum as a list of 3 floats.                                           |
+| `transparency`| number  | Transparency value between 0-1.                                                           |
+| `wireframe`   | object  | Settings for wireframe rendering mode.                                                    |
+| `hide_render` | boolean | Whether to hide the frustum in the final rendered images.                                 |
+
+#### Wireframe Settings
+
+| Sub-parameter | Type    | Description                           |
+| ------------- | ------- | --------------------------------------|
+| `enabled`     | boolean | Whether to render as wireframe lines. |
+| `thickness`   | number  | Thickness of the wireframe lines.     |
+
 !!! warning
     If `motion_blur` is enabled, `shutter_speed` becomes a required parameter.
+
+!!! tip
+    The frustum visualization is primarily intended for debugging purposes when running Syclops with the `-d scene` flag. This flag opens the scene in Blender and allows you to visualize the frustum of the sensor, which can be useful for sensor placement prototyping.
 
 ## Intrinsic Camera Parameters Output
 
@@ -84,7 +105,7 @@ Where:
 
 ## Metadata Output
 
-Along with the intrinsic and extrinsic parameter files, a `metadata.yaml` file is generated in the respective output folders. This file contains metadata about the parameter outputs, including the output type, format, description, expected steps, sensor name, and output ID.s
+Along with the intrinsic and extrinsic parameter files, a `metadata.yaml` file is generated in the respective output folders. This file contains metadata about the parameter outputs, including the output type, format, description, expected steps, sensor name, and output ID.
 
 ## Example Configuration
 
@@ -105,10 +126,19 @@ syclops_sensor_camera:
       rolling_shutter:
         enabled: true
         duration: 0.001
+    frustum:
+      enabled: true
+      type: pyramid
+      depth: 10
+      color: [1, 0, 0]
+      transparency: 0.5
+      wireframe:
+        enabled: true
+        thickness: 0.1
     outputs:
         syclops_output_rgb:
             - samples: 256
               id: main_cam_rgb
 ```
 
-In the example above, a camera named "Main_Camera" is defined with a resolution of 1920x1080 pixels, a focal length of 35mm, and other specific properties. The camera will also utilize motion blur with a rolling shutter effect. The intrinsic and extrinsic camera parameters will be output according to the specified configuration.
+In the example above, a camera named "Main_Camera" is defined with a resolution of 1920x1080 pixels, a focal length of 35mm, and other specific properties. The camera will also utilize motion blur with a rolling shutter effect. Additionally, the frustum visualization is enabled, displaying a wireframe pyramid with a depth of 10 meters, colored red, and semi-transparent. The intrinsic and extrinsic camera parameters will be output according to the specified configuration.
