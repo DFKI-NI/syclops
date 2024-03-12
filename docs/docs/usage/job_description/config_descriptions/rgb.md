@@ -31,3 +31,7 @@ syclops_output_rgb:
 ```
 
 In this configuration, the RGB output with the identifier "MainView" will have a quality of 200 samples per pixel. Additionally, if the [scene debugging](/developement/debugging/#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
+
+## Metadata Output
+
+Along with the output files, a `metadata.yaml` file is generated in the output folder. This file contains metadata about the keypoint output, including the output type, format, description, expected steps, sensor name, and output ID.

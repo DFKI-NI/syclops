@@ -34,6 +34,7 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 |**Object Positions**|3D position of each object in the scene|
 |**Point Cloud**|3D location of each pixel in camera space|
 |**Keypoints**|Location of keypoints in camera space|
+|**Object Volume**|Volume of each object in the scene|
 
 # 📣 Terminology
 |Term|Description|

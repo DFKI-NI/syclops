@@ -58,6 +58,40 @@ items:
             duration:
               description: Exposure time of the Scanline in seconds.
               type: number
+    frustum:
+      description: Settings for the camera frustum visualization
+      type: object 
+      properties:
+        enabled:
+          description: Whether to enable frustum visualization
+          type: boolean
+        type:
+          description: Type of frustum visualization (e.g. pyramid)
+          type: string
+        depth:
+          description: Depth of the frustum in meters
+          type: number
+        color:
+          description: RGB color of the frustum
+          type: array
+          items:
+            type: number
+        transparency:
+          description: Transparency value between 0-1
+          type: number
+        wireframe:
+          description: Settings for wireframe rendering
+          type: object
+          properties:
+            enabled:
+              description: Whether to render as wireframe
+              type: boolean  
+            thickness:
+              description: Thickness of wireframe lines
+              type: number
+        hide_render:
+          description: Whether to hide frustum in final render
+          type: boolean
     outputs:
       type: object
       properties:
@@ -71,7 +105,6 @@ items:
           $ref: "#/definitions/syclops_output_keypoints"
       additionalProperties: False
   required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
-
   allOf:
     - if:
         properties:
@@ -79,6 +112,6 @@ items:
             properties:
               enabled:
                 const: true
-        required: [motion_blur]
+      required: [motion_blur]
       then:
         required: [shutter_speed]

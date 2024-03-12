@@ -40,9 +40,10 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 |**Instance Segmentation**|Unique instance id for each object in the scene|
 |**Depth**|Distance from the camera to each pixel|
 |**Bounding Boxes**|Bounding boxes for each object in the scene|
-|**Object Volume**|Volume of each object in the scene|
+|**Object Positions**|3D position of each object in the scene|
 |**Point Cloud**|3D location of each pixel in camera space|
-|**Object Positions**|3D pose of each object in the scene|
+|**Keypoints**|Location of keypoints in camera space|
+|**Object Volume**|Volume of each object in the scene|
 
 
 # ⚡️Getting Started
