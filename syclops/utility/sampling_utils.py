@@ -149,8 +149,13 @@ def apply_sampling(parameter, curr_frame=None, catalog=None):
         return parameter
     for sample_func in sample_functions:
         if sample_func in parameter:
-            return eval(f"sample_{sample_func}")(
-                parameter[sample_func], curr_frame, catalog
-            )
+            if sample_func in ["selection_asset", "wildcard"]:
+                return eval(f"sample_{sample_func}")(
+                    parameter[sample_func], curr_frame, catalog=catalog
+                )
+            else:
+                return eval(f"sample_{sample_func}")(
+                    parameter[sample_func], curr_frame
+                )
     logging.warning("Parameter {0} not supported format".format(parameter))
     raise ValueError("Parameter {0} not supported format".format(parameter))
