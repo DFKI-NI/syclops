@@ -68,6 +68,7 @@ nav:
     - Post Processing:
       - Bounding Boxes: usage/job_description/config_descriptions/bounding_box.md
     - Assets: usage/assets/assets.md
+    - FAQ: usage/faq.md
   - Developement:
     - Architecture: developement/architecture.md
     - Add Functionality:
