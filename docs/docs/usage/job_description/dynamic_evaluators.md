@@ -37,3 +37,23 @@ The following table lists all dynamic evaluators and their parameters.
 | random_selection | ```[<step1>, <step2>, ...]``` | Samples a value from a list of steps in a random order. |
 | selection_asset | ```{library: <library_name>, type: <type>} ``` | Randomly picks an asset from the given library and type. |
 | selection_wildcard | ```{library: <library_name>, wildcard: <wildcard_pattern>}``` | Randomly selects an asset from a library that matches the given wildcard pattern. |
+
+
+## Referencing Global Evaluators
+
+In addition to the dynamic evaluators that are specific to each attribute, you can also reference global evaluators defined in the `global_evaluators` section of the job configuration. Global evaluators are evaluated once per frame and ensure that the same random value is used for all sensors within a single frame.
+
+To reference a global evaluator, use the syntax `$global.<evaluator_name>`. For example:
+
+```yaml
+sensor:
+  syclops_sensor_camera:
+    - name: "main_camera"
+      gamma: $global.gamma
+      # ...
+    - name: "secondary_camera"
+      gamma: $global.gamma
+      # ...
+```
+
+In this example, both the `main_camera` and `secondary_camera` will use the same random value for `gamma` in each frame, as defined in the `global_evaluators` section.

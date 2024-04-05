@@ -18,12 +18,11 @@ if 'bpy' in sys.modules:
                                 load_image, load_img_as_array, merge_objects,
                                 refresh_modifiers, render_visibility,
                                 resize_textures, set_active_collection, set_seeds,
-                                show_all_modifiers)
-    from .sampling_utils import (eval_param, interpolate_img, sample_linear,
-                                sample_normal, sample_random_selection,
-                                sample_selection_asset, sample_selection_folder,
-                                sample_step, sample_uniform, sample_wildcard)
-
+                                show_all_modifiers, eval_param)
+from .sampling_utils import (sample_linear,
+                            sample_normal, sample_random_selection,
+                            sample_selection_asset, sample_selection_folder,
+                            sample_step, sample_uniform, sample_wildcard, apply_sampling)
 
 from .general_utils import (AtomicYAMLWriter, create_folder,
                             find_class_id_mapping,get_site_packages_path, get_module_path, hash_vector)

@@ -84,6 +84,27 @@ properties:
                 - $ref: "#/definitions/keep_overlapp"
                 - $ref: "#/definitions/random_rectangles"
             minItems: 1
+  global_evaluators:
+    type: object
+    additionalProperties:
+      anyOf:
+        - type: number
+        - $ref: "#/definitions/sample_linear_vector"
+        - $ref: "#/definitions/sample_linear_number"
+        - $ref: "#/definitions/sample_normal_vector"
+        - $ref: "#/definitions/sample_normal_number"
+        - $ref: "#/definitions/sample_uniform_vector"
+        - $ref: "#/definitions/sample_uniform_number"
+        - $ref: "#/definitions/sample_step_number"
+        - $ref: "#/definitions/sample_step_vector"
+        - $ref: "#/definitions/sample_step_string"
+        - $ref: "#/definitions/sample_random_selection_number"
+        - $ref: "#/definitions/sample_random_selection_vector"
+        - $ref: "#/definitions/sample_random_selection_string"
+        - $ref: "#/definitions/sample_selection_folder"
+        - $ref: "#/definitions/sample_selection_asset"
+        - $ref: "#/definitions/sample_wildcard"
+
 required: [steps, seeds, render_device, denoising_enabled]
 
 allOf:
