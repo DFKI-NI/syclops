@@ -12,6 +12,7 @@ Each job can be divided into the following sections:
 * **sensor**: Configuration of individual sensors and their corresponding outputs.
 * **postprocessing** - [*optional]*: Operations that are applied to the generated data after creation.
 * **textures** - [*optional]*: Dynamically generated textures that can be used in the scene.
+* **global_evaluators**: Defines global evaluators that can be referenced by multiple plugins or sensors.
 
 === "general"
 
@@ -239,3 +240,19 @@ Each job can be divided into the following sections:
                 octaves: 4
         ```
     </details>
+
+=== "global_evaluators"
+
+    This section defines global evaluators that can be referenced by multiple plugins or sensor. These evaluators are evaluated once per frame and ensure that the same random value is used for all plugins/sensors within a single frame. This is useful for multiple cameras that should have the same random exposure value every frame.
+
+    !!! tip
+        See [Dynamic Evaluators](dynamic_evaluators.md) for more information.
+
+    **Example**:
+    ```yaml
+    global_evaluators:
+      gamma:
+        uniform: [0.8, 1.2]
+      exposure:
+        normal: [0, 1]
+    ```

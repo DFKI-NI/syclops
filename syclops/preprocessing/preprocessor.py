@@ -7,6 +7,8 @@ from jsonschema.exceptions import ValidationError
 from PIL import Image
 from ruamel.yaml import YAML
 from syclops.preprocessing.texture_processor import process_texture
+from syclops import utility
+
 
 CATALOG_LIBRARY_KEY = "Preprocessed Assets"
 
@@ -140,14 +142,43 @@ def create_textures(config: dict, catalog: dict, output_path: str):
                 _add_to_catalog(catalog, texture_name, asset_value, output_path)
 
 
-def _set_seed(config: dict, seed: int):
-    np.random.seed(config["seeds"]["numpy"] * seed)
+def evaluate_global_evaluators(config: dict, global_evaluators: dict, catalog: dict):
+    """
+    Evaluates global evaluators in the config.
+    """
+    evaluated_global_evaluators = {}
+    for key, eval_value in global_evaluators.items():
+        is_list = isinstance(eval_value, list) or hasattr(eval_value, "to_list")
+        if is_list:
+            raise ValueError("Global evaluators must be dictionaries.")
+        evaluated_global_evaluators[key] = {
+            "step": [
+                utility.apply_sampling(eval_value, step, catalog)
+                for step in range(config["steps"])
+            ]
+        }
+
+    return evaluated_global_evaluators
 
 
 def preprocess(config_path: str, catalog_path: str, schema: str, output_path: str):
     config = read_yaml(config_path)
     catalog = read_yaml(catalog_path)
     schema = read_yaml(schema)
+
+    # Evaluate global evaluators
+    global_evaluators = config.get("global_evaluators", {})
+    evaluated_global_evaluators = evaluate_global_evaluators(
+        config, global_evaluators, catalog
+    )
+
+    # Replace global evaluator references in sensor configurations
+    for sensor_config in config["sensor"].values():
+        for sensor in sensor_config:
+            for key, value in sensor.items():
+                if isinstance(value, str) and value.startswith("$global."):
+                    global_key = value[8:]
+                    sensor[key] = evaluated_global_evaluators[global_key]
     try:
         validate(config, schema)
         print("Job Config is valid!")
