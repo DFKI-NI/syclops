@@ -65,6 +65,7 @@ nav:
       - Pixel Annotation: usage/job_description/config_descriptions/pixel_annotation.md
       - Object Position: usage/job_description/config_descriptions/object_position.md
       - Keypoint Annotation: usage/job_description/config_descriptions/keypoint_annotation.md
+      - Structured Light: usage/job_description/config_descriptions/structured_light.md
     - Post Processing:
       - Bounding Boxes: usage/job_description/config_descriptions/bounding_box.md
     - Assets: usage/assets/assets.md
