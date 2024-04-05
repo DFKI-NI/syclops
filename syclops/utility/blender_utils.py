@@ -9,6 +9,7 @@ import bpy
 import coacd
 import numpy as np
 from mathutils import Matrix
+from . import sampling_utils as su
 
 
 def apply_transform(
@@ -443,6 +444,7 @@ def convex_decomposition(
 
     return convex_hulls
 
+
 class DisjointSet:
     def __init__(self):
         self.parent = {}
@@ -468,7 +470,7 @@ class DisjointSet:
                 clusters[root] = set()
             clusters[root].add(item)
         return list(clusters.values())
-    
+
     def find_cluster(self, item):
         if item not in self.parent:
             return None  # Item not present in any cluster
@@ -479,7 +481,8 @@ class DisjointSet:
             if self.find(key) == root:
                 cluster.add(key)
         return cluster
-    
+
+
 def run_coacd(quality: float, coacd_mesh: coacd.Mesh) -> list:
     """Run the COACD algorithm on a mesh with default parameters.
 
@@ -638,7 +641,14 @@ def add_volume_attribute(obj: bpy.types.Object):
 
     bm = bmesh.new()
     bm.from_mesh(obj.data)
-    volume = float(bm.calc_volume()) * volume_conversion_factor
+    # Calculate the raw volume (without considering scaling)
+    raw_volume = float(bm.calc_volume())
+
+    # Calculate the scale factor (product of the scale on all axes)
+    scale_factor = obj.scale.x * obj.scale.y * obj.scale.z
+    # Adjust the volume for the object's scaling
+    volume = raw_volume * scale_factor * volume_conversion_factor
+
     # Remove bmesh
     bm.free()
     bm = None
@@ -789,3 +799,25 @@ def merge_objects(obj_list: list) -> bpy.types.Object:
     ):
         bpy.ops.object.join()
     return obj_list[0]
+
+
+def eval_param(eval_params: Union[float, dict, str]) -> Union[float, list, str]:
+    """Convert a parameter to a discrete value with the help of a sample function.
+
+    Args:
+        eval_params: Parameter to be evaluated.
+
+    Returns:
+        Union[float, list, str]: Evaluated parameter.
+    """
+    is_list = isinstance(eval_params, list) or hasattr(eval_params, "to_list")
+    eval_params = eval_params if is_list else [eval_params]
+
+    curr_frame = bpy.context.scene.frame_current
+    catalog_string = bpy.data.scenes["Scene"]["catalog"]
+    catalog = pickle.loads(bytes(catalog_string, "latin1"))
+
+    evaluated_param = list(
+        map(lambda x: su.apply_sampling(x, curr_frame, catalog), eval_params)
+    )
+    return evaluated_param if is_list else evaluated_param[0]
