@@ -56,6 +56,8 @@ jobs:
           "./output/*/main_camera_annotations/object_volume/*metadata.yaml"
           "./output/*/main_camera_annotations/keypoints/*.json"
           "./output/*/main_camera_annotations/keypoints/*metadata.yaml"
+          "./output/*/main_camera_annotations/structured_light/*.png"
+          "./output/*/main_camera_annotations/structured_light/*metadata.yaml"
           "./output/*/object_positions/*.json"
           "./output/*/object_positions/*metadata.yaml"
         )

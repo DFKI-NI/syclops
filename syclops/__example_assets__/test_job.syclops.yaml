@@ -120,7 +120,7 @@ sensor:
           duration: 0.03 # s (Scanline "exposure" time)
       outputs:
         syclops_output_rgb:
-          - samples: 16
+          - samples: 4
             compositor:
               chromatic_aberration: 0.007 #Strong aberration can cause shift between ground truth and rgb
               bloom:
@@ -141,6 +141,12 @@ sensor:
               id: main_cam_depth
             object_volume:
               id: main_cam_object_volume
+        syclops_output_structured_light:
+          - id: main_cam_structured_light
+            frame_id: "camera_link"
+            intensity: 10000
+            scale: 200
+            samples: 4
 
 postprocessing:
   syclops_postprocessing_bounding_boxes:
