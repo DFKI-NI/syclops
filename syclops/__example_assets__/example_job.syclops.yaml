@@ -51,18 +51,22 @@ scene:
       environment_image: 
         random_selection: [Example Assets/Sunflower Field]
 
-  syclops_plugin_scatter:
-    - name: "Corn Scatter"
+  syclops_plugin_crop:
+    - name: "Corn"
       models: [Example Assets/Corn]
       floor_object: Ground
-      max_texture_size: 512
-      density_max: 10 # per m^2
-      distance_min: 0.05 # m
+      crop_angle: 0 # degrees; [-90, 90] possible
+      row_distance: 0.6 # m
+      row_standard_deviation: 0.2 # m
+      plant_distance: 0.1
+      plant_standard_deviation: 0.1 # m
       scale_standard_deviation: 0.5
       class_id: 2
       class_id_offset:
         Stem: 1
       seed: 1
+
+  syclops_plugin_scatter:
     - name: "Weed Scatter"
       models: [Example Assets/Plain Weeds]
       floor_object: Ground
