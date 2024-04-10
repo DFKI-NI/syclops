@@ -24,6 +24,7 @@ syclops_plugin_ground = "syclops.blender.plugins.ground:Ground"
 syclops_plugin_environment = "syclops.blender.plugins.environment:Environment"
 syclops_plugin_scatter = "syclops.blender.plugins.scatter:Scatter"
 syclops_plugin_object = "syclops.blender.plugins.object:Object"
+syclops_plugin_simulated_scatter = "syclops.blender.plugins.simulated_scatter:SimulatedScatter"
 [project.entry-points."syclops.sensors"]
 syclops_sensor_camera = "syclops.blender.sensors.camera:Camera"
 [project.entry-points."syclops.outputs"]
