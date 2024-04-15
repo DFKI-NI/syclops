@@ -9,19 +9,19 @@ denoising_algorithm: "OPENIMAGEDENOISE"
 
 # TRANSFORMATION CONFIG
 transformations:
-  map:          
+  map:
     location: [0, 0, 0]
     rotation: [0, 0, 0]
     children:
       camera_link:
         location:
-          linear: [[-20,0,2],[0.5,0,0]]
-        rotation: 
-          normal: [[0.785398, 0, 0],[0.05,0.05,0.05]]
+          linear: [[-20, 0, 2], [0.5, 0, 0]]
+        rotation:
+          normal: [[0.785398, 0, 0], [0.05, 0.05, 0.05]]
       iso_object:
         location:
-          uniform: [[-20,-20,0],[20,20,0]]
-        rotation: [0,0,0]
+          uniform: [[-20, -20, 0], [20, 20, 0]]
+        rotation: [0, 0, 0]
 
 textures:
   plain_noise:
@@ -48,27 +48,35 @@ scene:
 
   syclops_plugin_environment:
     - type: hdri
-      environment_image: 
+      environment_image:
         random_selection: [Example Assets/Sunflower Field]
 
-  syclops_plugin_scatter:
-    - name: "Corn Scatter"
+  syclops_plugin_simulated_scatter:
+    - name: "ISO Object Scatter"
+      models: Example Assets/ISO Object
+      floor_object: Ground
+      class_id: 1
+      simulation_steps: 50
+      std_scale: 1
+      density: 0.01
+      convex_decomposition_quality: 90
+
+  syclops_plugin_crop:
+    - name: "Corn"
       models: [Example Assets/Corn]
       floor_object: Ground
-      max_texture_size: 512
-      density_max: 10 # per m^2
-      distance_min: 0.05 # m
+      crop_angle: 0 # degrees; [-90, 90] possible
+      row_distance: 0.6 # m
+      row_standard_deviation: 0.2 # m
+      plant_distance: 0.1
+      plant_standard_deviation: 0.1 # m
       scale_standard_deviation: 0.5
       class_id: 2
       class_id_offset:
         Stem: 1
       seed: 1
-      clumps:
-        ratio: 0.3
-        size: 3
-        size_std: 2
-        position_std: 0.02
-        scale_std: 0.4
+
+  syclops_plugin_scatter:
     - name: "Weed Scatter"
       models: [Example Assets/Plain Weeds]
       floor_object: Ground
@@ -92,7 +100,6 @@ scene:
       place_on_ground: true
       models: [Example Assets/ISO Object]
       floor_object: Ground
-
 
 # SENSOR CONFIG
 sensor:
@@ -151,7 +158,7 @@ sensor:
 postprocessing:
   syclops_postprocessing_bounding_boxes:
     - type: "YOLO"
-      classes_to_skip: [0,1]
+      classes_to_skip: [0, 1]
       id: yolo_bound_boxes
       sources: ["main_cam_instance", "main_cam_semantic"]
       multiple_bb_per_instance: False
