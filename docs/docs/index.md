@@ -35,6 +35,7 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 |**Point Cloud**|3D location of each pixel in camera space|
 |**Keypoints**|Location of keypoints in camera space|
 |**Object Volume**|Volume of each object in the scene|
+|**Structured Light**| Projected dot pattern for structured light reconstruction|
 
 # 📣 Terminology
 |Term|Description|
