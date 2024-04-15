@@ -1,4 +1,8 @@
 site_name: Syclops Documentation
+site_description: Documentation for the Syclops synthetic data generation tool
+site_author: Anton Elmiger
+site_url: https://dfki-ni.github.io/syclops/
+
 theme:
   name: material
   features:

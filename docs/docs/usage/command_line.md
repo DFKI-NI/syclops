@@ -30,4 +30,4 @@ Following is a list of the command line arguments for `syclops`:
 | `-log` | Display all log messages in the console. | `False` | Boolean |
 | `-tv` | Live display of the procedural textures in a job config. | `None` | String |
 | `-if` | Path to the install folder. | `None` | String |
-| `-d` | Debugging mode. See [Debugging](/developement/debugging) | `False` | String [scene, blender-code, pipeline-code]
+| `-d` | Debugging mode. See [Debugging](../developement/debugging.md) | `False` | String [scene, blender-code, pipeline-code]

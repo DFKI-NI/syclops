@@ -1,9 +1,10 @@
 # Introduction
 
-<h1 align="center">
-  <img alt="cgapp logo" src="/img/logo.png" width="224px"/><br/>
-  Syclops
-</h1>
+<figure markdown="span">
+  ![Syclops Logo](img/logo.png){ width="224" }
+</figure>
+
+
 <p align="center">Syclops is a tool for creating synthetic data from 3D virtual environments.</p>
 ---
 # 🎯 Features
@@ -18,9 +19,10 @@
 📦 Easy to use and extend with a modular architecture
 
 # 🔍 Annotations
-<div align="center">
-  <img alt="output-render" src="/img/renders/outputs.gif" width="400px"/><br/>
-</div>
+<figure markdown="span">
+  ![Syclops Output](img/renders/outputs.gif){ width="400" }
+</figure>
+
 
 Syclops supports a variety of annotated outputs for different use cases. The following outputs are currently supported:
 

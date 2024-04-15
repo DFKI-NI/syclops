@@ -5,7 +5,7 @@ The Pixel Annotation Output is dedicated to providing various pixel-level annota
 ## Inter Class Segmentation
 
 In Syclops it is possible to have multiple class labels for a single object. This means, that a plant can have the segmentation labels `stem` and `leaf` at the same time.
-![Inter Class Segmentation](/img/docs/inter_class_seg.png)
+![Inter Class Segmentation](../../../img/docs/inter_class_seg.png)
 
 It has to be configured in the scene description for the object that should have multiple labels. The following example shows how to configure it:
 
@@ -61,7 +61,7 @@ syclops_output_pixel_annotation:
   - debug_breakpoint: true
 ```
 
-In the provided configuration, a variety of pixel annotations are set up, each with their unique identifiers. Additionally, if the [scene debugging](/developement/debugging/#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
+In the provided configuration, a variety of pixel annotations are set up, each with their unique identifiers. Additionally, if the [scene debugging](../../../developement/debugging.md#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
 
 ## Metadata Output
 

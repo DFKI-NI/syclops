@@ -30,7 +30,7 @@ syclops_output_rgb:
     debug_breakpoint: true
 ```
 
-In this configuration, the RGB output with the identifier "MainView" will have a quality of 200 samples per pixel. Additionally, if the [scene debugging](/developement/debugging/#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
+In this configuration, the RGB output with the identifier "MainView" will have a quality of 200 samples per pixel. Additionally, if the [scene debugging](../../../developement/debugging.md#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
 
 ## Metadata Output
 
