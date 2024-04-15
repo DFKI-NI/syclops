@@ -1,7 +1,7 @@
 # Introduction
 
 <figure markdown="span">
-  ![Syclops Logo](img/logo.png){ width="224" }
+  ![Syclops Logo](./img/logo.png){ width="224" }
 </figure>
 
 
@@ -20,7 +20,7 @@
 
 # 🔍 Annotations
 <figure markdown="span">
-  ![Syclops Output](img/renders/outputs.gif){ width="400" }
+  ![Syclops Output](./img/renders/outputs.gif){ width="400" }
 </figure>
 
 
