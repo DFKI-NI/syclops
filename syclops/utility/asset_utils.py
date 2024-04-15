@@ -339,10 +339,10 @@ def import_file(obj_path: str, imported_objs: List[bpy.types.Object]):
         ".blend": _import_blend,
     }
 
-    import_func = import_dispatch.get(extension)
-    if import_func:
+    try:
+        import_func = import_dispatch[extension]
         import_func(obj_path)
-    else:
+    except KeyError:
         raise ValueError(f"Unsupported file extension: {extension}")
 
     new_objects = set(bpy.context.scene.objects) - set(prior_objects)

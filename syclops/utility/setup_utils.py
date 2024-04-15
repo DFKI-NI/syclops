@@ -10,13 +10,14 @@ from rich.console import Console
 from rich.prompt import Prompt
 from ruamel import yaml
 
+
 def download_file(url: str, dest: Path) -> None:
     """
     Download a file from the given URL to the specified destination with rich progress.
     """
     with requests.get(url, stream=True) as response:
         response.raise_for_status()
-        total_length = int(response.headers.get('content-length', 0))
+        total_length = int(response.headers.get("content-length", 0))
         task_description = f"[cyan]Downloading {url.split('/')[-1]}...[/cyan]"
         with Progress() as progress:
             task = progress.add_task(task_description, total=total_length)
@@ -25,11 +26,12 @@ def download_file(url: str, dest: Path) -> None:
                     file.write(chunk)
                     progress.update(task, advance=len(chunk))
 
+
 def extract_zip(src: Path, dest: Path) -> None:
     """
     Extract a zip file with rich progress.
     """
-    with zipfile.ZipFile(src, 'r') as zip_ref:
+    with zipfile.ZipFile(src, "r") as zip_ref:
         total_files = len(zip_ref.namelist())
         task_description = f"[red]Extracting {src.name}...[/red]"
         with Progress() as progress:
@@ -46,7 +48,7 @@ def extract_tar(src: Path, dest: Path) -> None:
     """
     Extract a tar.xz file with rich progress.
     """
-    with tarfile.open(src, 'r:xz') as tar_ref:
+    with tarfile.open(src, "r:xz") as tar_ref:
         total_files = len(tar_ref.getnames())
         task_description = f"[red]Extracting {src.name}...[/red]"
         with Progress() as progress:
@@ -58,9 +60,10 @@ def extract_tar(src: Path, dest: Path) -> None:
     extracted_folder = dest / src.stem.split(".tar")[0]
     extracted_folder.rename(dest / f"blender-{src.stem.split('-')[1]}")
 
+
 def install_blender(version: str, install_dir: Path) -> None:
     """
-    Check if Blender is installed in the package directory, 
+    Check if Blender is installed in the package directory,
     and if not, download the appropriate version for the OS.
     """
     base_url = "https://ftp.halifax.rwth-aachen.de/blender/release/"
@@ -95,6 +98,7 @@ def install_blender(version: str, install_dir: Path) -> None:
     # Clean up
     dest_file.unlink()
 
+
 def get_or_create_install_folder(install_folder_path: str = None) -> Path:
     """
     Get the install folder from the config file, or ask the user for a folder.
@@ -114,7 +118,11 @@ def get_or_create_install_folder(install_folder_path: str = None) -> Path:
         return _ask_directory().resolve()
 
     # If 'install_folder' is not in the config or the saved folder doesn't exist
-    if install_folder_key not in config or not Path(config[install_folder_key]).exists():
+    if (
+        install_folder_key not in config
+        or not Path(config[install_folder_key]).exists()
+        or install_folder_path is not None
+    ):
         install_folder = determine_folder()
         config[install_folder_key] = str(install_folder)
         _write_config(config)
@@ -133,9 +141,11 @@ def _load_config() -> dict:
             return yaml.safe_load(f)
     return {}
 
+
 def _get_or_create_config_file_path() -> Path:
     app_name = "syclops"
     return Path(appdirs.user_data_dir(app_name)) / "config.yaml"
+
 
 def _write_config(config: dict):
     config_file = _get_or_create_config_file_path()
