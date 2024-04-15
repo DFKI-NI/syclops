@@ -1,15 +1,16 @@
-# Introduction
+# Syclops
+![Documentation](https://github.com/dfki-ni/syclops/actions/workflows/docs_deployment.yaml/badge.svg)
 
 <h1 align="center">
   <img alt="cgapp logo" src="https://user-images.githubusercontent.com/40243985/222779654-df09c551-3eab-4a08-aa3c-08ab6cfd73ab.png" width="224px"/><br/>
   Syclops
 </h1>
 <p align="center">Syclops is a tool for creating synthetic data from 3D virtual environments.</p>
-<!-- <p align="center">
-  <a href="https://github.com/agri-gaia/syclops-docs/">
-    <img alt="Documentation" src="https://img.shields.io/badge/Documentation-0.0.0-blue.svg?style=flat-square">
+<p align="center">
+  <a href="https://dfki-ni.github.io/syclops/">
+    <img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue.svg?style=flat-square">
   </a>
-</p> -->
+</p>
 
 ---
 
