@@ -56,7 +56,7 @@ scene:
       models: Example Assets/ISO Object
       floor_object: Ground
       class_id: 1
-      simulation_steps: 50
+      simulation_steps: 5
       std_scale: 1
       density: 0.01
       convex_decomposition_quality: 90
