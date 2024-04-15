@@ -13,8 +13,8 @@
 
 ---
 
-
 # 🎯 Features
+
 📷 Photorealistic renderings of the virtual environment with pixel-perfect annotations
 
 📄 No-Code scene and sensor configuration with a simple YAML syntax
@@ -25,26 +25,26 @@
 
 📦 Easy to use and extend with a modular architecture
 
-
 # 🔍 Annotations
+
 <div align="center">
   <img alt="output-render" src="https://user-images.githubusercontent.com/40243985/222779779-02d4fb4d-b3a9-4436-8d75-b37de437ec10.gif" width="400px"/><br/>
 </div>
 
 Syclops supports a variety of annotated outputs for different use cases. The following outputs are currently supported:
 
-|Output|Description|
-|:---:|:---:|
-|**RGB**|Rendered color image|
-|**Semantic Segmentation**|Semantic segmentation mask with class ids|
-|**Instance Segmentation**|Unique instance id for each object in the scene|
-|**Depth**|Distance from the camera to each pixel|
-|**Bounding Boxes**|Bounding boxes for each object in the scene|
-|**Object Positions**|3D position of each object in the scene|
-|**Point Cloud**|3D location of each pixel in camera space|
-|**Keypoints**|Location of keypoints in camera space|
-|**Object Volume**|Volume of each object in the scene|
-
+|          Output           |                        Description                        |
+| :-----------------------: | :-------------------------------------------------------: |
+|          **RGB**          |                   Rendered color image                    |
+| **Semantic Segmentation** |         Semantic segmentation mask with class ids         |
+| **Instance Segmentation** |      Unique instance id for each object in the scene      |
+|         **Depth**         |          Distance from the camera to each pixel           |
+|    **Bounding Boxes**     |        Bounding boxes for each object in the scene        |
+|   **Object Positions**    |          3D position of each object in the scene          |
+|      **Point Cloud**      |         3D location of each pixel in camera space         |
+|       **Keypoints**       |           Location of keypoints in camera space           |
+|     **Object Volume**     |            Volume of each object in the scene             |
+|   **Structured Light**    | Projected dot pattern for structured light reconstruction |
 
 # ⚡️Getting Started
 
@@ -105,10 +105,10 @@ cd syclops
 pip install .
 ```
 
-
 ## Run a job
 
 Next, the assets need to be crawled by the pipeline. This only needs to be done once, or if new assets are added.
+
 ```bash
 syclops -c
 ```
@@ -116,11 +116,13 @@ syclops -c
 > To run a **job**, a job file is needed. You can find an example in the [syclops/\_\_example_assets\_\_](https://github.com/DFKI-NI/syclops/blob/main/syclops/__example_assets__/example_job.syclops.yaml) folder.
 
 To test the installation with the example job file run:
+
 ```bash
 syclops --example-job
 ```
 
 To run a job, simply pass the path to the job file to the `syclops` command:
+
 ```bash
 syclops -j path/to/job.syclops.yaml
 ```
@@ -135,3 +137,7 @@ To quickly visuzalize the data, you can use the dataset viewer tool.
 ```bash
 syclops -da output/2022-09-01_12-00-00
 ```
+
+# 🙏 Acknowledgements
+
+We would like to thank [@tik0](https://github.com/tik0), [@hwuebben](https://github.com/hwuebben) and [@frahe-ama](https://github.com/frahe-ama) for their valuable feedback during the development of Syclops. Their insightful discussions have played a role in shaping the project and setting its direction. We appreciate the involvement and expertise they have brought to the project.
