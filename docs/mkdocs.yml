@@ -58,6 +58,8 @@ nav:
       - Environment: usage/job_description/config_descriptions/environment.md
       - Object: usage/job_description/config_descriptions/object.md
       - Scatter: usage/job_description/config_descriptions/scatter.md
+      - Crop: usage/job_description/config_descriptions/crop.md  
+      - Simulated Scatter: usage/job_description/config_descriptions/simulated_scatter.md
     - Sensor Configuration:
       - Camera: usage/job_description/config_descriptions/camera.md
     - Output Configuration:

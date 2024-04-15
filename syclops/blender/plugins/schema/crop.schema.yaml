@@ -1,0 +1,66 @@
+description: Scatters 3D models on a floor object in a grid pattern.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the plugin
+      type: string
+    models:
+      description: 3D assets to scatter.
+      oneOf:
+        - type: array
+          items:
+            $ref: "#/definitions/asset_models"
+        - $ref: "#/definitions/asset_models"
+    floor_object:
+      description: Name of the floor object to scatter on.
+      type: string
+    max_texture_size:
+      description: Maximum texture size in pixel. Will reduce the texture to save GPU RAM.
+      type: integer
+    density_map:
+      description: Texture that alters the density. It is normalized to 0-1.
+      $ref: "#/definitions/image_texture_evaluation"
+    decimate_mesh_factor:
+      description: Factor between 0-1 that decimates the number of vertices of the mesh. Lower means less vertices.
+      type: number
+    scale_standard_deviation:
+      description: Scale variance of the scattered objects.
+      $ref: "#/definitions/number_evaluation"
+    class_id:
+      description: Class ID for ground truth output.
+      type: integer
+    class_id_offset:
+      description: Class ID offset for ground truth output. The keys are the name of the material and the values are the offsets.
+      type: object
+      additionalProperties:
+        type: integer
+    crop_angle:
+      description: Global orientation of the row direction in degrees.
+      $ref: "#/definitions/number_evaluation"
+    row_distance:
+      description: Distance between rows in meters.
+      $ref: "#/definitions/number_evaluation"
+    row_standard_deviation:
+      description: Standard deviation of the row distance in meters.
+      $ref: "#/definitions/number_evaluation"
+    plant_distance:
+      description: Intra row distance between plants in meters.
+      $ref: "#/definitions/number_evaluation"
+    plant_standard_deviation:
+      description: Standard deviation of the intra row distance in meters.
+      $ref: "#/definitions/number_evaluation"
+
+  required:
+    [
+      name,
+      models,
+      floor_object,
+      scale_standard_deviation,
+      row_distance,
+      plant_distance,
+      crop_angle,
+      row_standard_deviation,
+      plant_standard_deviation,
+    ]

@@ -76,7 +76,15 @@ def apply_modifiers(target_object: bpy.types.Object) -> None:
             logging.info(info_msg)
             target_object.modifiers.remove(modifier)
         else:
-            bpy.ops.object.modifier_apply(context, modifier=modifier.name)
+            try:
+                bpy.ops.object.modifier_apply(context, modifier=modifier.name)
+            except RuntimeError:
+                info_msg = "Error applying {0} to {1}, removing it instead.".format(
+                    modifier.name,
+                    target_object.name,
+                )
+                logging.info(info_msg)
+                target_object.modifiers.remove(modifier)
 
     # Clean up remaining modifiers
     for modifier in target_object.modifiers:

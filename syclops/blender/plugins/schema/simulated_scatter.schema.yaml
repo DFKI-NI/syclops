@@ -1,0 +1,50 @@
+description: Scatters 3D assets on a floor object and simulates physics to drop them on the surface.
+type: array
+items:
+  type: object
+  properties:
+    name:
+      description: Unique identifier of the plugin
+      type: string
+    models:
+      description: 3D assets to scatter.
+      oneOf:
+        - type: array
+          items:
+            $ref: "#/definitions/asset_models"
+        - $ref: "#/definitions/asset_models"
+    floor_object:
+      description: Name of the floor object to scatter on.
+      type: string
+    max_texture_size:
+      description: Maximum texture size in pixel. Will reduce the texture to save GPU RAM.
+      type: integer
+    decimate_mesh_factor:
+      description: Factor between 0-1 that decimates the number of vertices of the mesh. Lower means less vertices.
+      type: number
+    density:
+      description: Density of objects per square meter.
+      type: number
+    density_texture:
+      description: Texture that alters the density per pixel. Needs to be a single channel image that is normalized to 0-1.
+      $ref: "#/definitions/image_texture_evaluation"
+    scale_std:
+      description: Standard deviation of the scale randomization.
+      type: number
+    convex_decomposition_quality:
+      description: Quality setting for the convex decomposition. Higher means more accurate but slower. Range 1-100.
+      type: integer
+    simulation_steps:
+      description: Number of simulation steps to run.
+      type: integer
+
+  required:
+    [
+      name,
+      models,
+      floor_object,
+      density,
+      scale_std,
+      convex_decomposition_quality,
+      simulation_steps,
+    ]
