@@ -3,7 +3,7 @@
 The following section provides an overview of the architectural structure of Syclops, helping developers and users understand the interplay between different components.
 
 ## Repository Overview
-![An overview of how the different repositories work together to create synthetic data in Syclops](/img/docs/syclops_overview.png)
+![An overview of how the different repositories work together to create synthetic data in Syclops](../img/docs/syclops_overview.png)
 
 | Component/Folder | Description |
 |:---:|:---:|
@@ -18,7 +18,7 @@ The following section provides an overview of the architectural structure of Syc
 The following is a list of relevant files:
 
 - **syclops**
-    - **cli.py**: Contains the code for the syclops [CLI interface](/usage/command_line). It also orchestrates the preprocessing, postprocessing, and starting of Blender for the synthetic data generation.
+    - **cli.py**: Contains the code for the syclops [CLI interface](../usage/command_line.md). It also orchestrates the preprocessing, postprocessing, and starting of Blender for the synthetic data generation.
 - **syclops/preprocessing**
     - **preprocesor.py**: Script that gets called before the scene generation. It adjusts the job description and can create additional files that are needed for the scene generation.
 - **syclops/postprocessing**

@@ -12,7 +12,7 @@ A: Make sure you have the correct version of Python installed (3.9 or higher) an
 
 ### Q: How do I add new assets to my project?
 
-A: To add new assets, create an `assets.yaml` file in your project directory that defines the asset library and its assets. Then, run `syclops -c` to crawl the assets and update the catalog. For more information, see the [Assets documentation](/usage/assets/assets).
+A: To add new assets, create an `assets.yaml` file in your project directory that defines the asset library and its assets. Then, run `syclops -c` to crawl the assets and update the catalog. For more information, see the [Assets documentation](./assets/assets.md).
 
 ### Q: I'm getting an error message saying an asset file is missing. What should I do?
 
@@ -22,17 +22,17 @@ A: Check that the file paths in your `assets.yaml` file are correct and that the
 
 ### Q: My job configuration isn't working as expected. How can I debug it?
 
-A: You can use the `-d` flag to enable debugging mode in Syclops. Use `-d scene` to open the scene in Blender for visual debugging, or `-d blender-code` and `-d pipeline-code` to debug the Blender and pipeline code, respectively. For more information, see the [Debugging documentation](/developement/debugging).
+A: You can use the `-d` flag to enable debugging mode in Syclops. Use `-d scene` to open the scene in Blender for visual debugging, or `-d blender-code` and `-d pipeline-code` to debug the Blender and pipeline code, respectively. For more information, see the [Debugging documentation](../developement/debugging.md).
 
 ### Q: How do I use dynamic evaluators in my job configuration?
 
-A: Dynamic evaluators allow you to randomize parameter values for each frame in your scene. To use them, replace a fixed value in your job configuration with a dynamic evaluator expression, such as `uniform: [0, 1]` for a uniform random value between 0 and 1. For more examples, see the [Dynamic Evaluators documentation](/usage/job_description/dynamic_evaluators).
+A: Dynamic evaluators allow you to randomize parameter values for each frame in your scene. To use them, replace a fixed value in your job configuration with a dynamic evaluator expression, such as `uniform: [0, 1]` for a uniform random value between 0 and 1. For more examples, see the [Dynamic Evaluators documentation](./job_description/dynamic_evaluators.md).
 
 ## Rendering
 
 ### Q: My renders are taking a long time. How can I speed them up?
 
-A: To speed up rendering, you can try reducing the number of samples per pixel in your sensor configuration, or using a lower resolution for your output images. You can also make sure you're using GPU rendering if you have a compatible graphics card. For more tips, see the [Sensor Configuration documentation](/usage/job_description/sensor_configuration).
+A: To speed up rendering, you can try reducing the number of samples per pixel in your sensor configuration, or using a lower resolution for your output images. You can also make sure you're using GPU rendering if you have a compatible graphics card. For more tips, see the [Sensor Configuration documentation](./job_description/config_descriptions/camera.md).
 
 ### Q: I'm getting artifacts or noise in my rendered images. What can I do?
 

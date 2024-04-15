@@ -2,7 +2,7 @@
 
 The Structured Light Output generates structured light patterns projected onto the scene, which can be used for 3D reconstruction and depth estimation.
 
-![Dot projected image with stereo reconstruction on the right](/img/docs/dot_projection.png)
+![Dot projected image with stereo reconstruction on the right](../../../img/docs/dot_projection.png)
 
 ## Configuration Parameters
 
@@ -15,7 +15,7 @@ The following table describes each configuration parameter for the Structured Li
 | `intensity` | float | The intensity of the projected light pattern. | **Required** |
 | `scale` | float | The scale of the light pattern, controlling the density of the dots. | **Required** |
 | `samples` | integer | The number of samples per pixel for rendering the structured light image. Higher values result in better quality but slower rendering. | **Required** |
-| `debug_breakpoint` | boolean | If set to `true` and the [scene debugging](/developement/debugging/#visually-debug-a-job-file) is active, the rendering process will pause and open Blender before proceeding. | Optional |
+| `debug_breakpoint` | boolean | If set to `true` and the [scene debugging](../../../developement/debugging.md#visually-debug-a-job-file) is active, the rendering process will pause and open Blender before proceeding. | Optional |
 
 ## Example Configuration
 

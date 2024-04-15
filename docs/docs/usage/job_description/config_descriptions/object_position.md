@@ -35,7 +35,7 @@ syclops_output_object_positions:
     debug_breakpoint: true
 ```
 
-In the example configuration, the global positions of objects within the scene will be captured with the identifier `obj_pos_1`. Additionally, if the [scene debugging](/developement/debugging/#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
+In the example configuration, the global positions of objects within the scene will be captured with the identifier `obj_pos_1`. Additionally, if the [scene debugging](../../../developement/debugging.md#visually-debug-a-job-file) is active, the scene will break and open in Blender before rendering.
 
 ## Metadata Output
 
