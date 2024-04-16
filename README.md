@@ -147,8 +147,8 @@ Syclops was developed in the research project Agri-Gaia. This work was supported
 Niedersachsen (DFKI NI) is sponsored by the Ministry of Science and Culture of Lower
 Saxony and the VolkswagenStiftung. 
 
-![img](docs/docs/img/agrigaia.png)
-
-![img](docs/docs/img/dlr.jpg)
-
-![img](docs/docs/img/bmwk.png)
+<p align="center">
+  <img alt="AgriGaia" src="docs/docs/img/agrigaia.png" height="80"/>
+  <img alt="AgriGaia" src="docs/docs/img/dlr.jpg" height="80"/>
+  <img alt="AgriGaia" src="docs/docs/img/bmwk.png" height="80"/>
+</p>
