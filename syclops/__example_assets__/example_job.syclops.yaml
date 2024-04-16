@@ -32,7 +32,6 @@ textures:
       num_textures: 2
     ops:
       - perlin:
-          res: 4
           octaves: 4
       - math_expression: "((x-0.5) * 100 + 65535 / 2)/65535"
 
