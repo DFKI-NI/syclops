@@ -3,7 +3,6 @@ from pathlib import Path
 import cv2
 import numpy as np
 import ruamel.yaml as yaml
-from perlin_numpy import generate_fractal_noise_2d, generate_perlin_noise_2d
 
 
 def read_yaml(path: Path) -> dict:
@@ -15,16 +14,65 @@ def read_yaml(path: Path) -> dict:
         return None
 
 
+def fade(t):
+    return 6 * t**5 - 15 * t**4 + 10 * t**3
+
+
+def lerp(a, b, t):
+    return a + (b - a) * t
+
+
+def gradient(h, x, y):
+    vectors = np.array([[0, 1], [0, -1], [1, 0], [-1, 0]])
+    g = vectors[h % 4]
+    return g[:, :, 0] * x + g[:, :, 1] * y
+
+
+def perlin_octave(shape, frequency, amplitude):
+    x = np.linspace(0, frequency, shape[1], endpoint=False)
+    y = np.linspace(0, frequency, shape[0], endpoint=False)
+    y = y.reshape(-1, 1)
+
+    grid_x, grid_y = np.meshgrid(x, y)
+
+    p = np.arange(256, dtype=int)
+    np.random.shuffle(p)
+    p = np.stack([p, p]).flatten()
+
+    xi = grid_x.astype(int)
+    yi = grid_y.astype(int)
+    xf = grid_x - xi
+    yf = grid_y - yi
+
+    u = fade(xf)
+    v = fade(yf)
+
+    n00 = gradient(p[p[xi] + yi], xf, yf)
+    n01 = gradient(p[p[xi] + yi + 1], xf, yf - 1)
+    n11 = gradient(p[p[xi + 1] + yi + 1], xf - 1, yf - 1)
+    n10 = gradient(p[p[xi + 1] + yi], xf - 1, yf)
+
+    x1 = lerp(n00, n10, u)
+    x2 = lerp(n01, n11, u)
+    return lerp(x1, x2, v) * amplitude
+
+
 def perlin(texture: np.ndarray, config: dict, textures: dict, current_frame: int):
     """Generate Perlin Noise"""
-    res = config["res"]
     octaves = config["octaves"]
-    texture = generate_fractal_noise_2d(
-        shape=texture.shape, res=(res, res), octaves=octaves
-    )
-    texture = (texture + 1) / 2
-    # Clip the texture to 0-1
-    texture = np.clip(texture, 0, 1)
+    persistence = config.get("persistence", 0.5)
+    lacunarity = config.get("lacunarity", 2.0)
+
+    shape = texture.shape
+    noise = np.zeros(shape)
+    frequency = 1
+    amplitude = 1
+    for _ in range(octaves):
+        noise += perlin_octave(shape, frequency, amplitude)
+        frequency *= lacunarity
+        amplitude *= persistence
+
+    texture[:] = np.clip(noise, -1, 1) * 0.5 + 0.5
     return texture
 
 
@@ -167,9 +215,10 @@ def process_texture(tex_name: str, tex_dict: dict, textures: dict, current_frame
     image_size = tex_dict["config"]["image_size"]
     texture = np.zeros((image_size[0], image_size[1]), np.float32)
 
-    # Set numpy seed
-    if "seed" in tex_dict["config"]:
-        np.random.seed(tex_dict["config"]["seed"])
+    # Set numpy random seed
+    seed = tex_dict["config"].get("seed", None)
+    if seed is not None:
+        np.random.seed(seed)
 
     for operation in tex_dict["ops"]:
         operation_name = list(operation.keys())[0]

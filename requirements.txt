@@ -6,7 +6,6 @@ filelock==3.9.0
 GitPython==3.1.29
 jsonschema==4.17.3
 opencv-python==4.6.0.66
-perlin-numpy @ git+https://github.com/pvigier/perlin-numpy@5e26837db14042e51166eb6cad4c0df2c1907016
 Pillow==9.4.0
 PyYAML==6.0.1
 requests==2.27.1

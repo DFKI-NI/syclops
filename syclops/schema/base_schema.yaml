@@ -360,11 +360,9 @@ definitions:
         description: Create a Perlin noise texture
         type: object
         properties:
-          res:
-            type: integer
           octaves:
             type: integer
-        required: [res, octaves]
+        required: [octaves]
         additionalProperties: false
     additionalProperties: false
   
