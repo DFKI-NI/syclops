@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "syclops"
+name = "Syclops"
 authors = [
     {name = "Anton Elmiger", email = "anton.elmiger@gmail.com"},
 ]
