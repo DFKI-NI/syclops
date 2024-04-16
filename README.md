@@ -141,4 +141,14 @@ syclops -da output/2022-09-01_12-00-00
 
 # 🙏 Acknowledgements
 
-We would like to thank [@tik0](https://github.com/tik0), [@hwuebben](https://github.com/hwuebben) and [@frahe-ama](https://github.com/frahe-ama) for their valuable feedback during the development of Syclops. Their insightful discussions have played a role in shaping the project and setting its direction. We appreciate the involvement and expertise they have brought to the project.
+We would like to thank our colleagues Timo Korthals ([@tik0](https://github.com/tik0)), Henning Wübben ([@hwuebben](https://github.com/hwuebben)), Florian Rahe ([@frahe-ama](https://github.com/frahe-ama)), Thilo Steckel and Stefan Stiene for their valuable feedback during the development of Syclops. Their involvement and the resulting insightful discussions have played a key role in shaping the project and setting its direction.
+
+Syclops was developed in the research project Agri-Gaia. This work was supported by the German Federal Ministry for Economic Affairs and Climate Action within the Agri-Gaia project (grant number: 01MK21004A). The DFKI
+Niedersachsen (DFKI NI) is sponsored by the Ministry of Science and Culture of Lower
+Saxony and the VolkswagenStiftung. 
+
+<p align="center">
+  <img alt="AgriGaia" src="docs/docs/img/agrigaia.png" height="80"/>
+  <img alt="AgriGaia" src="docs/docs/img/dlr.jpg" height="80"/>
+  <img alt="AgriGaia" src="docs/docs/img/bmwk.png" height="80"/>
+</p>

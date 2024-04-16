@@ -3,16 +3,17 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Syclops"
+name = "syclops"
 authors = [
-    {name = "Anton Elmiger", email = "anton.elmiger@gmail.com"},
+    {name = "Anton Elmiger", email = "anton.elmiger@dfki.de"},
+    {name = "Kai von Szadkowski", email = "kai.von_szadkowski@dfki.de"},
 ]
 description = "Syclops is a Python library for generating synthetic data for machine learning."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "GPLv3"}
 
-version = "1.2.2"
+version = "1.2.3"
 
 dynamic = ["dependencies"]
 
