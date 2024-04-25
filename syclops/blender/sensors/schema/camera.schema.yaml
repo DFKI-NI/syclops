@@ -103,6 +103,10 @@ items:
           $ref: "#/definitions/syclops_output_object_positions"
         syclops_output_keypoints:
           $ref: "#/definitions/syclops_output_keypoints"
+        syclops_output_structured_light:
+          $ref: "#/definitions/syclops_output_structured_light"
+        syclops_output_object_occlusion:
+          $ref: "#/definitions/syclops_output_object_occlusion"
       additionalProperties: False
   required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
   allOf:

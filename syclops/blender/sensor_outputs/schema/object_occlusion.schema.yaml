@@ -1,0 +1,17 @@
+description: Portion of the image that is covered by each visible object as well as the fraction, how much of the object is occluded.
+type: array
+items:
+  type: object
+  properties:
+    id:
+      description: Unique identifier of the output
+      type: string
+    res_ratio:
+      description: Quality of the occlusion map. 0.1 is a good tradeoff between quality and performance. 1 is full resolution, meaning ray casting for every pixel.
+      type: number
+    debug_breakpoint:
+      description: Wether to break and open Blender before rendering. Only works if scene debugging is active.
+      type: boolean
+  required: [id, res_ratio]
+minItems: 1
+maxItems: 1

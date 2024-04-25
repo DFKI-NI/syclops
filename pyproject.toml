@@ -35,6 +35,7 @@ syclops_output_keypoints = "syclops.blender.sensor_outputs.keypoints:Keypoints"
 syclops_output_pixel_annotation = "syclops.blender.sensor_outputs.pixel_annotation:PixelAnnotation"
 syclops_output_object_positions = "syclops.blender.sensor_outputs.object_positions:ObjectPositions"
 syclops_output_structured_light = "syclops.blender.sensor_outputs.structured_light:StructuredLight"
+syclops_output_object_occlusion = "syclops.blender.sensor_outputs.object_occlusion:ObjectOcclusion"
 [project.entry-points."syclops.postprocessing"]
 syclops_postprocessing_bounding_boxes = "syclops.postprocessing.bounding_boxes:BoundingBoxes"
 
