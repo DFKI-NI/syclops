@@ -701,17 +701,28 @@ def add_volume_attribute(obj: bpy.types.Object):
 
 def refresh_modifiers():
     """Flip the visibility of all modifiers to refresh them."""
+    modifier_states = {}
+
+    # Store the initial state of each modifier
+    for obj in bpy.data.objects:
+        for mod in obj.modifiers:
+            modifier_states[(obj.name, mod.name)] = mod.show_viewport
+
+    # Disable all modifiers
     for obj in bpy.data.objects:
         for mod in obj.modifiers:
             if mod.show_viewport:
                 mod.show_viewport = False
-                bpy.context.view_layer.update()
-                mod.show_viewport = True
-                bpy.context.view_layer.update()
-            elif render_visibility(obj):
-                mod.show_viewport = True
-                bpy.context.view_layer.update()
 
+    bpy.context.view_layer.update()
+
+    # Restore the state of modifiers based on the stored state
+    for obj in bpy.data.objects:
+        for mod in obj.modifiers:
+            if modifier_states[(obj.name, mod.name)]:
+                mod.show_viewport = True
+
+    bpy.context.view_layer.update()
 
 def _get_num_clumps(num_objects: int, ratio: float) -> int:
     return int(-(ratio * num_objects) / (ratio - 1))
