@@ -299,10 +299,10 @@ class ObjPointer(object):
             str: UUID of object.
         """
         if self.type == "OBJECT":
-            if "UUID" in obj:
-                return obj["UUID"]
+            if "POINTER_UUID" in obj:
+                return obj["POINTER_UUID"]
             ob_id = str(uuid.uuid4())
-            obj["UUID"] = ob_id
+            obj["POINTER_UUID"] = ob_id
         elif self.type == "COLLECTION":
             ob_id = obj.name
         return ob_id

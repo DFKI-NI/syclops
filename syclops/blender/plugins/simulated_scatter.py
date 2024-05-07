@@ -57,7 +57,7 @@ class SimulatedScatter(PluginInterface):
                         new_conv_hull
                     )
                     new_conv_hull["PARENT_UUID_COPY"] = conv_hull["PARENT_UUID"]
-                    del new_conv_hull["UUID"]
+                    del new_conv_hull["POINTER_UUID"]
                     del new_conv_hull["PARENT_UUID"]
                     self.instanced_conv_hulls.append(utility.ObjPointer(new_conv_hull))
                     # Delete Parent UUID to prevent further copying
@@ -129,7 +129,7 @@ class SimulatedScatter(PluginInterface):
         final_collection = utility.create_collection(self.config["name"] + "_Final")
 
         for parent_uuid, poses in obj_poses.items():
-            parent_obj = utility.filter_objects("UUID", parent_uuid)[0]
+            parent_obj = utility.filter_objects("POINTER_UUID", parent_uuid)[0]
             for pose in poses:
                 # Creater instance object
                 instance_object = parent_obj.copy()
