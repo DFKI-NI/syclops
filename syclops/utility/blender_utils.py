@@ -318,13 +318,13 @@ class ObjPointer(object):
         """
         if self.type == "OBJECT":
             for obj in bpy.data.objects:
-                if obj.get("UUID") == self.uuid:
+                if obj.get("POINTER_UUID") == self.uuid:
                     return obj
         elif self.type == "COLLECTION":
             for collection in bpy.data.collections:
                 if collection.name == self.uuid:
                     return collection
-        err_msg = "Object with UUID {0} not found".format(self.uuid)
+        err_msg = "Object with POINTER_UUID {0} not found".format(self.uuid)
         logging.error(err_msg)
         raise ValueError(err_msg)
 
