@@ -35,6 +35,10 @@ class Environment(PluginInterface):
         if self.config["type"] == "hdri_and_sun":
             self._configure_hdri_and_sun()
         self._load_and_set_env_texture()
+        if "random_rotation" in self.config:
+            bpy.context.scene.world.node_tree.nodes["rotation_multiplier"].inputs[
+                1
+            ].default_value = (self.config["random_rotation"] * 1000)
         if "strength" in self.config:
             self._set_strength()
         logging.info("Environment configured")
