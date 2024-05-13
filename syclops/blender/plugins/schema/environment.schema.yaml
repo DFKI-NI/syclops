@@ -15,6 +15,9 @@ items:
     sun_rotation:
       description: Rotation of the sun in radians
       $ref: "#/definitions/number_evaluation"
+    random_rotation:
+      description: Randomly rotate the environment map in every frame
+      type: boolean
 
   if: 
     properties: 

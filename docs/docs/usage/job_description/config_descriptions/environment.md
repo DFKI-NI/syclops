@@ -12,6 +12,7 @@ The following table describes each configuration parameter for the Environment P
 | `environment_image` | string (dynamic evaluator capable) | The HDRI image used as the environment map, serving as both the background and the illumination source. | **Required** |
 | `sun_elevation` | number (dynamic evaluator capable) | The elevation angle of the sun, defined in radians. | Required if `type` is `hdri_and_sun` |
 | `sun_rotation` | number (dynamic evaluator capable) | The sun's rotation angle, measured in radians. | Required if `type` is `hdri_and_sun` |
+| `random_rotation` | boolean | Randomly rotates the environment map every frame. | Optional (default: `true`) |
 
 !!! warning
     When you choose `hdri_and_sun` for the `type`, you must also provide values for `sun_elevation` and `sun_rotation`.
