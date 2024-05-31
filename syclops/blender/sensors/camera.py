@@ -127,7 +127,7 @@ class Camera(SensorInterface):
         """Create sensor's frustum"""
         if "frustum" in self.config:
             if self.config["frustum"]["enabled"]:
-                if self.get_camera() != "PERSP":
+                if self.get_camera().data.type != "PERSP":
                     logging.warning(
                         "Camera: create_frustum not supported for non-perspective cameras"
                     )
@@ -213,21 +213,25 @@ class Camera(SensorInterface):
         # Place Camera in scene
         camera_data = bpy.data.cameras.new(name=self.config["name"])
 
-        # Initial camera settings
+        # Set lense type and use "PERSPECTIVE" as default
+        if "lense_type" in self.config:
+            lense_type = utility.eval_param(self.config["lense_type"])
+        else:
+            lense_type = "PERSPECTIVE"
 
-        lense_type = utility.eval_param(self.config["lense_type"])
+        # Initial camera settings
         if lense_type == "PERSPECTIVE":
             camera_data.type = "PERSP"
             camera_data.lens = utility.eval_param(self.config["focal_length"])
         elif lense_type == "FISHEYE_EQUIDISTANT":
             camera_data.type = "PANO"
             camera_data.cycles.panorama_type = "FISHEYE_EQUIDISTANT"
-            camera_data.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+            camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
         elif lense_type == "FISHEYE_EQUISOLID":
             camera_data.type = "PANO"
             camera_data.cycles.panorama_type = "FISHEYE_EQUISOLID"
-            camera_data.lens = utility.eval_param(self.config["focal_length"])
-            camera_data.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+            camera_data.cycles.fisheye_lens = utility.eval_param(self.config["focal_length"])
+            camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
         else:
             raise ValueError("Camera: not supported lense type \"%s\"", lense_type)
 
