@@ -16,18 +16,18 @@ items:
         type: integer
       maxItems: 2
       minItems: 2
-    lense_type:
-      description: Lense type (PERSPECTIVE [default],FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT)
+    lens_type:
+      description: Lens type (PERSPECTIVE [default],FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT)
       type: string
       enum: [PERSPECTIVE,FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT]
     focal_length:
-      description: Focal length of the camera in mm. Only effects lense_type=(PERSPECTIVE,FISHEYE_EQUISOLID).
+      description: Focal length of the camera in mm. Only effects lens_type=(PERSPECTIVE,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
     sensor_width:
       description: Width of the sensor in mm.
       $ref: "#/definitions/number_evaluation"
     fisheye_fov:
-      description: Horizontal angular field of view in rad. Only effects lense_type=(FISHEYE_EQUIDISTANT,FISHEYE_EQUISOLID).
+      description: Horizontal angular field of view in rad. Only effects lens_type=(FISHEYE_EQUIDISTANT,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
     exposure:
       description: Exposure offset in stops.

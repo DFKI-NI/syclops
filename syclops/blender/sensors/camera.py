@@ -213,27 +213,27 @@ class Camera(SensorInterface):
         # Place Camera in scene
         camera_data = bpy.data.cameras.new(name=self.config["name"])
 
-        # Set lense type and use "PERSPECTIVE" as default
-        if "lense_type" in self.config:
-            lense_type = utility.eval_param(self.config["lense_type"])
+        # Set lens type and use "PERSPECTIVE" as default
+        if "lens_type" in self.config:
+            lens_type = utility.eval_param(self.config["lens_type"])
         else:
-            lense_type = "PERSPECTIVE"
+            lens_type = "PERSPECTIVE"
 
         # Initial camera settings
-        if lense_type == "PERSPECTIVE":
+        if lens_type == "PERSPECTIVE":
             camera_data.type = "PERSP"
             camera_data.lens = utility.eval_param(self.config["focal_length"])
-        elif lense_type == "FISHEYE_EQUIDISTANT":
+        elif lens_type == "FISHEYE_EQUIDISTANT":
             camera_data.type = "PANO"
             camera_data.cycles.panorama_type = "FISHEYE_EQUIDISTANT"
             camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
-        elif lense_type == "FISHEYE_EQUISOLID":
+        elif lens_type == "FISHEYE_EQUISOLID":
             camera_data.type = "PANO"
             camera_data.cycles.panorama_type = "FISHEYE_EQUISOLID"
             camera_data.cycles.fisheye_lens = utility.eval_param(self.config["focal_length"])
             camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
         else:
-            raise ValueError("Camera: not supported lense type \"%s\"", lense_type)
+            raise ValueError("Camera: not supported lens type \"%s\"", lens_type)
 
         camera_data.sensor_width = utility.eval_param(self.config["sensor_width"])
 
