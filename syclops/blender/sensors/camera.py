@@ -167,9 +167,22 @@ class Camera(SensorInterface):
                 cam.data.dof.focus_distance,
             )
 
+        if "lens_type" in self.config:
+            lens_type = utility.eval_param(self.config["lens_type"])
+        else:
+            lens_type = "PERSPECTIVE"
+
         # Set camera settings
-        cam.data.lens = utility.eval_param(self.config["focal_length"])
         cam.data.sensor_width = utility.eval_param(self.config["sensor_width"])
+        if lens_type == "PERSPECTIVE":
+            cam.data.lens = utility.eval_param(self.config["focal_length"])
+        elif lens_type == "FISHEYE_EQUIDISTANT":
+            cam.data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        elif lens_type == "FISHEYE_EQUISOLID":
+            cam.data.cycles.fisheye_lens = utility.eval_param(self.config["focal_length"])
+            cam.data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        else:
+            raise ValueError("Camera: not supported lens type \"%s\"", lens_type)
 
         if "motion_blur" in self.config:
             if self.config["motion_blur"]["enabled"]:
