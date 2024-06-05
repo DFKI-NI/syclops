@@ -19,6 +19,7 @@ items:
     lense_type:
       description: Lense type (PERSPECTIVE [default],FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT)
       type: string
+      enum: [PERSPECTIVE,FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT]
     focal_length:
       description: Focal length of the camera in mm. Only effects lense_type=(PERSPECTIVE,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
@@ -27,7 +28,7 @@ items:
       $ref: "#/definitions/number_evaluation"
     fisheye_fov:
       description: Horizontal angular field of view in rad. Only effects lense_type=(FISHEYE_EQUIDISTANT,FISHEYE_EQUISOLID).
-      type: number
+      $ref: "#/definitions/number_evaluation"
     exposure:
       description: Exposure offset in stops.
       $ref: "#/definitions/number_evaluation"
