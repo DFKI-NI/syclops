@@ -3,8 +3,6 @@ name: Syclops Pipeline Test
 on:
   push:
     branches: [ main ]
-    tags:
-      - 'v*'  # This will match any tag starting with 'v'
   pull_request:
     branches: [ main ]
 
