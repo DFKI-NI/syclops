@@ -3,6 +3,8 @@ name: Syclops Pipeline Test
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'  # This will match any tag starting with 'v'
   pull_request:
     branches: [ main ]
 
@@ -10,6 +12,7 @@ jobs:
   build-and-test:
     name: Syclops Pipeline Test
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
 
     steps:
     - name: Checkout repository
