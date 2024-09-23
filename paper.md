@@ -15,6 +15,7 @@ authors:
     orcid: 0000-0002-1814-8463
     affiliation: 1
   - name: Timo Korthals
+    orcid: 0000-0003-4297-7197
     affiliation: 2
 affiliations:
   - name: German Research Center for Artificial Intelligence (DFKI), Germany
