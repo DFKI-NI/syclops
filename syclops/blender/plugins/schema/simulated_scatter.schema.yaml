@@ -44,7 +44,7 @@ items:
       models,
       floor_object,
       density,
-      scalscale_standard_deviatione_std,
+      scale_standard_deviation,
       convex_decomposition_quality,
       simulation_steps,
     ]
