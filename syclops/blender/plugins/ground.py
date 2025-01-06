@@ -55,7 +55,7 @@ class Ground(PluginInterface):
         bpy.context.object.modifiers["Subdivision"].subdivision_type = "SIMPLE"
         bpy.context.object.modifiers["Subdivision"].levels = 2
         bpy.context.object.cycles.use_adaptive_subdivision = True
-        bpy.context.object.cycles.dicing_rate = 2.0
+        bpy.context.object.cycles.dicing_rate = 1.0
 
     def _setup_ground_material(self):
         """Configure the ground material."""
@@ -69,7 +69,7 @@ class Ground(PluginInterface):
         self._configure_node_mappings(nodes, texture["texture_size"])
         self._import_and_set_images(nodes, root_path, texture)
         self._set_voronoi_scale(nodes)
-        self._set_displacement_scale(nodes, texture)
+        self._set_displacement_params(nodes, texture)
 
     def _configure_node_mappings(self, nodes, texture_size):
         scale = self.config["size"] / texture_size
@@ -101,11 +101,16 @@ class Ground(PluginInterface):
         for node_name in ["Voronoi Texture", "Voronoi Texture.001"]:
             nodes.get(node_name).inputs["Scale"].default_value = scale_value
 
-    def _set_displacement_scale(self, nodes, texture):
+    def _set_displacement_params(self, nodes, texture):
         if "texture_displacement_scale" in texture:
             nodes.get("Displacement").inputs["Scale"].default_value = float(
                 texture["texture_displacement_scale"]
             )
+        if "texture_displacement_midlevel" in texture:
+            nodes.get("Displacement").inputs["Midlevel"].default_value = float(
+                texture["texture_displacement_midlevel"]
+            )
+
 
     def _setup_ground_geometry(self):
         """Create a plane, scale and subdivide according to the ground size."""
