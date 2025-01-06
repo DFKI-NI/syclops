@@ -111,14 +111,26 @@ items:
         syclops_output_keypoints:
           $ref: "#/definitions/syclops_output_keypoints"
       additionalProperties: False
-  required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
+  required: [name, frame_id, resolution, sensor_width, outputs]
   allOf:
     - if:
+        required: [motion_blur]
         properties:
           motion_blur:
             properties:
               enabled:
                 const: true
-      required: [motion_blur]
       then:
         required: [shutter_speed]
+    - if:
+        properties:
+          lens_type:
+            enum: [PERSPECTIVE, FISHEYE_EQUISOLID]
+      then:
+        required: [focal_length]
+    - if:
+        properties:
+          lens_type:
+            enum: [FISHEYE_EQUIDISTANT, FISHEYE_EQUISOLID]
+      then:
+        required: [fisheye_fov]

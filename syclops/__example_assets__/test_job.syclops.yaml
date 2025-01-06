@@ -107,7 +107,7 @@ sensor:
     - name: "main_camera"
       # Location, rotation and velocity of camera is optional if frame_id is set
       frame_id: "camera_link"
-      resolution: [1280, 960]
+      resolution: [256, 256]
       focal_length: 65 # mm
       shutter_speed: 0.02 # s Currently only affects motion blur
       sensor_width: 35 # mm
@@ -154,6 +154,20 @@ sensor:
             intensity: 10000
             scale: 200
             samples: 4
+    - name: "fisheye_camera"
+      frame_id: "camera_link"
+      resolution: [256, 256]
+      fisheye_fov: 1.8
+      lens_type: "FISHEYE_EQUIDISTANT"
+      sensor_width: 35 # mm
+      outputs:
+        syclops_output_rgb:
+          - samples: 4
+            compositor:
+              chromatic_aberration: 0.007 #Strong aberration can cause shift between ground truth and rgb
+              bloom:
+                threshold: 0.99 # higher is less bloom
+            id: main_cam_rgb
 
 postprocessing:
   syclops_postprocessing_bounding_boxes:
