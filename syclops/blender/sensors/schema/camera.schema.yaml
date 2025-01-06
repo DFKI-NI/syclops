@@ -20,6 +20,7 @@ items:
       description: Lens type (PERSPECTIVE [default],FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT)
       type: string
       enum: [PERSPECTIVE,FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT]
+      default: PERSPECTIVE
     focal_length:
       description: Focal length of the camera in mm. Only effects lens_type=(PERSPECTIVE,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
@@ -131,6 +132,12 @@ items:
     - if:
         properties:
           lens_type:
-            enum: [FISHEYE_EQUIDISTANT, FISHEYE_EQUISOLID]
+            const: FISHEYE_EQUIDISTANT
       then:
         required: [fisheye_fov]
+    - if:
+        properties:
+          lens_type:
+            const: FISHEYE_EQUISOLID
+      then:
+        required: [fisheye_fov, focal_length]
