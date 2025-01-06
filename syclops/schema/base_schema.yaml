@@ -129,7 +129,7 @@ definitions:
       velocities:
         type: object
         properties:
-          translation:
+          location:
             description: Translation velocity in meters per second
             $ref: "#/definitions/vector_evaluation"
           rotation:

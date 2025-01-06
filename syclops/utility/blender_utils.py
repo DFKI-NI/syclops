@@ -398,6 +398,7 @@ def convex_decomposition(
     obj_pointer: ObjPointer,
     conv_hull_collection_pointer: ObjPointer,
     quality: float = 90,
+    max_hull_vertices: int = 100,
 ) -> List[bpy.types.Object]:
     """Decompose an object into convex hulls for physics simulation.
 
@@ -405,7 +406,7 @@ def convex_decomposition(
         obj_pointer (ObjPointer): Pointer to object to decompose.
         conv_hull_collection_pointer (ObjPointer): Pointer to collection to store convex hulls in.
         quality (float, optional): Quality of the convex decomposition. Defaults to 90.
-
+        max_hull_vertices (int, optional): Maximum number of vertices in a convex hull. Defaults to 256.
     Returns:
         list[bpy.types.Object]: List of convex hulls.
     """
@@ -435,6 +436,15 @@ def convex_decomposition(
 
         # Create the mesh data
         mesh.from_pydata(convex_hull[0], [], convex_hull[1])
+
+        # Num vertices of mesh
+        num_vertices = len(mesh.vertices)
+        if num_vertices > max_hull_vertices:
+            decimate_factor = max_hull_vertices / num_vertices
+
+            # Decimate the mesh if it has too many vertices
+            decimate_mesh(convex_obj, decimate_factor)
+
 
         # Update the mesh and object
         mesh.update()

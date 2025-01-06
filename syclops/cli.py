@@ -50,7 +50,7 @@ parser.add_argument(
     "-o",
     "--output-path",
     help="Output path of generated files. Defaults to <install_folder>/output",
-    default="./output",
+    default=None,
 )
 parser.add_argument(
     "-d",
@@ -225,7 +225,9 @@ def _wait_for_debugger():
 
 
 def _run_syclops_job(args, install_folder: Path, job_description: Path):
-    output_path = _configure_output_path(install_folder / "output")
+    output_path = (_configure_output_path(Path(args.output_path).absolute())
+                   if args.output_path
+                   else _configure_output_path(install_folder / "output"))
 
     job_filepath = job_description
     asset_catalog_filepath = install_folder / "asset_catalog.yaml"
