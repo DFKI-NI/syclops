@@ -53,7 +53,7 @@ class Keypoints(OutputInterface):
                     if class_id is not None:
                         if "keypoints" in object_instance.object:
                             location = object_instance.matrix_world.translation
-                            location = [round(x, 4) for x in location]
+                            location = [round(x, 6) for x in location]
                             instance_id = self._calculate_instance_id(location)
                             for keypoint, pos in object_instance.object["keypoints"].items():
                                 vec = mathutils.Vector((pos['x'], pos['y'], pos['z']))
