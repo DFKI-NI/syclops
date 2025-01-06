@@ -28,7 +28,7 @@ items:
     density_texture:
       description: Texture that alters the density per pixel. Needs to be a single channel image that is normalized to 0-1.
       $ref: "#/definitions/image_texture_evaluation"
-    scale_std:
+    scale_standard_deviation:
       description: Standard deviation of the scale randomization.
       type: number
     convex_decomposition_quality:
@@ -44,7 +44,7 @@ items:
       models,
       floor_object,
       density,
-      scale_std,
+      scalscale_standard_deviatione_std,
       convex_decomposition_quality,
       simulation_steps,
     ]
