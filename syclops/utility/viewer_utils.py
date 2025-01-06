@@ -25,7 +25,7 @@ def read_and_draw_bounding_boxes(img, bb_path):
 
     bb_img = img.copy()
     for line in lines:
-        _, x_center, y_center, width, height = map(float, line.split())
+        _, x_center, y_center, width, height, *_ = map(float, line.split())
         x = int(x_center * img.shape[1] - width * img.shape[1] / 2)
         y = int(y_center * img.shape[0] - height * img.shape[0] / 2)
         w = int(width * img.shape[1])
@@ -127,6 +127,7 @@ def dataset_viewer(args):
                 object_positions_dict = json.load(f)
             for _, poses in object_positions_dict.items():
                 location_list = [element["loc"] for element in poses]
+                rotation_list = [element["rot"] for element in poses]
                 positions_array = np.array(location_list, dtype=np.float32).reshape(
                     (-1, 3)
                 )
