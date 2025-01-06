@@ -16,9 +16,7 @@ class Camera(SensorInterface):
 
     def setup_sensor(self):
         self.create_camera()  # Create self.objs
-        for obj in self.objs:
-            if obj.get().type == "CAMERA":
-                cam = obj.get()
+        cam = self.get_camera()
         cam["name"] = self.config["name"]
         if "depth_of_field" in self.config:
             cam.data.dof.use_dof = True
@@ -30,9 +28,7 @@ class Camera(SensorInterface):
         """Create sensor's frustum as pyramid"""
 
         # Get cam object
-        for obj in self.objs:
-            if obj.get().type == "CAMERA":
-                cam = obj.get()
+        cam = self.get_camera()
 
         cam_matrix = cam.matrix_world.normalized()
         scene = bpy.context.scene
@@ -131,6 +127,11 @@ class Camera(SensorInterface):
         """Create sensor's frustum"""
         if "frustum" in self.config:
             if self.config["frustum"]["enabled"]:
+                if self.get_camera().data.type != "PERSP":
+                    logging.warning(
+                        "Camera: create_frustum not supported for non-perspective cameras"
+                    )
+                    return
                 if self.config["frustum"]["type"] == "pyramid":
                     self.create_frustum_pyramid()
                 else:
@@ -150,9 +151,7 @@ class Camera(SensorInterface):
         scene.render.resolution_x = self.config["resolution"][0]
         scene.render.resolution_y = self.config["resolution"][1]
         # Set camera as active camera
-        for obj in self.objs:
-            if obj.get().type == "CAMERA":
-                cam = obj.get()
+        cam = self.get_camera()
         scene.camera = cam
 
         if cam.data.dof.use_dof:
@@ -168,9 +167,22 @@ class Camera(SensorInterface):
                 cam.data.dof.focus_distance,
             )
 
+        if "lens_type" in self.config:
+            lens_type = utility.eval_param(self.config["lens_type"])
+        else:
+            lens_type = "PERSPECTIVE"
+
         # Set camera settings
-        cam.data.lens = utility.eval_param(self.config["focal_length"])
         cam.data.sensor_width = utility.eval_param(self.config["sensor_width"])
+        if lens_type == "PERSPECTIVE":
+            cam.data.lens = utility.eval_param(self.config["focal_length"])
+        elif lens_type == "FISHEYE_EQUIDISTANT":
+            cam.data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        elif lens_type == "FISHEYE_EQUISOLID":
+            cam.data.cycles.fisheye_lens = utility.eval_param(self.config["focal_length"])
+            cam.data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        else:
+            raise ValueError("Camera: not supported lens type \"%s\"", lens_type)
 
         if "motion_blur" in self.config:
             if self.config["motion_blur"]["enabled"]:
@@ -214,8 +226,28 @@ class Camera(SensorInterface):
         # Place Camera in scene
         camera_data = bpy.data.cameras.new(name=self.config["name"])
 
+        # Set lens type and use "PERSPECTIVE" as default
+        if "lens_type" in self.config:
+            lens_type = utility.eval_param(self.config["lens_type"])
+        else:
+            lens_type = "PERSPECTIVE"
+
         # Initial camera settings
-        camera_data.lens = utility.eval_param(self.config["focal_length"])
+        if lens_type == "PERSPECTIVE":
+            camera_data.type = "PERSP"
+            camera_data.lens = utility.eval_param(self.config["focal_length"])
+        elif lens_type == "FISHEYE_EQUIDISTANT":
+            camera_data.type = "PANO"
+            camera_data.cycles.panorama_type = "FISHEYE_EQUIDISTANT"
+            camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        elif lens_type == "FISHEYE_EQUISOLID":
+            camera_data.type = "PANO"
+            camera_data.cycles.panorama_type = "FISHEYE_EQUISOLID"
+            camera_data.cycles.fisheye_lens = utility.eval_param(self.config["focal_length"])
+            camera_data.cycles.fisheye_fov = utility.eval_param(self.config["fisheye_fov"])
+        else:
+            raise ValueError("Camera: not supported lens type \"%s\"", lens_type)
+
         camera_data.sensor_width = utility.eval_param(self.config["sensor_width"])
 
         camera_object = bpy.data.objects.new(self.config["name"], camera_data)
@@ -274,7 +306,11 @@ class Camera(SensorInterface):
             numpy.array: The camera matrix
         """
         if camera.type != "PERSP":
-            raise ValueError("Non-perspective cameras not supported")
+            logging.warning(
+                "Camera: get_camera_matrix not supported for non-perspective cameras"
+            )
+            return Matrix(((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+
         scene = bpy.context.scene
         f_in_mm = camera.lens
         resolution_x_in_px = self.config["resolution"][0]
@@ -324,9 +360,7 @@ class Camera(SensorInterface):
 
     def write_intrinsics(self):
         """Write the camera intrinsics to a file"""
-        for obj in self.objs:
-            if obj.get().type == "CAMERA":
-                cam = obj.get()
+        cam = self.get_camera()
         curr_frame = bpy.context.scene.frame_current
         cam_name = cam["name"]
         calibration_folder = (
@@ -370,9 +404,7 @@ class Camera(SensorInterface):
 
     def write_extrinsics(self):
         """Write the camera extrinsics to a file"""
-        for obj in self.objs:
-            if obj.get().type == "CAMERA":
-                cam = obj.get()
+        cam = self.get_camera()
 
         curr_frame = bpy.context.scene.frame_current
         cam_name = cam["name"]
@@ -415,3 +447,9 @@ class Camera(SensorInterface):
             writer.data["expected_steps"] = utility.get_job_conf()["steps"]
             writer.data["sensor"] = cam_name
             writer.data["id"] = cam_name + "_extrinsics"
+
+    def get_camera(self):
+        for obj in self.objs:
+            if obj.get().type == "CAMERA":
+                return obj.get()
+        raise Exception("'self' has no object 'CAMERA'.")

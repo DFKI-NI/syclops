@@ -1,0 +1,26 @@
+description: Structured light pattern output from a camera with a projected pattern.
+type: array
+items:
+  type: object
+  properties:
+    id:
+      description: Unique identifier of the output
+      type: string
+    frame_id:
+      description: Frame ID to attach the structured light source to
+      type: string
+    samples:
+      description: Render quality of the image. More means a better quality and more samples per pixel.
+      type: integer
+    intensity:
+      description: Light intensity of the structured light pattern
+      type: number
+    scale:
+      description: Scale factor of the Voronoi pattern
+      type: number
+    debug_breakpoint:
+      description: Whether to break and open Blender before rendering. Only works if scene debugging is active.
+      type: boolean
+  required: [id, frame_id, samples, intensity, scale]
+minItems: 1
+maxItems: 1

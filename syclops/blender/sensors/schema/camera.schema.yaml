@@ -16,11 +16,19 @@ items:
         type: integer
       maxItems: 2
       minItems: 2
+    lens_type:
+      description: Lens type (PERSPECTIVE [default],FISHEYE_EQUISOLID,FISHEYE_EQUIDISTANT)
+      type: string
+      enum: [PERSPECTIVE, FISHEYE_EQUISOLID, FISHEYE_EQUIDISTANT]
+      default: PERSPECTIVE
     focal_length:
-      description: Focal length of the camera in mm.
+      description: Focal length of the camera in mm. Only effects lens_type=(PERSPECTIVE,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
     sensor_width:
       description: Width of the sensor in mm.
+      $ref: "#/definitions/number_evaluation"
+    fisheye_fov:
+      description: Horizontal angular field of view in rad. Only effects lens_type=(FISHEYE_EQUIDISTANT,FISHEYE_EQUISOLID).
       $ref: "#/definitions/number_evaluation"
     exposure:
       description: Exposure offset in stops.
@@ -60,7 +68,7 @@ items:
               type: number
     frustum:
       description: Settings for the camera frustum visualization
-      type: object 
+      type: object
       properties:
         enabled:
           description: Whether to enable frustum visualization
@@ -85,7 +93,7 @@ items:
           properties:
             enabled:
               description: Whether to render as wireframe
-              type: boolean  
+              type: boolean
             thickness:
               description: Thickness of wireframe lines
               type: number
@@ -103,15 +111,30 @@ items:
           $ref: "#/definitions/syclops_output_object_positions"
         syclops_output_keypoints:
           $ref: "#/definitions/syclops_output_keypoints"
+        syclops_output_structured_light:
+          $ref: "#/definitions/syclops_output_structured_light"
       additionalProperties: False
-  required: [name, frame_id, resolution, focal_length, sensor_width, outputs]
+  required: [name, frame_id, resolution, sensor_width, outputs]
   allOf:
     - if:
+        required: [motion_blur]
         properties:
           motion_blur:
             properties:
               enabled:
                 const: true
-      required: [motion_blur]
       then:
         required: [shutter_speed]
+    - anyOf:
+        - properties:
+            lens_type:
+              enum: [PERSPECTIVE, null]
+          required: [focal_length]
+        - properties:
+            lens_type:
+              const: FISHEYE_EQUIDISTANT
+          required: [fisheye_fov]
+        - properties:
+            lens_type:
+              const: FISHEYE_EQUISOLID
+          required: [fisheye_fov, focal_length]

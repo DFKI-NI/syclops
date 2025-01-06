@@ -15,13 +15,13 @@ The following table describes each configuration parameter for the Simulated Sca
 | `decimate_mesh_factor` | number (0-1) | Factor between 0-1 that decimates the number of vertices of the mesh. Lower means less vertices. | Optional |
 | `density` | number | Density of objects per square meter. | **Required** |
 | `density_texture` | image/texture evaluation | Texture that alters the density per pixel. Needs to be a single channel image that is normalized to 0-1. | Optional |
-| `scale_std` | number | Standard deviation of the scale randomization. | **Required** | 
+| `scale_standard_deviation` | number | Standard deviation of the scale randomization. | **Required** | 
 | `convex_decomposition_quality` | integer (1-100) | Quality setting for the convex decomposition. Higher means more accurate but slower. | **Required** |
 | `simulation_steps` | integer | Number of simulation steps to run. | **Required** |
 
 ### Dynamic Evaluators
 
-Parameters like `density_texture` and `scale_std` can be dynamically evaluated. This means that their values can be altered for each new frame. For more insights on dynamic evaluators and how to use them, kindly refer to [Dynamic Evaluators](../dynamic_evaluators.md).
+Parameters like `density_texture` and `scale_standard_deviation` can be dynamically evaluated. This means that their values can be altered for each new frame. For more insights on dynamic evaluators and how to use them, kindly refer to [Dynamic Evaluators](../dynamic_evaluators.md).
 
 ## Example Configuration
 
@@ -33,7 +33,7 @@ scene:
       floor_object: "Ground" 
       max_texture_size: 2048
       density: 5
-      scale_std: 0.3
+      scale_standard_deviation: 0.3
       convex_decomposition_quality: 90
       simulation_steps: 100
 ```

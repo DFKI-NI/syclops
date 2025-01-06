@@ -42,8 +42,8 @@ class SimulatedScatter(PluginInterface):
                 conv_hulls = utility.filter_objects("PARENT_UUID", parent_uuid)
                 random_rotation = Vector(np.random.uniform(0, 2 * np.pi, size=3))
                 random_scale_value = (
-                    np.random.normal(1, self.config["scale_std"])
-                    if "scale_std" in self.config
+                    np.random.normal(1, self.config["scale_standard_deviation"])
+                    if "scale_standard_deviation" in self.config
                     else 1
                 )
                 random_scale = Vector([random_scale_value] * 3)
