@@ -1,6 +1,6 @@
 # Camera Plugin Documentation
 
-The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, focal length, exposure, depth of field, motion blur, and frustum visualization for debugging purposes. Additionally, it outputs the intrinsic and extrinsic camera parameters.
+The Camera Plugin simulates a basic camera sensor, allowing you to configure the optical and digital properties of the camera within your scene. It supports various parameters such as resolution, lens types (perspective and fisheye), exposure, depth of field, motion blur, and frustum visualization for debugging purposes. Additionally, it outputs the intrinsic and extrinsic camera parameters.
 
 ## Configuration Parameters
 
@@ -11,7 +11,9 @@ The following table describes each configuration parameter for the Camera Plugin
 | `name`           | string                                                | Unique identifier of the sensor.                                                                                   | **Required** |
 | `frame_id`       | string                                                | Transformation tree node the camera attaches to.                                                                   | **Required** |
 | `resolution`     | array (2 integers: width x height)                    | Width and height of the camera in pixels.                                                                          | **Required** |
-| `focal_length`   | float                                                 | Focal length of the camera in mm.                                                                                  | **Required** |
+| `lens_type`      | string                                                | Type of lens projection (PERSPECTIVE [default], FISHEYE_EQUISOLID, FISHEYE_EQUIDISTANT).                          | Optional     |
+| `focal_length`   | float                                                 | Focal length of the camera in mm. Required for PERSPECTIVE and FISHEYE_EQUISOLID.                                  | Conditional  |
+| `fisheye_fov`    | float                                                 | Horizontal angular field of view in radians. Required for FISHEYE_EQUIDISTANT and FISHEYE_EQUISOLID.              | Conditional  |
 | `sensor_width`   | float                                                 | Width of the sensor in mm.                                                                                         | **Required** |
 | `exposure`       | float                                                 | Exposure offset in stops.                                                                                          | Optional     |
 | `gamma`          | float                                                 | Gamma correction applied to the image (1 means no change in gamma).                                                | Optional     |
@@ -61,6 +63,28 @@ The following table describes each configuration parameter for the Camera Plugin
 | ------------- | ------- | --------------------------------------|
 | `enabled`     | boolean | Whether to render as wireframe lines. |
 | `thickness`   | number  | Thickness of the wireframe lines.     |
+
+### Lens Types and Parameters
+
+The camera supports three types of lens projections:
+
+1. **PERSPECTIVE** (default)
+   - Requires `focal_length`
+   - Standard perspective projection
+
+2. **FISHEYE_EQUISOLID**
+   - Requires both `focal_length` and `fisheye_fov`
+   - Follows the equisolid angle projection formula
+   - Commonly used in real fisheye lenses
+
+3. **FISHEYE_EQUIDISTANT**
+   - Requires `fisheye_fov`
+   - Linear mapping between angle and image distance
+   - Theoretical fisheye projection
+
+!!! note
+    When using fisheye lens types, the frustum visualization is not supported and will be disabled automatically.
+    Camera extrinsic parameters are not output when using fisheye lens types as they are not supported.
 
 !!! warning
     If `motion_blur` is enabled, `shutter_speed` becomes a required parameter.
