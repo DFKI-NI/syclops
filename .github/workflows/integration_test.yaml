@@ -60,6 +60,8 @@ jobs:
           "./output/*/main_camera_annotations/structured_light/*metadata.yaml"
           "./output/*/object_positions/*.json"
           "./output/*/object_positions/*metadata.yaml"
+          "./output/*/fisheye_camera/rect/*.png"
+          "./output/*/fisheye_camera/rect/*metadata.yaml"
         )
         
         missing=false
