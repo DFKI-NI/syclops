@@ -40,11 +40,18 @@ Syclops is an open-source, modular pipeline designed for generating large-scale,
 
 Syclops addresses the growing need for high-quality, diverse synthetic data in AI model development and testing, particularly in scenarios where real-world data collection is challenging, expensive, or time-consuming.
 
+<!-- Sollten wir nicht noch eine/mehrere der Grafiken einbinden, um das Paper abzurunden? Z.B.: -->
+<!-- ![Caption for example figure.](docs/docs/img/docs/syclops_overview.png), siehe https://joss.readthedocs.io/en/latest/paper.html -->
+
 # Statement of Need
 
 The performance of machine learning models, especially in computer vision and robotics, heavily depends on the quality and diversity of training data. However, obtaining real-world data can be expensive, time-consuming, and challenging, particularly for rare events or scenarios that are difficult to capture [@tabkhi2022real]. Synthetic data generation offers a promising solution to these challenges, allowing for the creation of large, diverse datasets with accurate ground truth annotations [@mumuni2024survey].
 
-Syclops fills an important gap in the landscape of synthetic dataset tools. While several tools exist for generating synthetic data, Syclops distinguishes itself through its focus on large-scale procedural generation, particularly for outdoor and agricultural scenarios. The following table compares Syclops with other prominent synthetic data generation tools:
+Syclops fills an important gap in the landscape of synthetic dataset tools. While several tools exist for generating synthetic data, Syclops distinguishes itself through its focus on large-scale procedural generation, particularly for outdoor and agricultural scenarios. Table 1 compares Syclops with other prominent synthetic data generation tools.
+
+<!-- Die Formatierung der Tabelle ist ungewöhnlich, Tabellen benötigen eigentlich eine Caption (was ein Stück weit durch die ursprüngliche 'Legende' umgesetzt war), welche *über* der Tabelle steht sowie eine Nummer. -->
+
+**Table 1**: Comparison of tools for synthetic data creation. Features are abbreviated as follows: SS=Semantic Segmentation, IS=Instance Segmentation, D=Depth, OF=Optical Flow, SN=Surface Normals, OC=Object Coordinates, BB=Bounding Box, OP=Object Pose, V=Object Volume, KP=Keypoints, PS=Python Script, C=Camera, SC=Stereo Camera with Projected Light, L=Lidar
 
 | Tool         | Rendering Engine | Scene Creation | Output Annotations                   | Sensors |
 | ------------ | ---------------- | -------------- | ------------------------------------ | ------- |
@@ -55,7 +62,7 @@ Syclops fills an important gap in the landscape of synthetic dataset tools. Whil
 | NDDS         | Unreal Engine 4  | UE4 GUI        | SS, D, BB, OP, KP                    | C       |
 | iGibson      | PBR Rastering    | PS             | SS, IS, D, OF, BB                    | C, L    |
 
-Legend: SS=Semantic Segmentation, IS=Instance Segmentation, D=Depth, OF=Optical Flow, SN=Surface Normals, OC=Object Coordinates, BB=Bounding Box, OP=Object Poses, V=Volume, KP=Keypoints, PS=Python Script, C=Camera, SC=Stereo Camera with Projected Light, L=Lidar
+
 
 While tools like Kubric [@greff2022kubric] and Blenderproc2 [@denninger2023blenderproc2] offer similar rendering capabilities and annotations, Syclops stands out with its YAML-based, procedural scene creation, which enhances ease of use. Additionally, Syclops includes unique features such as volume estimation and specialized support for agricultural scenarios.
 
@@ -63,7 +70,7 @@ While tools like Kubric [@greff2022kubric] and Blenderproc2 [@denninger2023blend
 
 Syclops offers several key features that set it apart from existing synthetic data generation tools:
 
-1. Large-scale Procedural Generation: Syclops excels at creating vast, complex environments with millions of scattered objects, making it particularly suitable for outdoor and agricultural scenarios.
+1. Large-scale Procedural Generation: Syclops excels at creating vast, complex environments with millions of scattered objects, making it particularly suitable for outdoor scenarios such as agricultural environments.
 
 2. YAML-based Scene Configuration: Users can easily define and customize complex scenes using a simple YAML syntax, enhancing reproducibility and ease of use.
 
@@ -82,15 +89,16 @@ Syclops is implemented in Python and uses Blender's Python API for 3D scene crea
 1. Job Configuration: A YAML-based system for defining scene composition, sensor properties, and output types.
 2. Asset Management: A module for organizing and accessing 3D models, textures, and materials.
 3. Scene Generation: Plugins for creating and manipulating scene elements, with a focus on efficient placement of large numbers of objects.
-4. Sensor Simulation: Modules for simulating various sensor types and their properties.
+4. Sensor Simulation: Modules for simulating different sensor types and their properties.
 5. Output Generation: Plugins for producing different types of sensor outputs and ground truth annotations.
 6. Postprocessing: Tools for refining and processing the generated data.
    Syclops leverages Blender's Geometry nodes for procedural placement of objects combined with object instancing. This approach allows for performant scenes with large amounts of objects while maintaining variability. Additionally, Syclops incorporates convex decomposition of objects for efficient rigid body simulation, further enhancing its capabilities for complex scene generation.
    The modular architecture allows users to easily extend Syclops with custom plugins for specific use cases or novel sensor types.
+<!-- Der letzte Satz gehört irgendwie nicht in das Listenelement...? -->
 
 # Example Usage
 
-Here's a basic example of how to use Syclops to generate a synthetic dataset:
+The following YAML code describes a synthetic dataset of RGB and depth images of trees scattered across a flat plane:
 
 ```yaml
 # job_config.yaml
@@ -131,36 +139,28 @@ sensor:
               id: "main_depth"
 ```
 
-To generate the dataset:
+Note that the elements of the scene description (e.g. "syclops_plugin_scatter") or sensor definition (e.g. "syclops_sensor_camera") are identifiers for the individual plugins that can process the respective YAML data blocks.
+
+In order to generate this dataset with Syclops, the following simple command is executed:
 
 ```bash
 syclops -j job_config.yaml
 ```
 
-This configuration will create a scene with a textured ground plane and scattered trees, capture RGB images, semantic segmentation masks, and depth maps from a virtual camera.
+The assets used for data generation in this example are included in the Syclops repository for demonstration purposes.
 
 # Use Cases
 
-Syclops has been successfully applied in several real-world scenarios, including:
-
-1. Semantic segmentation of crop and weed plants in agricultural fields, providing large-scale, diverse datasets for training robust machine learning models.
-2. Volume estimation of vegetables on a conveyor belt with physics simulation, demonstrating Syclops' capability to generate synthetic data for industrial automation applications.
-
-These use cases highlight Syclops' versatility in generating synthetic data for both outdoor and indoor scenarios, as well as its ability to simulate complex interactions between objects.
+Syclops has been successfully applied in several real-world scenarios, including the Semantic segmentation of crop and weed plants in agricultural fields, providing large-scale, diverse datasets for training robust machine learning models as well as volume estimation of vegetables on a conveyor belt with physics simulation, demonstrating Syclops' capability to generate synthetic data for industrial automation applications. These use cases highlight Syclops' versatility in generating synthetic data for both outdoor and indoor scenarios, as well as its ability to simulate complex interactions between objects.
 
 We evaluated Syclops' performance and quality on the public Phenobench Benchmark [@weyler2024phenobench], a dataset of sugarbeets and weeds in agricultural fields.
-
 For the semantic segmentation task, the model trained on 3,000 Syclops-generated images achieved a mean Intersection over Union (mIoU) of 80.7, compared to 85.97 for the model trained on real-world images. This demonstrates that Syclops can produce high-quality synthetic data that closely approximates real-world scenarios, while also enabling the generation of larger datasets.
 
 # Limitations and Future Work
 
 While Syclops offers powerful capabilities for synthetic data generation, it currently does not procedurally generate individual assets. High-quality assets are crucial for producing good synthetic data, and this remains an area for potential improvement. Future work will focus on developing tools for procedural generation of individual objects, further expanding Syclops' capabilities.
 
-Additionally, planned developments include:
-
-1. Expanding the range of supported sensor types
-2. Improving the realism of generated data
-3. Enhancing the efficiency of large-scale scene generation
+Additionally, planned developments include expanding the range of supported sensor types, improving the realism of generated data and enhancing the efficiency of large-scale scene generation.
 
 # Conclusion
 
