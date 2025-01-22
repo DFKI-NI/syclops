@@ -40,9 +40,6 @@ Syclops is an open-source, modular pipeline designed for generating large-scale,
 
 Syclops addresses the growing need for high-quality, diverse synthetic data in AI model development and testing, particularly in scenarios where real-world data collection is challenging, expensive, or time-consuming.
 
-<!-- Sollten wir nicht noch eine/mehrere der Grafiken einbinden, um das Paper abzurunden? Z.B.: -->
-<!-- ![Caption for example figure.](docs/docs/img/docs/syclops_overview.png), siehe https://joss.readthedocs.io/en/latest/paper.html -->
-
 # Statement of Need
 
 The performance of machine learning models, especially in computer vision and robotics, heavily depends on the quality and diversity of training data. However, obtaining real-world data can be expensive, time-consuming, and challenging, particularly for rare events or scenarios that are difficult to capture [@tabkhi2022real]. Synthetic data generation offers a promising solution to these challenges, allowing for the creation of large, diverse datasets with accurate ground truth annotations [@mumuni2024survey].
@@ -61,8 +58,6 @@ Syclops fills an important gap in the landscape of synthetic dataset tools. Whil
 | NViSII       | Nvidia Optix     | PS             | SS, D, OF, SN, OC, BB, OP            | C       |
 | NDDS         | Unreal Engine 4  | UE4 GUI        | SS, D, BB, OP, KP                    | C       |
 | iGibson      | PBR Rastering    | PS             | SS, IS, D, OF, BB                    | C, L    |
-
-
 
 While tools like Kubric [@greff2022kubric] and Blenderproc2 [@denninger2023blenderproc2] offer similar rendering capabilities and annotations, Syclops stands out with its YAML-based, procedural scene creation, which enhances ease of use. Additionally, Syclops includes unique features such as volume estimation and specialized support for agricultural scenarios.
 
@@ -84,7 +79,7 @@ Syclops offers several key features that set it apart from existing synthetic da
 
 # Architecture and Implementation
 
-Syclops is implemented in Python and uses Blender's Python API for 3D scene creation and rendering. The pipeline consists of several key components:
+Syclops is implemented in Python and uses Blender's Python API for 3D scene creation and rendering. The pipeline consists of several key components (compare Fig. 1 for an overview):
 
 1. Job Configuration: A YAML-based system for defining scene composition, sensor properties, and output types.
 2. Asset Management: A module for organizing and accessing 3D models, textures, and materials.
@@ -94,7 +89,9 @@ Syclops is implemented in Python and uses Blender's Python API for 3D scene crea
 6. Postprocessing: Tools for refining and processing the generated data.
    Syclops leverages Blender's Geometry nodes for procedural placement of objects combined with object instancing. This approach allows for performant scenes with large amounts of objects while maintaining variability. Additionally, Syclops incorporates convex decomposition of objects for efficient rigid body simulation, further enhancing its capabilities for complex scene generation.
    The modular architecture allows users to easily extend Syclops with custom plugins for specific use cases or novel sensor types.
-<!-- Der letzte Satz gehört irgendwie nicht in das Listenelement...? -->
+<!-- Der letzte Satz (Zeie 94) gehört irgendwie nicht in das Listenelement...? -->
+
+![Fig. 1: Syclops' various components and their relationship.](docs/docs/img/docs/syclops_overview.png)
 
 # Example Usage
 
@@ -153,8 +150,10 @@ The assets used for data generation in this example are included in the Syclops 
 
 Syclops has been successfully applied in several real-world scenarios, including the Semantic segmentation of crop and weed plants in agricultural fields, providing large-scale, diverse datasets for training robust machine learning models as well as volume estimation of vegetables on a conveyor belt with physics simulation, demonstrating Syclops' capability to generate synthetic data for industrial automation applications. These use cases highlight Syclops' versatility in generating synthetic data for both outdoor and indoor scenarios, as well as its ability to simulate complex interactions between objects.
 
-We evaluated Syclops' performance and quality on the public Phenobench Benchmark [@weyler2024phenobench], a dataset of sugarbeets and weeds in agricultural fields.
+We evaluated Syclops' performance and quality on the public Phenobench Benchmark [@weyler2024phenobench], a dataset of sugarbeets and weeds in agricultural fields (see Fig. 2 for an example).
 For the semantic segmentation task, the model trained on 3,000 Syclops-generated images achieved a mean Intersection over Union (mIoU) of 80.7, compared to 85.97 for the model trained on real-world images. This demonstrates that Syclops can produce high-quality synthetic data that closely approximates real-world scenarios, while also enabling the generation of larger datasets.
+
+![Fig. 2: Example of data synthesized by Syclops for the agricultural usecase of selective weeding in sugarbeets. From left to right: RGB image, instance segmentation, semantic segmentation, depth.](docs/docs/img/renders/syclops_output.png)
 
 # Limitations and Future Work
 
@@ -170,3 +169,7 @@ Syclops provides a powerful, flexible tool for generating high-quality synthetic
 
 Many thanks to Henning Wübben, Florian Rahe, Thilo Steckel and Stefan Stiene for their valuable feedback during the development of Syclops.
 Syclops was developed in the research project Agri-Gaia. This work was supported by the German Federal Ministry for Economic Affairs and Climate Action within the Agri-Gaia project (grant number: 01MK21004A). The DFKI Niedersachsen (DFKI NI) is sponsored by the Ministry of Science and Culture of Lower Saxony and the VolkswagenStiftung.
+
+# COI Disclosure
+
+Two of the authors (Anton Elmiger and Kai von Szadkowski) have founded a start-up company for AI services based on synthetic data in 2024 after the major work on Syclops (and this paper) was completed. Syclops is being utilized in this context as a tool to create artefacts, but not directly marketed and sold in any fashion (it is published as OSS under GPL 3.0, after all), so that no direct financial interest would lead to its unduly promotion. Work in this company currently happens as a part-time occupation in parallel to continued research activities for the DFKI in related topics. As Syclops is OSS under the GPL 3.0 license, the software is not
