@@ -168,7 +168,3 @@ Syclops provides a powerful, flexible tool for generating high-quality synthetic
 
 Many thanks to Henning Wübben, Florian Rahe, Thilo Steckel and Stefan Stiene for their valuable feedback during the development of Syclops.
 Syclops was developed in the research project Agri-Gaia. This work was supported by the German Federal Ministry for Economic Affairs and Climate Action within the Agri-Gaia project (grant number: 01MK21004A). The DFKI Niedersachsen (DFKI NI) is sponsored by the Ministry of Science and Culture of Lower Saxony and the VolkswagenStiftung.
-
-# COI Disclosure
-
-Two of the authors (Anton Elmiger and Kai von Szadkowski) have founded a start-up company for AI services based on synthetic data in 2024 after the major work on Syclops (and this paper) was completed. Syclops is being utilized in this context as a tool to create artefacts, but not directly marketed and sold in any fashion (it is published as OSS under GPL 3.0, after all), so that no direct financial interest would lead to its unduly promotion. Work in this company currently happens as a part-time occupation in parallel to continued research activities for the DFKI in related topics. As Syclops is OSS under the GPL 3.0 license, the software is not
