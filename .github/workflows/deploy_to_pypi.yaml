@@ -5,15 +5,23 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_publish:
+        description: 'Force publish to PyPI even without version change'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   auto-tag:
     name: Create and push tag
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     outputs:
       new_tag: ${{ steps.create_tag.outputs.new_tag }}
       version: ${{ steps.get_version.outputs.VERSION }}
+      force_publish: ${{ github.event.inputs.force_publish == 'true' || steps.create_tag.outputs.new_tag == 'true' }}
 
     steps:
     - uses: actions/checkout@v4
@@ -43,7 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     if: >
       github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && needs.auto-tag.outputs.new_tag == 'true')
+      (github.event_name == 'push' && needs.auto-tag.outputs.new_tag == 'true') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
     - uses: actions/checkout@v4
@@ -68,7 +77,7 @@ jobs:
   publish-to-pypi:
     name: Publish Python 🐍 distribution 📦 to PyPI
     needs: [auto-tag, build]
-    if: needs.auto-tag.outputs.new_tag == 'true'
+    if: needs.auto-tag.outputs.new_tag == 'true' || github.event.inputs.force_publish == 'true'
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -88,7 +97,7 @@ jobs:
   github-release:
     name: Sign and upload to GitHub Release
     needs: [auto-tag, publish-to-pypi]
-    if: needs.auto-tag.outputs.new_tag == 'true'
+    if: needs.auto-tag.outputs.new_tag == 'true' || github.event.inputs.force_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -127,7 +136,8 @@ jobs:
     needs: [auto-tag, build]
     if: >
       github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && needs.auto-tag.outputs.new_tag == 'true')
+      (github.event_name == 'push' && needs.auto-tag.outputs.new_tag == 'true') ||
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
       name: testpypi
