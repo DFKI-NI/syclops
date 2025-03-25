@@ -1,6 +1,6 @@
 antlr4-python3-runtime==4.8
 appdirs==1.4.4
-coacd==0.0.5
+coacd==1.0.6
 debugpy==1.6.3
 filelock==3.9.0
 GitPython==3.1.29
