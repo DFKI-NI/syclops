@@ -176,3 +176,5 @@ Syclops is a powerful tool for generating high-quality synthetic datasets in com
 ## Acknowledgements
 
 We thank Henning Wübben, Florian Rahe, Thilo Steckel, and Stefan Stiene for their valuable feedback. Syclops was developed as part of the Agri-Gaia project, supported by the German Federal Ministry for Economic Affairs and Climate Action (grant number: 01MK21004A) and sponsored by the Ministry of Science and Culture of Lower Saxony and the VolkswagenStiftung.
+
+## References
