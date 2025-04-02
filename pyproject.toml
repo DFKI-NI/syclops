@@ -11,10 +11,8 @@ authors = [
 description = "Syclops is a Python library for generating synthetic data for machine learning."
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "GPLv3"}
-
-version = "1.4.1"
-
+license = "GPL-3.0-or-later"  # Using SPDX expression format
+version = "1.4.2"
 dynamic = ["dependencies"]
 
 [project.scripts]
@@ -27,14 +25,17 @@ syclops_plugin_scatter = "syclops.blender.plugins.scatter:Scatter"
 syclops_plugin_object = "syclops.blender.plugins.object:Object"
 syclops_plugin_simulated_scatter = "syclops.blender.plugins.simulated_scatter:SimulatedScatter"
 syclops_plugin_crop = "syclops.blender.plugins.crop:Crop"
+
 [project.entry-points."syclops.sensors"]
 syclops_sensor_camera = "syclops.blender.sensors.camera:Camera"
+
 [project.entry-points."syclops.outputs"]
 syclops_output_rgb = "syclops.blender.sensor_outputs.rgb:RGB"
 syclops_output_keypoints = "syclops.blender.sensor_outputs.keypoints:Keypoints"
 syclops_output_pixel_annotation = "syclops.blender.sensor_outputs.pixel_annotation:PixelAnnotation"
 syclops_output_object_positions = "syclops.blender.sensor_outputs.object_positions:ObjectPositions"
 syclops_output_structured_light = "syclops.blender.sensor_outputs.structured_light:StructuredLight"
+
 [project.entry-points."syclops.postprocessing"]
 syclops_postprocessing_bounding_boxes = "syclops.postprocessing.bounding_boxes:BoundingBoxes"
 
@@ -50,3 +51,7 @@ dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.package-data]
 syclops = ["*.yaml", "*.blend", "*.png", ".hdr", ".jpg"]
+
+[tool.setuptools.packages.find]
+include = ["syclops*"]
+exclude = ["syclops_venv*"]
