@@ -41,7 +41,15 @@ def extract_zip(src: Path, dest: Path) -> None:
                 progress.update(task, advance=1)
     # Rename folder
     extracted_folder = dest / src.stem
-    extracted_folder.rename(dest / f"blender-{src.stem.split('-')[1]}")
+    stem_parts = src.stem.split('-')
+    if len(stem_parts) > 1:
+        extracted_folder.rename(dest / f"blender-{stem_parts[1]}")
+    else:
+        raise ValueError(f"Unexpected file naming convention: {src.stem}")
+    if len(stem_parts) > 1:
+        extracted_folder.rename(dest / f"blender-{stem_parts[1]}")
+    else:
+        raise ValueError(f"Unexpected file name format: {src.stem}")
 
 
 def extract_tar(src: Path, dest: Path) -> None:
