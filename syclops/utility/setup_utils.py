@@ -41,7 +41,15 @@ def extract_zip(src: Path, dest: Path) -> None:
                 progress.update(task, advance=1)
     # Rename folder
     extracted_folder = dest / src.stem
-    extracted_folder.rename(dest / f"blender-{src.stem.split('-')[1]}")
+    stem_parts = src.stem.split('-')
+    if len(stem_parts) > 1:
+        extracted_folder.rename(dest / f"blender-{stem_parts[1]}")
+    else:
+        raise ValueError(f"Unexpected file naming convention: {src.stem}")
+    if len(stem_parts) > 1:
+        extracted_folder.rename(dest / f"blender-{stem_parts[1]}")
+    else:
+        raise ValueError(f"Unexpected file name format: {src.stem}")
 
 
 def extract_tar(src: Path, dest: Path) -> None:
@@ -77,6 +85,27 @@ def install_blender(version: str, install_dir: Path) -> None:
     elif os_type == "Linux":
         file_name = f"blender-{version}-linux-x64.tar.xz"
         extract_func = extract_tar
+    elif os_type == "Darwin":
+        machine = platform.machine()
+        if machine == "arm64":
+            file_name = f"blender-{version}-macos-arm64.dmg"
+        elif machine == "x86_64":
+            file_name = f"blender-{version}-macos-x64.dmg"
+        else:
+            print(f"Unsupported macOS architecture: {machine}")
+            sys.exit(1)
+        extract_func = None  # macOS .dmg files typically don't require extraction
+        print("macOS detected. Please install Blender manually from the downloaded .dmg file.")
+        # For macOS, we download but don't extract or expect a specific installation structure.
+        # We'll download the file and then exit gracefully after informing the user.
+        download_path = f"{base_url}Blender{version_major}/{file_name}"
+        dest_file = install_dir / file_name
+        print(f"Downloading Blender for macOS ({machine})...")
+        download_file(download_path, dest_file)
+        print(f"Download complete: {dest_file}")
+        print("Please open the .dmg file and drag Blender to your Applications folder.")
+        # We return here because the rest of the function assumes extraction and specific folder structure
+        return
     else:
         print("Unsupported OS")
         sys.exit(1)
@@ -84,18 +113,19 @@ def install_blender(version: str, install_dir: Path) -> None:
     download_path = f"{base_url}Blender{version_major}/{file_name}"
     dest_file = install_dir / file_name
 
-    # Check if Blender is already installed in the package directory
+    # Check if Blender is already installed in the package directory (Skip for macOS as we return earlier)
     if (install_dir / f"blender-{version}").exists():
         print(f"Blender {version} already installed.")
         return
 
-    # Download Blender
+    # Download Blender (Skip for macOS as we return earlier)
     download_file(download_path, dest_file)
 
-    # Extract Blender
-    extract_func(dest_file, install_dir)
+    # Extract Blender (Skip for macOS as we return earlier)
+    if extract_func:
+        extract_func(dest_file, install_dir)
 
-    # Clean up
+    # Clean up (Skip for macOS as we return earlier)
     dest_file.unlink()
 
 

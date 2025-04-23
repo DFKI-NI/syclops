@@ -106,6 +106,10 @@ cd syclops
 pip install .
 ```
 
+### Note for macOS Users
+
+Installation on macOS is theoretically possible but is not currently officially supported or tested. If you are using macOS, Blender will be downloaded as a `.dmg` file for your architecture (arm64 or x64).
+
 ## Run a job
 
 Next, the assets need to be crawled by the pipeline. This only needs to be done once, or if new assets are added.
