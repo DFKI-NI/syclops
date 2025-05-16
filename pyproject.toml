@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Syclops is a Python library for generating synthetic data for machine learning."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9,<3.12"
 license = "GPL-3.0-or-later"  # Using SPDX expression format
 version = "1.4.3"
 dynamic = ["dependencies"]

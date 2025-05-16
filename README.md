@@ -53,7 +53,9 @@ Syclops supports a variety of annotated outputs for different use cases. The fol
 
 Before you install `Syclops`, ensure you have the following prerequisites:
 
-- Python version 3.9 or higher.
+- ✅ **Tested Python Versions**
+    - Python 3.9 – 3.11
+- ❌ Not yet compatible with Python 3.12+
 
 We recommend using a virtual environment to avoid potential package conflicts. Below are instructions for setting up with `virtualenv` and `conda`.
 
