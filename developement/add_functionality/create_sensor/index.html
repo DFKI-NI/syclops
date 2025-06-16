@@ -1,0 +1,1805 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Syclops synthetic data generation tool">
+      
+      
+        <meta name="author" content="Anton Elmiger">
+      
+      
+        <link rel="canonical" href="https://dfki-ni.github.io/syclops/developement/add_functionality/create_sensor/">
+      
+      
+        <link rel="prev" href="../create_plugin/">
+      
+      
+        <link rel="next" href="../../debugging/">
+      
+      
+      <link rel="icon" href="../../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Create Sensor and Output Plugin - Syclops Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#create-a-sensor-and-output-plugins" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Syclops Documentation" class="md-header__button md-logo" aria-label="Syclops Documentation" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Syclops Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Create Sensor and Output Plugin
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../getting_started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../usage/command_line/" class="md-tabs__link">
+          
+  
+  
+  Usage
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Developement
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Syclops Documentation" class="md-nav__button md-logo" aria-label="Syclops Documentation" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    Syclops Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Usage
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/command_line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Command Line
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Job Description
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Job Description
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/job_configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Job Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/dynamic_evaluators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dynamic Evaluators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Plugin Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Plugin Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/ground/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ground
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/scatter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scatter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/crop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/simulated_scatter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Simulated Scatter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sensor Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Sensor Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/camera/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Camera
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Output Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Output Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/rgb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RGB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/pixel_annotation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pixel Annotation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/object_position/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object Position
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/keypoint_annotation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Keypoint Annotation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/structured_light/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Structured Light
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Post Processing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Post Processing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/job_description/config_descriptions/bounding_box/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bounding Boxes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/assets/assets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Assets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developement
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Developement
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Add Functionality
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Add Functionality
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../create_plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Create Scene Plugin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Create Sensor and Output Plugin
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Create Sensor and Output Plugin
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor-and-ouput-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensor and Ouput Registration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Debugging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor-and-ouput-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensor and Ouput Registration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="create-a-sensor-and-output-plugins">Create a Sensor and Output Plugins</h1>
+<p>In this document, the process of creating a new sensor with a new output for Syclops is explained.</p>
+<h2 id="overview">Overview</h2>
+<p><strong><em>Sensor-Plugins</em></strong> in Syclops are Python classes, that mimic the behavior of real sensors in the virtual environment. They are treated as the foundation for the <strong><em>Output-Plugins</em></strong>, which are responsible for generating the data of the sensors. The sensor class is responsible for creating the sensor in the virtual environment and for providing the data to the <strong><em>Output-Plugin</em></strong>. The <strong><em>Output-Plugin</em></strong> is responsible for generating the data for the sensor. This allows to reuse the same sensor for different <strong><em>Output-Plugins</em></strong>.</p>
+<p>Syclops provides interface classes to inherit from, ensuring compatibility with the pipeline. For a sensor, the class has two abstract methods, that need to be implemented: <strong><em>setup_sensor</em></strong> and <strong><em>render_outputs</em></strong>. In the case of an output, the interface contains one abstract method: <strong><em>generate_output</em></strong>.</p>
+<h2 id="basic-example">Basic Example</h2>
+<p>Below is a basic example illustrating how a laser distance sensor can be added to Syclops. Since the sensor class itself does not generate any data, it is a fairly simple class. The rest of the functionality is implemented in the <a href="#output">output plugin</a>.</p>
+<h3 id="sensor">Sensor</h3>
+<div class="highlight"><span class="filename">laser_distance_sensor.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>  <span class="c1"># Blender python API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">syclops_blender</span><span class="w"> </span><span class="kn">import</span> <span class="n">utility</span>  <span class="c1"># Collection of useful utility functions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">syclops.blender.sensors.sensor_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">SensorInterface</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LaserDistanceSensor</span><span class="p">(</span><span class="n">SensorInterface</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Goal of this function is to create an object in the scene, that represents the sensor.&quot;&quot;&quot;</span>
+        <span class="c1"># Create empty object to represent the sensor</span>
+        <span class="n">sensor_empty</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">sensor_coll</span> <span class="o">=</span> <span class="n">utility</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="s2">&quot;Sensors&quot;</span><span class="p">)</span>
+        <span class="n">sensor_coll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">sensor_empty</span><span class="p">)</span>
+        <span class="c1"># Add empty to class variable objs in order to be correctly attached to the tf-tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">utility</span><span class="o">.</span><span class="n">ObjPointer</span><span class="p">(</span><span class="n">sensor_empty</span><span class="p">))</span>  <span class="c1"># (1)!</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Laser Distance Sensor: </span><span class="si">%s</span><span class="s2"> created&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function calls all outputs that are assigned to this sensor&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">generate_output</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>The blender empty object is stored as a pointer in order to be able to reference it later. This is necessary, because the "sensor_empty" variable is not a safe reference to the object. To retrieve the object, the "get" function of the ObjPointer class is used.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This sensor class is in its current state not usable, because it does not generate any data. In order to use it, an output plugin has to be created.</p>
+</div>
+<h3 id="output">Output</h3>
+<div class="highlight"><span class="filename">laser_distance_output.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mathutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">syclops_blender</span><span class="w"> </span><span class="kn">import</span> <span class="n">utility</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">syclops.blender.sensor_outputs.output_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutputInterface</span>
+
+<span class="n">META_DESCRIPTION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;DISTANCE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Distance of a single laser ray to the closest object in the scene&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LaserDistanceOutput</span><span class="p">(</span><span class="n">OutputInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles the generation of laser distance output for sensors.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_class</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate and save the laser ray distance output to JSON.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">utility</span><span class="o">.</span><span class="n">RevertAfter</span><span class="p">():</span>  <span class="c1"># (1)!</span>
+            <span class="c1"># Refresh the virtual scene</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_depsgraph</span><span class="p">()</span>
+
+            <span class="c1"># Get ray origin and direction</span>
+            <span class="n">sensor_empty</span> <span class="o">=</span> <span class="n">parent_class</span><span class="o">.</span><span class="n">objs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">ray_origin</span><span class="p">,</span> <span class="n">ray_direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_ray</span><span class="p">(</span><span class="n">sensor_empty</span><span class="p">)</span>
+
+            <span class="c1"># Raycast</span>
+            <span class="n">hit</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_hit</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raycast</span><span class="p">(</span><span class="n">ray_origin</span><span class="p">,</span> <span class="n">ray_direction</span><span class="p">)</span>
+
+            <span class="n">distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">location</span> <span class="o">-</span> <span class="n">ray_origin</span><span class="p">)</span><span class="o">.</span><span class="n">length</span> <span class="k">if</span> <span class="n">hit</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">class_id</span> <span class="o">=</span> <span class="n">obj_hit</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class_id&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">hit</span> <span class="k">else</span> <span class="kc">None</span>
+
+            <span class="c1"># Save output</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_output_folder</span><span class="p">(</span><span class="n">parent_class</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">json_file</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">frame_current</span><span class="si">:</span><span class="s2">04</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_output</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">class_id</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">ray_origin</span><span class="p">)</span>
+
+            <span class="c1"># Write meta output</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_meta_output_file</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">parent_class</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing laser distance output to </span><span class="si">{</span><span class="n">json_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_depsgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the dependency graph.&quot;&quot;&quot;</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">utility</span><span class="o">.</span><span class="n">refresh_modifiers</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_ray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_empty</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the ray&#39;s origin and direction from the sensor_empty.&quot;&quot;&quot;</span>
+        <span class="n">ray_origin</span> <span class="o">=</span> <span class="n">sensor_empty</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">translation</span>
+        <span class="n">ray_direction</span> <span class="o">=</span> <span class="n">sensor_empty</span><span class="o">.</span><span class="n">matrix_world</span><span class="o">.</span><span class="n">to_quaternion</span><span class="p">()</span> <span class="o">@</span> <span class="n">Vector</span><span class="p">(</span>
+            <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ray_origin</span><span class="p">,</span> <span class="n">ray_direction</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_raycast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ray_origin</span><span class="p">,</span> <span class="n">ray_direction</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform ray casting in the Blender scene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">ray_cast</span><span class="p">(</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">view_layer</span><span class="o">.</span><span class="n">depsgraph</span><span class="p">,</span>
+            <span class="n">ray_origin</span><span class="p">,</span>
+            <span class="n">ray_direction</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_output_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare the output folder and return its path.&quot;&quot;&quot;</span>
+        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">utility</span><span class="o">.</span><span class="n">append_output_path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sensor_name</span><span class="si">}</span><span class="s2">_annotations&quot;</span><span class="p">)</span>
+        <span class="n">utility</span><span class="o">.</span><span class="n">create_folder</span><span class="p">(</span><span class="n">output_folder</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output_folder</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_save_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">class_id</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">ray_origin</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the output data to a JSON file.&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;distance&quot;</span><span class="p">:</span> <span class="n">distance</span><span class="p">,</span>
+            <span class="s2">&quot;class_id&quot;</span><span class="p">:</span> <span class="n">class_id</span><span class="p">,</span>
+            <span class="s2">&quot;hit_location&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">location</span><span class="p">),</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">ray_origin</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_meta_output_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the metadata output to a YAML file.&quot;&quot;&quot;</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">parent</span>
+
+        <span class="k">with</span> <span class="n">utility</span><span class="o">.</span><span class="n">AtomicYAMLWriter</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output_path</span> <span class="o">/</span> <span class="s2">&quot;metadata.yaml&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">META_DESCRIPTION</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add_step</span><span class="p">(</span>
+                <span class="n">step</span><span class="o">=</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">frame_current</span><span class="p">,</span>
+                <span class="n">step_dicts</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">META_DESCRIPTION</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="p">},</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;expected_steps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utility</span><span class="o">.</span><span class="n">get_job_conf</span><span class="p">()[</span><span class="s2">&quot;steps&quot;</span><span class="p">]</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;sensor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensor_name</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+</code></pre></div>
+<ol>
+<li>The <code>RevertAfter</code> context manager is used to revert all changes made to the scene after the context manager is exited.</li>
+</ol>
+<h3 id="sensor-and-ouput-registration">Sensor and Ouput Registration</h3>
+<p>To register your sensor and output plugins with Syclops, add entries in your pyproject.toml file under the [project.entry-points."syclops.plugins"] section. For example:</p>
+<div class="highlight"><span class="filename">pyproject.toml</span><pre><span></span><code><span class="k">[project.entry-points.</span><span class="s2">&quot;syclops.sensors&quot;</span><span class="k">]</span>
+<span class="n">syclops_laser_sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path.to.laser_distance_sensor:LaserDistanceSensor&quot;</span>
+<span class="k">[project.entry-points.</span><span class="s2">&quot;syclops.outputs&quot;</span><span class="k">]</span>
+<span class="n">syclops_laser_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path.to.laser_distance_output:LaserDistanceOutput&quot;</span>
+</code></pre></div>
+<p>Replace <code>path.to.laser_distance_sensor</code> and <code>path.to.laser_distance_output</code> with the actual module paths where your <code>LaserDistanceSensor</code> and <code>LaserDistanceOutput</code> classes are defined.</p>
+<p>The plugins are now directly integrated into your package and recognized by Syclops through the pyproject.toml entry. Ensure your package is installed via pip in the same virtual environment as Syclops.</p>
+<p><strong>Directory Structure:</strong>
+<div class="highlight"><pre><span></span><code>.
+├── pyproject.toml
+├── sensors
+│   ├── laser_distance_sensor.py
+│   └── schema
+│       └── laser_distance_sensor.schema.yaml
+└── outputs
+    ├── laser_distance_output.py
+    └── schema
+        └── laser_distance_output.schema.yaml
+</code></pre></div></p>
+<p>To <strong>install</strong> the plugins, simply install your package using pip. Once installed, Syclops will automatically detect and register the plugins. You can then use the plugins in a Syclops job configuration file within the <code>scene</code> section:</p>
+<div class="highlight"><span class="filename">laser_distance_example_job.syclops.yaml</span><pre><span></span><code><span class="c1"># ...</span>
+<span class="nt">transformations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">laser_node</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">rotation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span>
+<span class="nt">sensor</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">syclops_laser_sensor</span><span class="p">:</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">laser_sensor</span>
+<span class="w">          </span><span class="nt">frame_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">laser_node</span>
+<span class="w">          </span><span class="nt">outputs</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">syclops_laser_output</span><span class="p">:</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="w">              </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">laser_output</span>
+<span class="c1"># ...</span>
+</code></pre></div>
+<ol>
+<li>This is the name of the entry point defined in the pyproject.toml file.</li>
+</ol>
+<h3 id="schema">Schema</h3>
+<p>A YAML schema file can be used to define the limits of the plugin configuration:</p>
+<div class="highlight"><span class="filename">laser_distance_sensor.schema.yaml</span><pre><span></span><code><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Frame for a laser distance sensor</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="w">  </span><span class="nt">properties</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier of the sensor</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">frame_id</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Transformation tree node to attach to.</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">outputs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">Docs Example Asset Library/LaserDistanceOutput</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/Docs</span><span class="nv"> </span><span class="s">Example</span><span class="nv"> </span><span class="s">Asset</span><span class="nv"> </span><span class="s">Library/LaserDistanceOutput&quot;</span><span class="w"> </span><span class="c1"># (2)!</span>
+<span class="w">      </span><span class="nt">additionalProperties</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+
+<span class="w">  </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">frame_id</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">outputs</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<ol>
+<li>Multiple instances of a plugin can be created. Therefore, the schema has to be of type array.</li>
+<li>The schema of the output plugin is referenced here. This allows to define, which outputs are supported by the sensor.</li>
+</ol>
+<div class="highlight"><span class="filename">laser_distance_output.schema.yaml</span><pre><span></span><code><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Laser distance output. The distance and class_id are saved to a JSON file.</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"> </span><span class="c1"># (1)!</span>
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="w">  </span><span class="nt">properties</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">id</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier of the output</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">debug_breakpoint</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wether to break and open Blender before rendering. Only works if scene debugging is active.</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="w">  </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">id</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<ol>
+<li>Multiple instances of a plugin can be created. Therefore, the schema has to be of type array.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.path", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotate", "content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
