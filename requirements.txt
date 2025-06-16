@@ -13,4 +13,3 @@ requests==2.27.1
 ruamel.yaml==0.18.10
 rich==12.6.0
 wheel==0.38.4
-importlib_metadata>=4.0.0;python_version<"3.8"

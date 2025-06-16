@@ -3,7 +3,6 @@ from abc import ABC
 from pathlib import Path
 from typing import Union
 
-import ruamel.yaml as yaml
 from ruamel.yaml import YAML
 from filelock import FileLock, Timeout
 
@@ -145,12 +144,13 @@ class PostprocessorBase(ABC):
 
         Raises:
             TimeoutError: If the filelock could not be acquired within 5 seconds.
-        """
+        """        
         try:
             lock = FileLock(f"{metadata_file_path}.lock", timeout=5)
             with lock.acquire():
                 with open(metadata_file_path, "r") as f:
-                    metadata = yaml.safe_load(f)
+                    yaml_loader = YAML(typ='safe', pure=True)
+                    metadata = yaml_loader.load(f)
             return metadata
         except Timeout:
             error_string = f"Could not acquire filelock for {metadata_file_path}"
