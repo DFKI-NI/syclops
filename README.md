@@ -110,7 +110,9 @@ pip install .
 
 ### Note for macOS Users
 
-Installation on macOS is theoretically possible but is not currently officially supported or tested. If you are using macOS, Blender will be downloaded as a `.dmg` file for your architecture (arm64 or x64).
+⚠️ **IMPORTANT**: Syclops is **not currently supported on macOS**. While installation theoretically might be possible, it has not been tested and likely will not work properly. If you attempt to use Syclops on macOS, Blender would be downloaded as a `.dmg` file for your architecture (arm64 or x64), but full functionality cannot be guaranteed.
+
+We recommend using Linux or Windows for the best experience with Syclops.
 
 ## Run a job
 

@@ -2,12 +2,13 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 
 
 def read_yaml(path: Path) -> dict:
     with open(path, "r") as f:
-        yaml_dict = yaml.safe_load(f)
+        yaml_loader = YAML(typ='safe', pure=True)
+        yaml_dict = yaml_loader.load(f)
     if "textures" in yaml_dict:
         return yaml_dict["textures"]
     else:

@@ -12,7 +12,7 @@ description = "Syclops is a Python library for generating synthetic data for mac
 readme = "README.md"
 requires-python = ">=3.9,<3.12"
 license = "GPL-3.0-or-later"  # Using SPDX expression format
-version = "1.4.3"
+version = "1.4.4"
 dynamic = ["dependencies"]
 
 [project.scripts]

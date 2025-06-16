@@ -3,7 +3,7 @@ import threading
 import time
 from pathlib import Path
 
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 from filelock import FileLock
 from rich.console import Console, Group
 from rich.live import Live
@@ -86,11 +86,12 @@ class ProgressTracker:
                     metadata_files = [f for f in files if f.endswith("metadata.yaml")]
                     for file in metadata_files:
                         # Acquire a lock on the file
-                        lock = FileLock(os.path.join(root, file + ".lock"))
+                        lock = FileLock(os.path.join(root, file + ".lock"))                        
                         with lock.acquire():
                             # Read the contents of the output_meta.yaml file
                             with open(os.path.join(root, file), "r") as f:
-                                self.output_dicts[root] = yaml.safe_load(f)
+                                yaml_loader = YAML(typ='safe', pure=True)
+                                self.output_dicts[root] = yaml_loader.load(f)
                 for _, output_dict in self.output_dicts.items():
                     main_status.update("[bold white]Generating Data...")
                     # Check if the output_dict is valid

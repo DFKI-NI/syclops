@@ -8,7 +8,7 @@ import requests
 import appdirs
 from rich.console import Console
 from rich.prompt import Prompt
-from ruamel import yaml
+from ruamel.yaml import YAML
 
 
 def download_file(url: str, dest: Path) -> None:
@@ -167,8 +167,9 @@ def get_or_create_install_folder(install_folder_path: str = None) -> Path:
 def _load_config() -> dict:
     config_file = _get_or_create_config_file_path()
     if config_file.exists():
+        yaml = YAML(typ='safe')
         with open(config_file, "r") as f:
-            return yaml.safe_load(f)
+            return yaml.load(f)
     return {}
 
 
@@ -182,6 +183,7 @@ def _write_config(config: dict):
     # Create the directory if it doesn't exist
     if not config_file.parent.exists():
         config_file.parent.mkdir(parents=True, exist_ok=True)
+    yaml = YAML(typ='safe')
     with open(config_file, "w") as f:
         yaml.dump(config, f)
 

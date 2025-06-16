@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 import pkg_resources
 from filelock import FileLock, Timeout
-from ruamel import yaml
+from ruamel.yaml import YAML
 import importlib.util
 import hashlib
 import struct
@@ -41,8 +41,7 @@ class AtomicYAMLWriter(object):
     Args:
         filename: Path to the YAML file.
         timeout: Timeout for acquiring the lock.
-    """
-
+    """    
     def __init__(self, filename: str, timeout: int = 10) -> None:
         """
         Initialize the AtomicYAMLWriter.
@@ -53,6 +52,7 @@ class AtomicYAMLWriter(object):
         """
         self.filename = filename
         self.timeout = timeout
+        self.yaml = YAML(typ='safe')
 
     def add_step(self, step: int, step_dicts: List[dict]) -> None:
         """
@@ -87,7 +87,7 @@ class AtomicYAMLWriter(object):
         # Try to read the YAML file
         try:
             with open(self.filename, "r") as yaml_file:
-                self.data = yaml.safe_load(yaml_file)
+                self.data = self.yaml.load(yaml_file)
         except FileNotFoundError:
             self.data = {}
 
@@ -102,7 +102,7 @@ class AtomicYAMLWriter(object):
             traceback: The traceback.
         """
         with open(self.filename, "w") as yaml_file:
-            yaml.safe_dump(self.data, yaml_file)
+            self.yaml.dump(self.data, yaml_file)
         self.lock.release()
 
 

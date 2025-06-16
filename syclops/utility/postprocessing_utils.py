@@ -1,6 +1,6 @@
 import os
 
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 from filelock import FileLock, Timeout
 import pkg_resources
 
@@ -13,11 +13,12 @@ def crawl_output_meta(parent_dir: str) -> dict:
         for root, dirs, files in os.walk(parent_dir):
             if "output_meta.yaml" in files:
                 # Acquire a lock on the file
-                lock = FileLock(os.path.join(root, "output_meta.yaml.lock"))
+                lock = FileLock(os.path.join(root, "output_meta.yaml.lock"))                  
                 with lock.acquire():
                     # Read the contents of the output_meta.yaml file
                     with open(os.path.join(root, "output_meta.yaml"), "r") as f:
-                        output_meta_dict[root] = yaml.safe_load(f)
+                        yaml_loader = YAML(typ='safe', pure=True)
+                        output_meta_dict[root] = yaml_loader.load(f)
     except Timeout:
         error_string = f"Could not acquire filelock for {os.path.join(root, 'output_meta.yaml.lock')}"
         print(error_string)
