@@ -164,7 +164,7 @@ Saxony and the VolkswagenStiftung.
 
 
 # Citation
-If used, please cite Syclops:
+If used in research, please cite Syclops:
 ```
 @article{Elmiger2025,
  doi = {10.21105/joss.07854},
