@@ -161,3 +161,18 @@ Saxony and the VolkswagenStiftung.
   <img alt="AgriGaia" src="docs/docs/img/dlr.jpg" height="100"/>
   <img alt="AgriGaia" src="docs/docs/img/bmwk.png" height="150"/>
 </p>
+
+
+# Citation
+If used, please cite Syclops:
+```
+@article{Elmiger2025,
+ doi = {10.21105/joss.07854},
+ url = {https://doi.org/10.21105/joss.07854},
+ year = {2025}, publisher = {The Open Journal},
+ volume = {10}, number = {110}, pages = {7854},
+ author = {Anton Elmiger and Kai von Szadkowski and Timo Korthals},
+ title = {Syclops: A Modular Pipeline for Procedural Generation of Synthetic Data},
+ journal = {Journal of Open Source Software}
+ }
+```
