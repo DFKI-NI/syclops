@@ -1,5 +1,6 @@
 # Syclops
 ![Documentation](https://github.com/dfki-ni/syclops/actions/workflows/docs_deployment.yaml/badge.svg)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.07854/status.svg)](https://doi.org/10.21105/joss.07854)
 
 <h1 align="center">
   <img alt="cgapp logo" src="https://user-images.githubusercontent.com/40243985/222779654-df09c551-3eab-4a08-aa3c-08ab6cfd73ab.png" width="224px"/><br/>
