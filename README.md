@@ -58,9 +58,25 @@ Before you install `Syclops`, ensure you have the following prerequisites:
     - Python 3.9 – 3.11
 - ❌ Not yet compatible with Python 3.12+
 
-We recommend using a virtual environment to avoid potential package conflicts. Below are instructions for setting up with `virtualenv` and `conda`.
+We recommend using a virtual environment to avoid potential package conflicts. Below are instructions for setting up with `venv`, `virtualenv`,  and `conda`.
 
-## Installing
+## Installation
+
+### Using `venv`
+
+Install the appropriate Python version for your version of syclops, then create the venv:
+
+```bash
+# For Linux/macOS
+# command will depend on specific version
+python3.10 -m venv .syclops_venv
+source syclops_venv/bin/activate
+
+# For Windows
+# command will depend on specific version
+py -3.10 -m venv .syclops_venv
+.\syclops_venv\Scripts\activate
+```
 
 ### Using `virtualenv`
 
@@ -70,7 +86,7 @@ If you don't have `virtualenv` installed:
 pip install virtualenv
 ```
 
-To create and activate a new virtual environment named `syclops`:
+To create and activate a new virtual environment named `syclops_venv`:
 
 ```bash
 # For Linux/macOS
@@ -99,7 +115,7 @@ Once you have your environment set up and activated:
 pip install syclops
 ```
 
-### Alternatively: Clone and Install from Source
+### Alternative: Clone and Install from Source
 
 To install `Syclops` directly from the source code:
 
@@ -107,6 +123,14 @@ To install `Syclops` directly from the source code:
 git clone https://github.com/DFKI-NI/syclops.git
 cd syclops
 pip install .
+```
+
+If you are aiming for bleeding edge use and/or development, install in editable mode:
+
+```bash
+git clone --branch dev https://github.com/DFKI-NI/syclops.git
+cd syclops
+pip install -e .
 ```
 
 ### Note for macOS Users
