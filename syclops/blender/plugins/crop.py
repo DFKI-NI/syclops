@@ -51,6 +51,7 @@ class Crop(PluginInterface):
         utility.set_active_collection(self.instance_objects.get())
 
         # Import the geometry
+        logging.info("Loading models for crop: {0}".format(self.config["models"]))
         loaded_objs = utility.import_assets(self.config["models"])
         for obj in loaded_objs:
             self.reduce_size(obj)

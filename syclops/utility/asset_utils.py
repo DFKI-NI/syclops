@@ -157,6 +157,8 @@ def get_asset_path(
     Returns:
         tuple[Path, Union[str, List]]: Root path and asset path
     """
+    if '::' in asset_name:
+        asset_name, _ = asset_name.split('::') 
     asset = get_asset(asset_name)
     if asset is not None:
         root_path = Path(get_lib_path(asset_name))
@@ -202,10 +204,11 @@ def import_assets(
     """
     assets = [asset_name] if isinstance(asset_name, str) else asset_name
     obj_paths = []
+    obj_names = []
     for asset in assets:
         root_dir, obj_path = get_asset_path(asset, path_key)
         obj_paths.append(str((root_dir / obj_path).resolve()))
-    return import_objects(obj_paths)
+    return import_objects(obj_paths, obj_names)
 
 
 def remove_unused_objects() -> None:
@@ -264,7 +267,7 @@ def link_duplicate_objs(obj_list: List[bpy.types.Object]) -> None:
         mesh_hashs[dup_hash].data = obj_hashes[dup_hash].data
 
 
-def import_objects(obj_paths: Union[str, list]) -> List[bpy.types.Object]:
+def import_objects(obj_paths: Union[str, list], obj_names: Union[str, list] | None = None) -> List[bpy.types.Object]:
     """Import Objects into Blender.
 
     Args:
@@ -273,14 +276,18 @@ def import_objects(obj_paths: Union[str, list]) -> List[bpy.types.Object]:
     Returns:
         list[bpy.types.Object]: Imported Blender objects
     """
+    logging.info("Importing objects: {0} / {1}".format(obj_paths, obj_names))
     obj_paths = [obj_paths] if isinstance(obj_paths, str) else obj_paths
+    obj_names = [obj_names] if isinstance(obj_names, str) else obj_names
     imported_objs = []
-    for obj_path in obj_paths:
-        if isdir(obj_path):
+    for i in range(len(obj_paths)):
+        obj_path = obj_paths[i]
+        obj_name = obj_names[i] if obj_names else None
+        if isdir(obj_paths[i]):
             for file in glob.glob("{0}/*".format(obj_path)):
-                import_file(file, imported_objs)
+                import_file(file, obj_name, imported_objs)
         else:
-            import_file(obj_path, imported_objs)
+            import_file(obj_path, obj_name, imported_objs)
     link_duplicate_objs(imported_objs)
     remove_unused_objects()
     return imported_objs
@@ -294,10 +301,15 @@ def _import_obj(obj_path: str):
     bpy.ops.import_scene.obj(filepath=obj_path)
 
 
-def _import_blend(obj_path: str):
+def _import_blend(obj_path: str, obj_name: str| None = None):
     loaded_objs = []
-    with bpy.data.libraries.load(obj_path, link=False) as (data_from, data_to):
-        data_to.objects = data_from.objects
+    if obj_name:
+        logging.info("Importing specific object {0} from {1}".format(obj_name, obj_path))
+        with bpy.data.libraries.load(obj_path, link=False) as (data_from, data_to):
+            data_to.objects = [obj for obj in data_from.objects if obj.name == obj_name]
+    else:
+        with bpy.data.libraries.load(obj_path, link=False) as (data_from, data_to):
+            data_to.objects = data_from.objects
     loaded_objs.extend(data_to.objects)
     for obj in loaded_objs:
         if obj:
@@ -305,7 +317,7 @@ def _import_blend(obj_path: str):
             collection.objects.link(obj)
 
 
-def import_file(obj_path: str, imported_objs: List[bpy.types.Object]):
+def import_file(obj_path: str, obj_name: str | None, imported_objs: List[bpy.types.Object]):
     """Import a single object file.
 
     Currently supports .fbx, .obj, and .blend files.
@@ -326,9 +338,10 @@ def import_file(obj_path: str, imported_objs: List[bpy.types.Object]):
         ".obj": _import_obj,
         ".blend": _import_blend,
     }
-
     try:
         import_func = import_dispatch[extension]
+        if obj_name and extension in[".blend"]:  # TODO: Add support for obj_name in other import functions where applicable
+            import_func(obj_path, obj_name)
         import_func(obj_path)
     except KeyError:
         raise ValueError(f"Unsupported file extension: {extension}")

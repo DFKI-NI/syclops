@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Any
+import copy
 
 import numpy as np
 from jsonschema import validate
@@ -63,6 +64,25 @@ def write_yaml(path: str, data: dict):
     with open(path, "w") as f:
         yaml = YAML()
         yaml.dump(data, f)
+
+
+def _strip_subobjects_from_asset_references(value: Any) -> Any:
+    """Strip Blender-style sub-object suffixes from asset references.
+
+    This is only used for validation. It preserves strings like
+    `Library/Asset::subobject` as `Library/Asset` so asset library
+    validation checks only the top-level asset.
+    """
+    if isinstance(value, dict):
+        return {k: _strip_subobjects_from_asset_references(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_strip_subobjects_from_asset_references(v) for v in value]
+    if isinstance(value, str) and "::" in value:
+        base_value, suffix = value.split("::", 1)
+        # Only strip values that look like asset library references.
+        if "/" in base_value:
+            return base_value
+    return value
 
 
 def _add_to_catalog(catalog: dict, key: str, value: Any, output_path: str):
@@ -179,8 +199,10 @@ def preprocess(config_path: str, catalog_path: str, schema: str, output_path: st
                 if isinstance(value, str) and value.startswith("$global."):
                     global_key = value[8:]
                     sensor[key] = evaluated_global_evaluators[global_key]
+
+    config_for_validation = _strip_subobjects_from_asset_references(copy.deepcopy(config))
     try:
-        validate(config, schema)
+        validate(config_for_validation, schema)
         print("Job Config is valid!")
     except ValidationError as e:
         print("Job Config is invalid:")
