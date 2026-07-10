@@ -8,7 +8,7 @@ if 'bpy' in sys.modules:
                             create_mesh_hash, create_module_instances, get_asset,
                             get_asset_path, get_lib_path, import_assets,
                             import_file, import_objects, link_duplicate_objs,
-                            load_module, remove_unused_objects, split_asset_name)
+                            load_module, remove_unused_objects)
     from .blender_utils import (ObjPointer, RevertAfter, DisjointSet, add_volume_attribute,
                                 append_output_path, apply_modifiers,
                                 apply_transform, clear_scene, configure_render,

@@ -143,19 +143,6 @@ def create_module_instances(config: dict) -> list:
     return instances
 
 
-def split_asset_name(asset_name: str) -> Tuple[str, str]:
-    """Split asset name into a library name and asset name.
-
-    Args:
-        asset_name (str): Name of the asset
-
-    Returns:
-        tuple[str, str]: Library name and asset name
-    """
-    library = asset_name.split("/")[0]
-    asset = asset_name.split("/")[1]
-    return library, asset
-
 
 def get_asset_path(
     asset_name: str,
@@ -193,8 +180,9 @@ def get_asset(asset_name: str) -> dict:
     """
     catalog_string = bpy.data.scenes["Scene"]["catalog"]
     catalog = pickle.loads(bytes(catalog_string, "latin1"))
-
-    library, asset = split_asset_name(asset_name)
+    if '::' in asset_name:
+        asset_name, _ = asset_name.split('::') 
+    library, asset = asset_name.split('/')
     if library in catalog and asset in catalog[library]["assets"]:
         return catalog[library]["assets"][asset]
 
@@ -353,6 +341,4 @@ def get_lib_path(asset_name: str) -> str:
     """Get library path from catalog"""
     catalog_string = bpy.data.scenes["Scene"]["catalog"]
     catalog = pickle.loads(bytes(catalog_string, "latin1"))
-
-    library, _ = split_asset_name(asset_name)
-    return catalog[library]["root_path"]
+    return catalog[asset_name.split('/')[0]]["root_path"]
