@@ -73,9 +73,10 @@ def main(args):
 if __name__ == "__main__":
     args = parse_arguments()
     
+    import site
     site_packages_path = Path(args.site_packages_path).resolve()
     print(f"Adding {site_packages_path} to sys.path")
-    sys.path.append(str(site_packages_path))
+    site.addsitedir(str(site_packages_path))
 
     import debugpy
     import yaml

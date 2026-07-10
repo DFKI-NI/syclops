@@ -2,7 +2,7 @@ import os
 
 from ruamel.yaml import YAML
 from filelock import FileLock, Timeout
-import pkg_resources
+from importlib.metadata import entry_points
 
 
 def crawl_output_meta(parent_dir: str) -> dict:
@@ -53,7 +53,7 @@ def create_module_instances_pp(config: dict) -> list:
 
 def _load_plugins_pp():
     plugins = {}
-    for entry_point in pkg_resources.iter_entry_points('syclops.postprocessing'):
+    for entry_point in entry_points(group='syclops.postprocessing'):
         try:
             plugins[entry_point.name] = entry_point.load()
         except ModuleNotFoundError:

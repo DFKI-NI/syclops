@@ -19,7 +19,7 @@ from syclops.utility import (
 from syclops.asset_manager.asset_crawler import AssetCrawler
 import sys
 from rich.console import Console
-import pkg_resources
+from importlib.metadata import entry_points
 
 
 BLENDER_VERSION = "3.6.1"
@@ -135,17 +135,17 @@ def _crawl_assets(install_folder: Path, generate_thumbnails: bool = False):
 
 
 def available_plugins():
-    entry_points = [
+    eps = [
         "syclops.plugins",
         "syclops.sensors",
         "syclops.outputs",
         "syclops.postprocessing",
     ]
     plugins = {}
-    for group in entry_points:
+    for group in eps:
         plugins[group] = [
-            (entry_point.name, entry_point.module_name)
-            for entry_point in pkg_resources.iter_entry_points(group)
+            (entry_point.name, entry_point.value)
+            for entry_point in entry_points(group=group)
         ]
     return plugins
 

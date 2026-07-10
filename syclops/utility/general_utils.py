@@ -3,7 +3,7 @@
 import logging
 from pathlib import Path
 from typing import List
-import pkg_resources
+from sysconfig import get_paths
 from filelock import FileLock, Timeout
 from ruamel.yaml import YAML
 import importlib.util
@@ -143,7 +143,7 @@ def find_class_id_mapping(job_config: dict) -> dict:
     return class_id_mapping
 
 def get_site_packages_path():
-    return pkg_resources.get_distribution("syclops").location
+    return get_paths()["purelib"]
 
 def get_module_path(module_name: str) -> Path:
     spec = importlib.util.find_spec(module_name)

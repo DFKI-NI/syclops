@@ -13,19 +13,19 @@ import bmesh
 import bpy
 import numpy as np
 
-import pkg_resources
+from importlib.metadata import entry_points
 
 
 def load_plugins():
-    entry_points = [
+    groups = [
         "syclops.plugins",
         "syclops.sensors",
         "syclops.outputs",
         "syclops.postprocessing",
     ]
     plugins = {}
-    for group in entry_points:
-        for entry_point in pkg_resources.iter_entry_points(group):
+    for group in groups:
+        for entry_point in entry_points(group=group):
             plugins[entry_point.name] = entry_point.load()
 
     return plugins
